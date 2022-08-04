@@ -1,0 +1,50 @@
+.gridConstr {
+  grid-area: constructor;
+  display: grid;
+  justify-items: stretch;
+  align-content: start;
+  align-self: start;
+  row-gap: 16px;
+  box-sizing: border-box;
+
+  list-style: none;
+}
+
+.scroll {
+  list-style: none;
+  max-height: calc(100vh - 860px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 600px;
+  display: grid;
+  justify-items: stretch;
+  align-content: start;
+  align-self: start;
+  row-gap: 16px;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.gridButton {
+  grid-area: button;
+  align-self: start;
+
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+}
+
+.emptyIcon {
+  width: 24px;
+  content: "";
+}
+
+.currencyIcon{
+  transform: scale(1.5);
+}

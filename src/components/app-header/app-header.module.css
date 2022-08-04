@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  align-items: center;
+  max-width: 1240px;
+  width: 100vw;
+  justify-content: space-between;
+}
+
+.nav {
+  display: flex;
+}
+
+.item {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  background: inherit;
+  text-align: center;
+  display: flex;
+}
+
+.logo{
+transform: translateX(-100px);
+}
