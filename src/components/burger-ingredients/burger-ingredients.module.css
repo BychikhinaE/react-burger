@@ -2,43 +2,40 @@
   grid-area: title;
 }
 
-.gridIngred{
+.gridIngred {
   grid-area: ingredients;
 }
 
 .scroll {
   max-height: calc(100vh - 364px);
-
-    overflow-y: auto;
-    max-width: 600px;
-
+  overflow-y: auto;
+  max-width: 600px;
 }
 
 .list {
   list-style: none;
   display: flex;
   justify-content: space-between;
-
   flex-wrap: wrap;
   margin: 0;
 }
 
 .item {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-width: 272px;
-position: relative;
-text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 272px;
+  position: relative;
+  text-align: center;
 }
 
 .link {
   text-decoration: none;
 }
 
-.price{
+.price {
   display: flex;
   align-items: center;
-  gap: 8px
+  gap: 8px;
 }

@@ -14,8 +14,8 @@ const ReturnMenu = ({ array, ingredientGroup }) => {
   const currentObject = array.filter((item) => item.type === ingredientGroup);
   return (
     <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
-      {currentObject.map((item, index) => (
-        <li className={`${styles.item} mb-10`} key={index}>
+      {currentObject.map((item) => (
+        <li className={`${styles.item} mb-10`} key={item._id}>
           {item.__v > 0 && <Counter count={item.__v} size="default" />}
           <img alt={item.name} src={item.image} />
           <div className={styles.price}>
@@ -74,7 +74,6 @@ const BurgerIngredients = ({ array }) => {
               Начинки
             </Tab>
           </a>
-
         </nav>
         <div className={`${styles.scroll} custom-scroll`}>
           <h2 className="text text_type_main-medium pb-6" id="buns">
@@ -91,7 +90,6 @@ const BurgerIngredients = ({ array }) => {
             Начинки
           </h2>
           <ReturnMenu array={array} ingredientGroup={"main"} />
-
         </div>
       </section>
     </>
@@ -99,11 +97,11 @@ const BurgerIngredients = ({ array }) => {
 };
 
 BurgerIngredients.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes),
+  array: PropTypes.arrayOf(ingredientPropTypes.isRequired),
 };
 
 ReturnMenu.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes),
+  array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
   ingredientGroup: PropTypes.string.isRequired,
 };
 

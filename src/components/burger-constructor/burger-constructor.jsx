@@ -10,7 +10,6 @@ import PropTypes from "prop-types";
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
 
-
 //Компонент вернёт разметку ингредиента взависимости от переданных параметров
 const ReturnIngredients = ({ item, type, isLocked }) => {
   let halfBun = "";
@@ -42,7 +41,7 @@ const ReturnIngredients = ({ item, type, isLocked }) => {
 ReturnIngredients.propTypes = {
   item: ingredientPropTypes.isRequired,
   type: PropTypes.string,
-  isLocked: PropTypes.bool,
+  isLocked: PropTypes.bool.isRequired,
 };
 
 //Компонент вернет разметку,которая справа
@@ -58,37 +57,39 @@ const BurgerConstructor = ({ array }) => {
     );
   });
 
-  const total =
-    anotherIngredietsCheck.reduce((acc, p) => acc + p.price * p.__v, (bunCheck.price * 2));
+  const total = anotherIngredietsCheck.reduce(
+    (acc, p) => acc + p.price * p.__v,
+    bunCheck.price * 2
+  );
 
   return (
     <>
       <ul className={`${styles.gridConstr} text pl-4  mb-10`}>
         <ReturnIngredients
           item={bunCheck}
-          key={`${bunCheck.name}-top`}
+          key={`${bunCheck._id}-top`}
           type="top"
           isLocked={true}
         />
 
-         <ul className={`${styles.scroll} custom-scroll text`}>
+        <ul className={`${styles.scroll} custom-scroll text`}>
           {anotherIngredietsCheck.reduce((insideBurger, item) => {
-            for (let i = item.__v; i > 0 ; i--) {
+            for (let i = item.__v; i > 0; i--) {
               insideBurger.push(
-               <ReturnIngredients
+                <ReturnIngredients
                   item={item}
-                  key={`${item.name}-${i}`}
+                  key={`${item._id}-${i}`}
                   isLocked={false}
                 />
               );
             }
-           return insideBurger;
+            return insideBurger;
           }, [])}
         </ul>
 
         <ReturnIngredients
           item={bunCheck}
-          key={`${bunCheck.name}-bottom`}
+          key={`${bunCheck._id}-bottom`}
           type="bottom"
           isLocked={true}
         />
@@ -109,7 +110,7 @@ const BurgerConstructor = ({ array }) => {
 
 //Проверка типа
 BurgerConstructor.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes),
+  array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 };
 
 export default BurgerConstructor;
