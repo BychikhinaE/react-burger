@@ -12,7 +12,7 @@
 
 .scroll {
   list-style: none;
-  max-height: calc(100vh - 860px);
+  max-height: calc(100vh - 616px);
   overflow-y: auto;
   overflow-x: hidden;
   max-width: 600px;
