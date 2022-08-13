@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
 
 //Компонент вернёт разметку ингредиента взависимости от переданных параметров
-const ReturnIngredients = ({ item, type, isLocked }) => {
+function ReturnIngredients({ item, type, isLocked }) {
   let halfBun = "";
   if (type === "top") {
     halfBun = " (верх)";
@@ -19,6 +19,7 @@ const ReturnIngredients = ({ item, type, isLocked }) => {
   if (type === "bottom") {
     halfBun = " (низ)";
   }
+  console.log(item.price)
   return (
     <li className={`${styles.item} text`}>
       {item.type === "bun" ? (
@@ -38,14 +39,15 @@ const ReturnIngredients = ({ item, type, isLocked }) => {
 };
 
 //Проверка типа
-ReturnIngredients.propTypes = {
-  item: ingredientPropTypes.isRequired,
-  type: PropTypes.string,
-  isLocked: PropTypes.bool.isRequired,
-};
+// ReturnIngredients.propTypes = {
+//   item: ingredientPropTypes.isRequired,
+//   type: PropTypes.string,
+//   isLocked: PropTypes.bool.isRequired,
+// };
 
 //Компонент вернет разметку,которая справа
-const BurgerConstructor = ({ array }) => {
+function BurgerConstructor({ array }) {
+  console.log(array)
   //Найти выбранный хлебушек-объект
   const bunCheck = array.find((item) => item.type === "bun" && item.__v > 0);
 
@@ -63,8 +65,8 @@ const BurgerConstructor = ({ array }) => {
   );
 
   return (
-    <>
-      <ul className={`${styles.gridConstr} text pl-4  mb-10`}>
+  <>
+       <ul className={`${styles.gridConstr} text pl-4  mb-10`}>
         <ReturnIngredients
           item={bunCheck}
           key={`${bunCheck._id}-top`}
@@ -104,13 +106,13 @@ const BurgerConstructor = ({ array }) => {
           Оформить заказ
         </Button>
       </div>
-    </>
-  );
+    </>)
+
 };
 
 //Проверка типа
 BurgerConstructor.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
+  array: PropTypes.arrayOf(ingredientPropTypes),
 };
 
 export default BurgerConstructor;
