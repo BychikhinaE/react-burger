@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
 import Modal from "../modal/modal";
-
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import {
   Tab,
   CurrencyIcon,
@@ -10,58 +10,25 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 
-//Вернет разделы меню взависимости от группы продукта
-
-function ReturnMenu({ array, ingredientGroup, onClick, currentIngred }) {
-
-  const currentObject = array.filter((item) => item.type === ingredientGroup);
-  return (
-    <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
-      {currentObject.map((item) => (
-        <li className={`${styles.item} mb-10`} key={item._id} onClick={onClick}
-        ref={currentIngred}>
-          {item.__v > 0 && <Counter count={item.__v} size="default" />}
-          <img alt={item.name} src={item.image} />
-          <div className={styles.price}>
-            <p className="text text_type_digits-default pt-2 pb-3">
-              {item.price}
-            </p>
-            <CurrencyIcon type="primary" />
-          </div>
-          <p className="text text_type_main-default pb-5">{item.name}</p>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-//Отрисует заголовок и всё меню
+//ОСНОВНОЙ КОМПОНЕНТ, которй отрисует заголовок и всё меню
 const BurgerIngredients = ({ array }) => {
   const [current, setCurrent] = React.useState("Булки");
 
-const ingredientRef = React.useRef(null)
-// Код мод.окна
-// const [state, setState] = React.useState({
-//   visible: false,
-//   ingredient: null
-// });
-function handleOpenModal() {
-  console.log(ingredientRef.current)
-// setState({visible: true, ingredient: event.target})
-}
+  // Код мод.окна
+  const [state, setState] = React.useState({
+    visible: false,
+    ingredient: {},
+  });
 
+  const handleOpenModal = (Event) => {
+    const targetIndex = Event.currentTarget.getAttribute("index");
+    const target = array.find((item) => item._id === targetIndex);
+    setState({ visible: true, ingredient: target });
+  };
 
-// function  handleCloseModal() {
-//   setState({ visible: false,  ingredient: null });
-// }
-// const modal = (
-//   <Modal header={state.ingredient} onClose={handleCloseModal}>
-//     <img alt={state.ingredient.name} src={state.ingredient.image} />
-//     <h2>{state.ingredient.name}</h2>
-//     {/* <p>{state.ingredient}</p> */}
-//   </Modal>
-// )
-
+  function handleCloseModal() {
+    setState({ visible: false, ingredient: {} });
+  }
 
   return (
     <>
@@ -109,75 +76,80 @@ function handleOpenModal() {
           <h2 className="text text_type_main-medium pb-6" id="buns">
             Булки
           </h2>
-          <ReturnMenu array={array} ingredientGroup="bun" onClick={handleOpenModal}
-          currentIngred={ingredientRef}
+          <ReturnMenu
+            array={array}
+            ingredientGroup="bun"
+            onClickforInfo={handleOpenModal}
           />
 
           <h2 className="text text_type_main-medium pb-4" id="souce">
             Соусы
           </h2>
-          <ReturnMenu array={array} ingredientGroup="sauce" onClick={handleOpenModal}
-          currentIngred={ingredientRef}/>
+          <ReturnMenu
+            array={array}
+            ingredientGroup="sauce"
+            onClickforInfo={handleOpenModal}
+          />
 
           <h2 className="text text_type_main-medium pb-6" id="mains">
             Начинки
           </h2>
-          <ReturnMenu array={array} ingredientGroup="main" onClick={handleOpenModal}
-          currentIngred={ingredientRef}/>
+          <ReturnMenu
+            array={array}
+            ingredientGroup="main"
+            onClickforInfo={handleOpenModal}
+          />
         </div>
       </section>
 
-{/* Модальное окно*/}
-      {/* <div style={{ overflow: "hidden" }}>
-        {state.visible && modal}
-      </div> */}
-
+      {/* Модальное окно*/}
+      <div style={{ overflow: "hidden" }}>
+        {state.visible && (
+          <Modal header="Детали ингредиента" onClose={handleCloseModal}>
+            <IngredientDetails ingredient={state.ingredient} />
+          </Modal>
+        )}
+      </div>
     </>
   );
 };
 
-// BurgerIngredients.propTypes = {
-//   array: PropTypes.arrayOf(ingredientPropTypes.isRequired),
-// };
+//Вспомогательный компонент вернет разделы меню взависимости от группы продукта
+function ReturnMenu({ array, ingredientGroup, onClickforInfo }) {
+  const currentObject = array.filter((item) => item.type === ingredientGroup);
+  return (
+    <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
+      {currentObject.map((item) => (
+        <li
+          className={`${styles.item} mb-10`}
+          key={item._id}
+          onClick={onClickforInfo}
+          index={item._id}
+        >
+          {item.__v > 0 && <Counter count={item.__v} size="default" />}
+          <img alt={item.name} src={item.image} />
+          <div className={styles.price}>
+            <p className="text text_type_digits-default pt-2 pb-3">
+              {item.price}
+            </p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <p className="text text_type_main-default pb-5">{item.name}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
-// ReturnMenu.propTypes = {
-//   array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-//   ingredientGroup: PropTypes.string.isRequired,
-// };
+//Проверка типов данных
+BurgerIngredients.propTypes = {
+  array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
+};
+
+ReturnMenu.propTypes = {
+  array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
+  ingredientGroup: PropTypes.string.isRequired,
+  onClickforInfo: PropTypes.func.isRequired,
+};
 
 export default BurgerIngredients;
-// class App extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       visible: false,
-//     };
-
-//     this.handleOpenModal = this.handleOpenModal.bind(this);
-//     this.handleCloseModal = this.handleCloseModal.bind(this);
-//   }
-
-//   handleOpenModal() {
-//     this.setState({ visible: true });
-//   }
-
-//   handleCloseModal() {
-//     this.setState({ visible: false });
-//   }
-
-//   render() {
-//     const modal = (
-//       <Modal header="Внимание!" onClose={this.handleCloseModal}>
-//         <p>Спасибо за внимание!</p>
-//         <p>Открывай меня, если станет скучно</p>
-//       </Modal>
-//     );
-
-//     return (
-//       <div style={{ overflow: "hidden" }}>
-//         <button onClick={this.handleOpenModal}>Открыть модальное окно</button>
-//         {this.state.visible && modal}
-//       </div>
-//     );
-//   }
-// }

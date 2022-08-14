@@ -1,15 +1,21 @@
-import ReactDOM from "react-dom/client";
+//компонент Modal — шапка с заголовком и иконкой закрытия;
+//содержимое модального окна передается в компонент Modal как children ;
+//логика навешивания и удаления обработчиков события нажатия
+//клавиши "Esc" описана в компоненте Modal ;
+
+import ReactDOM from "react-dom";
 import React from "react";
 import PropTypes from "prop-types";
+import styles from "./modal.module.css";
 
 import ModalOverlay from "../modal-overlay/modal-overlay";
 
 const modalRoot = document.getElementById("react-modals");
 
-const Modal = ({ children, header, onClose }) => {
+function Modal({ children, header, onClose }) {
   const handleEscClose = (evt) => {
     if (evt.key === "Escape") {
-      this.close();
+      onClose();
     }
   };
   //логика навешивания и удаления обработчиков события нажатия клавиши "Esc"
@@ -20,67 +26,26 @@ const Modal = ({ children, header, onClose }) => {
       document.removeEventListener("keydown", handleEscClose);
     };
   }, []);
-  // Возвращаем ReactDOM.createPortal,
-  // который поместит дочерние элементы в modalRoot
+
   return ReactDOM.createPortal(
-    <>
-      <div className="Modal">
-        <h1 onClose={onClose}>{header}</h1>
+    <ModalOverlay onClick={onClose}>
+      <div className={`${styles.modal} pt-15 pl-10 pr-10`}>
+        <div className={`${styles.header} mb-3`}>
+          <h2 className="text text_type_main-large">{header}</h2>
+          <button className={styles.button} onClick={onClose} />
+        </div>
         {children}
       </div>
-      <ModalOverlay onClose={onClose} />
-    </>,
+    </ModalOverlay>,
     modalRoot
   );
-};
+}
 
 export default Modal;
 
 //проверкa типов PropTypes.
-// Modal.propTypes = {
-//   children: PropTypes.node.isRequired,
-//   header: PropTypes.string.isRequired,
-//   onClose: PropTypes.func.isRequired,
-// };
-
-//компонент Modal — шапка с заголовком и иконкой закрытия;
-//содержимое модального окна передается в компонент Modal как children ;
-//логика навешивания и удаления обработчиков события нажатия
-//клавиши "Esc" описана в компоненте Modal ;
-//в компоненте Modal используется портал;
-
-// class App extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       visible: false,
-//     };
-
-//     this.handleOpenModal = this.handleOpenModal.bind(this);
-//     this.handleCloseModal = this.handleCloseModal.bind(this);
-//   }
-
-//   handleOpenModal() {
-//     this.setState({ visible: true });
-//   }
-
-//   handleCloseModal() {
-//     this.setState({ visible: false });
-//   }
-
-//   render() {
-//     const modal = (
-//       <Modal header="Внимание!" onClose={this.handleCloseModal}>
-//         <p>Спасибо за внимание!</p>
-//         <p>Открывай меня, если станет скучно</p>
-//       </Modal>
-//     );
-
-//     return (
-//       <div style={{ overflow: "hidden" }}>
-//         <button onClick={this.handleOpenModal}>Открыть модальное окно</button>
-//         {this.state.visible && modal}
-//       </div>
-//     );
-//   }
-// }
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  header: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+};

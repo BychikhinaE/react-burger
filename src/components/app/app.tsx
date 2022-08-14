@@ -4,9 +4,8 @@ import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-//import arrayIngredients from "../../utils/data";
+import arrayIngredients from "../../utils/data";
 const API = "https://norma.nomoreparties.space/api/ingredients ";
-
 
 function App() {
   const [state, setState] = React.useState({
@@ -15,18 +14,16 @@ function App() {
     data: [],
   });
 
-
-const getData = async () => {
+  const getData = async () => {
     setState({ ...state, isLoading: true });
     const res = await fetch(API);
     const data = await res.json();
-    console.log(data);
-    if(data.success){
-      setState({ data: data.data, isLoading: false, hasError: false })
-    } else {setState({ ...state,  isLoading: false, hasError: true })}
-
-  }
-
+    if (data.success) {
+      setState({ data: data.data, isLoading: false, hasError: false });
+    } else {
+      setState({ ...state, isLoading: false, hasError: true });
+    }
+  };
 
   React.useEffect(() => {
     getData();
@@ -41,7 +38,9 @@ const getData = async () => {
         {!state.isLoading && !state.hasError && state.data.length && (
           <>
             <BurgerIngredients array={state.data} />
-            {/* <BurgerConstructor array={state.data} /> */}
+            {/* но по данным state.data ничего не заказано..*/}
+            <BurgerConstructor array={state.data} />
+            {/* <BurgerConstructor array={arrayIngredients} /> */}
           </>
         )}
       </main>

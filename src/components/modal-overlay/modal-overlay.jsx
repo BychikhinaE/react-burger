@@ -1,21 +1,25 @@
-import ReactDOM from "react-dom/client";
+//ModalOverlay — фоновая подложка под модальным окном;
 import PropTypes from "prop-types";
+import styles from "./modal-overlay.module.css";
 
-const ModalOverlay =() => {};
+const ModalOverlay = ({ onClick, children }) => {
+  const closeByClickOverlay = (evt) => {
+    if (evt.target === evt.currentTarget) {
+      onClick();
+    }
+  };
+
+  return (
+    <div className={styles.overlay} onClick={closeByClickOverlay}>
+      {children}
+    </div>
+  );
+};
 
 export default ModalOverlay;
+
 //проверкa типов PropTypes.
-
-//ModalOverlay — фоновая подложка под модальным окном;
-
-// Открытие модального окна:
-// Клик по ингредиенту открывает модальное окно с описанием ингредиента.
-// Клик по кнопке «Оформить заказ» открывает модальное окно с описанием заказа.
-
-// Закрытие модального окна:
-// Клик по иконке крестика закрывает модальное окно.
-// Клик по ModalOverlay или нажатие на клавишу “Esc” закрывают модальное окно.
-// Компонент модального окна будет использоваться внутри компонентов
-// с overflow: hidden, поэтому для реализации модальных окон воспользуйтесь
-// порталами.
-// Из UI-библиотеки используйте типографику и иконки.
+ModalOverlay.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
