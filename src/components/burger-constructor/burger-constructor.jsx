@@ -117,13 +117,13 @@ function Total({ total }) {
       </div>
 
       {/* Модальное окно*/}
-      <div style={{ overflow: "hidden" }}>
+      <>
         {state.visible && (
           <Modal header="" onClose={handleCloseModal}>
             <OrderDetails identifier={state.identifier} />
           </Modal>
         )}
-      </div>
+      </>
     </>
   );
 }

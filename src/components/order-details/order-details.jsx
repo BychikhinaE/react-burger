@@ -20,5 +20,5 @@ function OrderDetails({ identifier }) {
 export default OrderDetails;
 //проверкa типов PropTypes.
 OrderDetails.propTypes = {
-  identifier: PropTypes.string.isRequired,
+  identifier: PropTypes.number.isRequired,
 };

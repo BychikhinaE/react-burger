@@ -18,7 +18,7 @@
 }
 
 .button {
-  background: url(../../images/closeIcon.svg) no-repeat center;
+  background-color: #000;
   width: 24px;
   height: 24px;
   border: none;

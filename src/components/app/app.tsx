@@ -9,18 +9,23 @@ const API = "https://norma.nomoreparties.space/api/ingredients ";
 
 function App() {
   const [state, setState] = React.useState({
-    isLoading: false,
+    isLoading: true,
     hasError: false,
     data: [],
   });
 
   const getData = async () => {
-    setState({ ...state, isLoading: true });
-    const res = await fetch(API);
-    const data = await res.json();
-    if (data.success) {
+    try {
+      const res = await fetch(API);
+      if (!res.ok) {
+        setState({ ...state, isLoading: false, hasError: true });
+        throw `Ошибка ${res.status}`;
+      }
+      const data = await res.json();
       setState({ data: data.data, isLoading: false, hasError: false });
-    } else {
+    }
+    catch (error) {
+      console.log('Произошла ошибка: ', error);
       setState({ ...state, isLoading: false, hasError: true });
     }
   };
@@ -38,9 +43,7 @@ function App() {
         {!state.isLoading && !state.hasError && state.data.length && (
           <>
             <BurgerIngredients array={state.data} />
-            {/* но по данным state.data ничего не заказано..*/}
-            <BurgerConstructor array={state.data} />
-            {/* <BurgerConstructor array={arrayIngredients} /> */}
+            <BurgerConstructor array={arrayIngredients} />
           </>
         )}
       </main>

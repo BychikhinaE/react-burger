@@ -103,13 +103,13 @@ const BurgerIngredients = ({ array }) => {
       </section>
 
       {/* Модальное окно*/}
-      <div style={{ overflow: "hidden" }}>
+      <>
         {state.visible && (
           <Modal header="Детали ингредиента" onClose={handleCloseModal}>
             <IngredientDetails ingredient={state.ingredient} />
           </Modal>
         )}
-      </div>
+      </>
     </>
   );
 };
