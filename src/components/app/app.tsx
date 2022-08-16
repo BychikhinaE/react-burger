@@ -18,7 +18,6 @@ function App() {
     try {
       const res = await fetch(API);
       if (!res.ok) {
-        setState({ ...state, isLoading: false, hasError: true });
         throw `Ошибка ${res.status}`;
       }
       const data = await res.json();

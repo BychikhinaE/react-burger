@@ -40,8 +40,7 @@ const BurgerIngredients = ({ array }) => {
 
       <section className={styles.gridIngred}>
         <nav
-          style={{ display: "flex" }}
-          className="text text_type_main-default pb-10"
+          className={`${styles.nav} text text_type_main-default pb-10`}
         >
           <a className={styles.link} href="#buns">
             <Tab
