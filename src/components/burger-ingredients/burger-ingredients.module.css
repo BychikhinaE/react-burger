@@ -39,3 +39,7 @@
   align-items: center;
   gap: 8px;
 }
+
+.nav {
+  display: flex;
+}
