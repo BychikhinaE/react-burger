@@ -7,6 +7,8 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
+// import { ProductContext } from '../../services/productContext';
+import { TotalPriceContext } from "../../services/totalPriceContext";
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -16,23 +18,26 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
-function BurgerConstructor({ array }) {
+function BurgerConstructor() {
+  const { arraySelected } = React.useContext(TotalPriceContext);
+  const array = arraySelected;
+  React.useEffect(() => {
+    console.log(arraySelected, array.length);
+  }, [arraySelected]);
+
   //Мы еще не умеем отправлять и принимать заказ, поставила приветствие
-  if (array.some((item) => item.__v > 0)) {
+  if (array.length > 0) {
     //Найти в массиве выбранную булку
-    const bunCheck = array.find((item) => item.type === "bun" && item.__v > 0);
+    const bunCheck = array.find((item) => item.type === "bun");
 
     //Найти массив выбранного инопланетного наполнителя
     const anotherIngredietsCheck = array.filter((item) => {
-      return (
-        (item.type === "sauce" && item.__v > 0) ||
-        (item.type === "main" && item.__v > 0)
-      );
+      return item.type === "sauce" || item.type === "main";
     });
 
     //Сумма заказа
     const total = anotherIngredietsCheck.reduce(
-      (acc, p) => acc + p.price * p.__v,
+      (acc, p) => acc + p.price,
       bunCheck.price * 2
     );
 
@@ -48,15 +53,14 @@ function BurgerConstructor({ array }) {
 
           <ul className={`${styles.scroll} custom-scroll text`}>
             {anotherIngredietsCheck.reduce((insideBurger, item) => {
-              for (let i = item.__v; i > 0; i--) {
-                insideBurger.push(
-                  <ReturnIngredients
-                    item={item}
-                    key={`${item._id}-${i}`}
-                    isLocked={false}
-                  />
-                );
-              }
+              insideBurger.push(
+                <ReturnIngredients
+                  item={item}
+                  key={`${item._id}`}
+                  isLocked={false}
+                />
+              );
+
               return insideBurger;
             }, [])}
           </ul>
@@ -167,8 +171,8 @@ Total.propTypes = {
   Total: PropTypes.number,
 };
 
-BurgerConstructor.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes.isRequired),
-};
+// BurgerConstructor.propTypes = {
+//   array: PropTypes.arrayOf(ingredientPropTypes.isRequired),
+// };
 
 export default BurgerConstructor;

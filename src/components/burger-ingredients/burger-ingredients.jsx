@@ -9,10 +9,38 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
+import { ProductContext } from "../../services/productContext";
+import { TotalPriceContext } from "../../services/totalPriceContext";
 
-//ОСНОВНОЙ КОМПОНЕНТ, которй отрисует заголовок и всё меню
-const BurgerIngredients = ({ array }) => {
+//ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
+const BurgerIngredients = () => {
+  const array = React.useContext(ProductContext);
+  const {  setTotalPrice } = React.useContext(TotalPriceContext);
+
   const [current, setCurrent] = React.useState("Булки");
+
+  function onClickforBuy(event) {
+    event.stopPropagation();
+    dispatch(event);
+  }
+
+  function reducer(arraySelectedIngrdnt, event) {
+    const idElement = event.target.offsetParent.getAttribute("index");
+    const selectedIngrdnt = array.find((item)=> item._id === idElement)
+
+
+    return [...arraySelectedIngrdnt, selectedIngrdnt];
+  }
+  const [arraySelectedIngrdnt, dispatch] = React.useReducer(reducer, []);
+
+  React.useEffect(
+    () => {
+
+      setTotalPrice(arraySelectedIngrdnt);
+// console.log(arraySelectedIngrdnt)
+    },
+    [arraySelectedIngrdnt, setTotalPrice]
+  );
 
   // Код мод.окна
   const [state, setState] = React.useState({
@@ -32,16 +60,8 @@ const BurgerIngredients = ({ array }) => {
 
   return (
     <>
-      <h1
-        className={`text text_type_main-large pt-10 pb-5 ${styles.gridTitle}`}
-      >
-        Соберите бургер
-      </h1>
-
       <section className={styles.gridIngred}>
-        <nav
-          className={`${styles.nav} text text_type_main-default pb-10`}
-        >
+        <nav className={`${styles.nav} text text_type_main-default pb-10`}>
           <a className={styles.link} href="#buns">
             <Tab
               value="Булки"
@@ -79,6 +99,7 @@ const BurgerIngredients = ({ array }) => {
             array={array}
             ingredientGroup="bun"
             onClickforInfo={handleOpenModal}
+            onClickforBuy={onClickforBuy}
           />
 
           <h2 className="text text_type_main-medium pb-4" id="souce">
@@ -88,6 +109,7 @@ const BurgerIngredients = ({ array }) => {
             array={array}
             ingredientGroup="sauce"
             onClickforInfo={handleOpenModal}
+            onClickforBuy={onClickforBuy}
           />
 
           <h2 className="text text_type_main-medium pb-6" id="mains">
@@ -97,6 +119,7 @@ const BurgerIngredients = ({ array }) => {
             array={array}
             ingredientGroup="main"
             onClickforInfo={handleOpenModal}
+            onClickforBuy={onClickforBuy}
           />
         </div>
       </section>
@@ -113,21 +136,19 @@ const BurgerIngredients = ({ array }) => {
   );
 };
 
-//Вспомогательный компонент вернет разделы меню взависимости от группы продукта
-function ReturnMenu({ array, ingredientGroup, onClickforInfo }) {
+//Вспомогательный компонент вернет элементы меню по разделам
+const ReturnMenu = ({ array, ingredientGroup, onClickforInfo, onClickforBuy}) => {
   const currentObject = array.filter((item) => item.type === ingredientGroup);
+
+
+
   return (
     <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
       {currentObject.map((item) => (
-        <li
-          className={`${styles.item} mb-10`}
-          key={item._id}
-          onClick={onClickforInfo}
-          index={item._id}
-        >
-          {item.__v > 0 && <Counter count={item.__v} size="default" />}
+        <li className={`${styles.item} mb-10`} key={item._id} index={item._id}   onClick={onClickforInfo}>
+          {/* {state.count  && <Counter count={state.count} size="default" />} */}
           <img alt={item.name} src={item.image} />
-          <div className={styles.price}>
+          <div className={styles.price} onClick={onClickforBuy}>
             <p className="text text_type_digits-default pt-2 pb-3">
               {item.price}
             </p>
@@ -138,17 +159,18 @@ function ReturnMenu({ array, ingredientGroup, onClickforInfo }) {
       ))}
     </ul>
   );
-}
+};
 
 //Проверка типов данных
-BurgerIngredients.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-};
+// BurgerIngredients.propTypes = {
+//   array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
+// };
 
 ReturnMenu.propTypes = {
   array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
   ingredientGroup: PropTypes.string.isRequired,
   onClickforInfo: PropTypes.func.isRequired,
+  onClickforBuy: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

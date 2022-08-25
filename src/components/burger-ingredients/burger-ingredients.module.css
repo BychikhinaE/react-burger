@@ -1,6 +1,4 @@
-.gridTitle {
-  grid-area: title;
-}
+
 
 .gridIngred {
   grid-area: ingredients;
