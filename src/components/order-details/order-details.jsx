@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 function OrderDetails({ identifier }) {
-  React.useEffect(()=>{
-
-  }, [])
+  React.useEffect(() => {}, []);
 
   return (
     <>
@@ -24,16 +22,6 @@ function OrderDetails({ identifier }) {
 
 export default OrderDetails;
 //проверкa типов PropTypes.
-// OrderDetails.propTypes = {
-//   identifier: PropTypes.number.isRequired,
-// };
-
-// function postOrder(ingridientsIdArray) {
-//   return fetch(`${ApiUrl}/orders`, {
-//     method: "POST",
-//     headers: {
-//      "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({"ingredients": ingridientsIdArray}),
-//   }).then(checkReponse);
-// }
+OrderDetails.propTypes = {
+  identifier: PropTypes.number.isRequired,
+};

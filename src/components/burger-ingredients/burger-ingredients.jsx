@@ -10,13 +10,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 import { ProductContext } from "../../services/productContext";
-import { TotalPriceContext } from "../../services/totalPriceContext";
+import { SelectedContext } from "../../services/selectedContext";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
+  //принимает контекст всех ингредиентов с сервера
   const array = React.useContext(ProductContext);
-  const { setTotalPrice } = React.useContext(TotalPriceContext);
-
+  //влияет на контекст выбранных ингредиентов
+  const { setArraySelected } = React.useContext(SelectedContext);
+  //стейт компонента Tab
   const [current, setCurrent] = React.useState("Булки");
 
   //Код добавления ингредиента в конструктор
@@ -24,23 +26,31 @@ const BurgerIngredients = () => {
     event.stopPropagation();
     dispatch(event);
   }
-//Здесь собираются два массива - выбранные ингредиенты и их ID(для последующей отправки на сервер)
-  const initArg = { arr: [], id: [] };
+
+  //Здесь собираются в массив selectedIngrdnts выбранные ингредиенты и обновляется контекст setArraySelected
   function reducer(selectedIngrdnts, event) {
     const idElement = event.target.offsetParent.getAttribute("index");
+
     const selectedIngrdnt = array.find((item) => item._id === idElement);
 
-    return {
-      arr: [...selectedIngrdnts.arr, selectedIngrdnt],
-      id: [...selectedIngrdnts.id, idElement],
-    };
+    //Проверим что ингредиент - булка и удалим в массиве хлеб, если он там был
+    if (
+      (selectedIngrdnt.type === "bun") &
+      selectedIngrdnts.some((item) => item.type === "bun")
+    ) {
+      const bunIndex = selectedIngrdnts.findIndex(
+        (item) => item.type === "bun"
+      );
+      selectedIngrdnts.splice(bunIndex, 1);
+    }
+
+    return [...selectedIngrdnts, selectedIngrdnt];
   }
-  const [selectedIngrdnts, dispatch] = React.useReducer(reducer, initArg);
+  const [selectedIngrdnts, dispatch] = React.useReducer(reducer, []);
 
   React.useEffect(() => {
-    setTotalPrice({ arr: selectedIngrdnts.arr, id: selectedIngrdnts.id });
-    // console.log(arraySelectedIngrdnt)
-  }, [selectedIngrdnts, setTotalPrice]);
+    setArraySelected(selectedIngrdnts);
+  }, [selectedIngrdnts, setArraySelected]);
 
   // Код мод.окна просмотра полной информации об ингредиенте
   const [state, setState] = React.useState({
@@ -154,10 +164,15 @@ const ReturnMenu = ({
           index={item._id}
           onClick={onClickforInfo}
         >
-          {/* {state.count  && <Counter count={state.count} size="default" />} */}
+          {/* <Counter count={0} size="default" /> */}
           <img alt={item.name} src={item.image} />
-          <div className={styles.price} onClick={onClickforBuy}>
-            <p className="text text_type_digits-default pt-2 pb-3">
+          {/* В ТЗ пока нет указаний как будет добавляться ингредиент в конструктор и
+          этот onClick={onClickforBuy} временное решение */}
+          <div className={styles.price} title="Клик!">
+            <p
+              className={`text text_type_digits-default pt-2 pb-3 ${styles.addInConstructor}`}
+              onClick={onClickforBuy}
+            >
               {item.price}
             </p>
             <CurrencyIcon type="primary" />
@@ -170,10 +185,6 @@ const ReturnMenu = ({
 };
 
 //Проверка типов данных
-// BurgerIngredients.propTypes = {
-//   array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-// };
-
 ReturnMenu.propTypes = {
   array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
   ingredientGroup: PropTypes.string.isRequired,

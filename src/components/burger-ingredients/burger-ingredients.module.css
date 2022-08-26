@@ -41,3 +41,8 @@
 .nav {
   display: flex;
 }
+
+.addInConstructor:hover{
+  cursor: pointer;
+  opacity: .5;
+}

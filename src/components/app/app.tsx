@@ -1,32 +1,35 @@
 import React from "react";
 //Context
 import { ProductContext } from "../../services/productContext";
-import { TotalPriceContext } from "../../services/totalPriceContext";
+import { SelectedContext } from "../../services/selectedContext";
 
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-// import arrayIngredients from "../../utils/data";
-
-import {getData} from '../api'
+//Функция запроса данных на сервер
+import { getData } from "../api";
 
 function App() {
-  const [arraySelected, setTotalPrice] = React.useState({arr:[], id: []});
-
+  //Стейт для выбранных ингредиентов
+  const [arraySelected, setArraySelected] = React.useState([]);
+  //Стейт для загрузки ингредиентов с сервера
   const [state, setState] = React.useState({
     isLoading: true,
     hasError: false,
     data: [],
   });
 
-
+  //Запрашиваем ингредиенты на сервере и передаем их в стейт
   React.useEffect(() => {
     getData()
-    .then((data)=>{setState({ data: data.data, isLoading: false, hasError: false });})
-    .catch((error) => {console.log("Произошла ошибка: ", error);
-    setState({ ...state, isLoading: false, hasError: true });
-    });
+      .then((data) => {
+        setState({ data: data.data, isLoading: false, hasError: false });
+      })
+      .catch((error) => {
+        console.log("Произошла ошибка: ", error);
+        setState({ ...state, isLoading: false, hasError: true });
+      });
   }, []);
 
   return (
@@ -43,10 +46,12 @@ function App() {
         {state.hasError && "Произошла ошибка"}
         {!state.isLoading && !state.hasError && state.data.length && (
           <ProductContext.Provider value={state.data}>
-            <TotalPriceContext.Provider value={{ arraySelected, setTotalPrice }}>
+            <SelectedContext.Provider
+              value={{ arraySelected, setArraySelected }}
+            >
               <BurgerIngredients />
               <BurgerConstructor />
-            </TotalPriceContext.Provider>
+            </SelectedContext.Provider>
           </ProductContext.Provider>
         )}
       </main>

@@ -7,9 +7,10 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
-// import { ProductContext } from '../../services/productContext';
-import { TotalPriceContext } from "../../services/totalPriceContext";
-import {postOrder} from '../api'
+//Контекст выбранных ингредиентов
+import { SelectedContext } from "../../services/selectedContext";
+//Функция отправки данных id-ингредиентов на сервер и получение номера заказа
+import { postOrder } from "../api";
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -20,21 +21,15 @@ import OrderDetails from "../order-details/order-details";
 
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
 function BurgerConstructor() {
-  const { arraySelected } = React.useContext(TotalPriceContext);
-  const array = arraySelected.arr;
-  const idSelectedElements = arraySelected.id;
+  const { arraySelected } = React.useContext(SelectedContext);
 
-  React.useEffect(() => {
-    console.log(arraySelected, array.length);
-  }, [arraySelected]);
-
-  //Мы еще не умеем отправлять и принимать заказ, поставила приветствие
-  if (array.length > 0) {
+  //Пока ничего не заказано будет отображаться приветствие
+  if (arraySelected.length > 0) {
     //Найти в массиве выбранную булку
-    const bunCheck = array.find((item) => item.type === "bun");
+    const bunCheck = arraySelected.find((item) => item.type === "bun");
 
     //Найти массив выбранного инопланетного наполнителя
-    const anotherIngredietsCheck = array.filter((item) => {
+    const anotherIngredietsCheck = arraySelected.filter((item) => {
       return item.type === "sauce" || item.type === "main";
     });
 
@@ -43,6 +38,11 @@ function BurgerConstructor() {
       (acc, p) => acc + p.price,
       bunCheck.price * 2
     );
+
+    //ID заказанных ингредиентов
+    const idSelectedElements = arraySelected
+      .map((item) => item._id)
+
 
     return (
       <>
@@ -55,13 +55,9 @@ function BurgerConstructor() {
           />
 
           <ul className={`${styles.scroll} custom-scroll text`}>
-            {anotherIngredietsCheck.reduce((insideBurger, item) => {
+            {anotherIngredietsCheck.reduce((insideBurger, item, index) => {
               insideBurger.push(
-                <ReturnIngredients
-                  item={item}
-                  key={`${item._id}`}
-                  isLocked={false}
-                />
+                <ReturnIngredients item={item} key={index} isLocked={false} />
               );
 
               return insideBurger;
@@ -76,7 +72,7 @@ function BurgerConstructor() {
           />
         </ul>
 
-        <Total total={total} idSelectedElements={idSelectedElements}/>
+        <Total total={total} idSelectedElements={idSelectedElements} />
       </>
     );
   } else {
@@ -86,14 +82,11 @@ function BurgerConstructor() {
           <h2>Добро пожаловать!</h2>
           <p>Готовы сделать заказ?</p>
         </div>
-        <Total total="0" />
+        <Total total={0} />
       </>
     );
   }
 }
-
-// //идентификтатор получим пока так, потом с сервера
-// const getRandomNum = () => Math.floor(Math.random() * 1000000);
 
 //Компонент кнопки ЗАКАЗА и здесь МОДАЛЬНОЕ окно
 function Total({ total, idSelectedElements }) {
@@ -104,15 +97,18 @@ function Total({ total, idSelectedElements }) {
   });
 
   const handleOpenModal = () => {
-    postOrder(idSelectedElements)
-    .then((res)=>{
-      // console.log(res, res.order, res.order.number)
-    setState({ visible: true, identifier: res.order.number });}
-    )
-    .catch((error) => {console.log("Произошла ошибка: ", error);
-    setState({ ...state, visible: false });
-    });
-    // setState({ visible: true, identifier: getRandomNum() });
+    // if -чтобы не падать в ошибку запроса, если ничего не было заказано
+    if(idSelectedElements){
+      postOrder(idSelectedElements)
+      .then((res) => {
+        setState({ visible: true, identifier: res.order.number });
+      })
+      .catch((error) => {
+        console.log("Произошла ошибка: ", error);
+        setState({ ...state, visible: false });
+      });
+    }
+
   };
 
   function handleCloseModal() {
@@ -172,18 +168,15 @@ function ReturnIngredients({ item, type, isLocked }) {
 }
 
 //Проверка типов данных
-// ReturnIngredients.propTypes = {
-//   item: ingredientPropTypes.isRequired,
-//   type: PropTypes.string,
-//   isLocked: PropTypes.bool.isRequired,
-// };
+ReturnIngredients.propTypes = {
+  item: ingredientPropTypes.isRequired,
+  type: PropTypes.string,
+  isLocked: PropTypes.bool.isRequired,
+};
 
-// Total.propTypes = {
-//   Total: PropTypes.number,
-// };
-
-// BurgerConstructor.propTypes = {
-//   array: PropTypes.arrayOf(ingredientPropTypes.isRequired),
-// };
+Total.propTypes = {
+  total: PropTypes.number,
+  idSelectedElements: PropTypes.array,
+};
 
 export default BurgerConstructor;
