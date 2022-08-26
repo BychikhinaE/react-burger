@@ -15,34 +15,34 @@ import { TotalPriceContext } from "../../services/totalPriceContext";
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
   const array = React.useContext(ProductContext);
-  const {  setTotalPrice } = React.useContext(TotalPriceContext);
+  const { setTotalPrice } = React.useContext(TotalPriceContext);
 
   const [current, setCurrent] = React.useState("Булки");
 
+  //Код добавления ингредиента в конструктор
   function onClickforBuy(event) {
     event.stopPropagation();
     dispatch(event);
   }
-
-  function reducer(arraySelectedIngrdnt, event) {
+//Здесь собираются два массива - выбранные ингредиенты и их ID(для последующей отправки на сервер)
+  const initArg = { arr: [], id: [] };
+  function reducer(selectedIngrdnts, event) {
     const idElement = event.target.offsetParent.getAttribute("index");
-    const selectedIngrdnt = array.find((item)=> item._id === idElement)
+    const selectedIngrdnt = array.find((item) => item._id === idElement);
 
-
-    return [...arraySelectedIngrdnt, selectedIngrdnt];
+    return {
+      arr: [...selectedIngrdnts.arr, selectedIngrdnt],
+      id: [...selectedIngrdnts.id, idElement],
+    };
   }
-  const [arraySelectedIngrdnt, dispatch] = React.useReducer(reducer, []);
+  const [selectedIngrdnts, dispatch] = React.useReducer(reducer, initArg);
 
-  React.useEffect(
-    () => {
+  React.useEffect(() => {
+    setTotalPrice({ arr: selectedIngrdnts.arr, id: selectedIngrdnts.id });
+    // console.log(arraySelectedIngrdnt)
+  }, [selectedIngrdnts, setTotalPrice]);
 
-      setTotalPrice(arraySelectedIngrdnt);
-// console.log(arraySelectedIngrdnt)
-    },
-    [arraySelectedIngrdnt, setTotalPrice]
-  );
-
-  // Код мод.окна
+  // Код мод.окна просмотра полной информации об ингредиенте
   const [state, setState] = React.useState({
     visible: false,
     ingredient: {},
@@ -137,15 +137,23 @@ const BurgerIngredients = () => {
 };
 
 //Вспомогательный компонент вернет элементы меню по разделам
-const ReturnMenu = ({ array, ingredientGroup, onClickforInfo, onClickforBuy}) => {
+const ReturnMenu = ({
+  array,
+  ingredientGroup,
+  onClickforInfo,
+  onClickforBuy,
+}) => {
   const currentObject = array.filter((item) => item.type === ingredientGroup);
-
-
 
   return (
     <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
       {currentObject.map((item) => (
-        <li className={`${styles.item} mb-10`} key={item._id} index={item._id}   onClick={onClickforInfo}>
+        <li
+          className={`${styles.item} mb-10`}
+          key={item._id}
+          index={item._id}
+          onClick={onClickforInfo}
+        >
           {/* {state.count  && <Counter count={state.count} size="default" />} */}
           <img alt={item.name} src={item.image} />
           <div className={styles.price} onClick={onClickforBuy}>

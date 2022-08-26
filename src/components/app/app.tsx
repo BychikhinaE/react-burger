@@ -8,10 +8,11 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 // import arrayIngredients from "../../utils/data";
-const API = "https://norma.nomoreparties.space/api/ingredients ";
+
+import {getData} from '../api'
 
 function App() {
-  const [arraySelected, setTotalPrice] = React.useState([]);
+  const [arraySelected, setTotalPrice] = React.useState({arr:[], id: []});
 
   const [state, setState] = React.useState({
     isLoading: true,
@@ -19,22 +20,13 @@ function App() {
     data: [],
   });
 
-  const getData = async () => {
-    try {
-      const res = await fetch(API);
-      if (!res.ok) {
-        throw `Ошибка ${res.status}`;
-      }
-      const data = await res.json();
-      setState({ data: data.data, isLoading: false, hasError: false });
-    } catch (error) {
-      console.log("Произошла ошибка: ", error);
-      setState({ ...state, isLoading: false, hasError: true });
-    }
-  };
 
   React.useEffect(() => {
-    getData();
+    getData()
+    .then((data)=>{setState({ data: data.data, isLoading: false, hasError: false });})
+    .catch((error) => {console.log("Произошла ошибка: ", error);
+    setState({ ...state, isLoading: false, hasError: true });
+    });
   }, []);
 
   return (

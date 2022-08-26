@@ -9,6 +9,7 @@ import {
 import styles from "./burger-constructor.module.css";
 // import { ProductContext } from '../../services/productContext';
 import { TotalPriceContext } from "../../services/totalPriceContext";
+import {postOrder} from '../api'
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -20,7 +21,9 @@ import OrderDetails from "../order-details/order-details";
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
 function BurgerConstructor() {
   const { arraySelected } = React.useContext(TotalPriceContext);
-  const array = arraySelected;
+  const array = arraySelected.arr;
+  const idSelectedElements = arraySelected.id;
+
   React.useEffect(() => {
     console.log(arraySelected, array.length);
   }, [arraySelected]);
@@ -73,7 +76,7 @@ function BurgerConstructor() {
           />
         </ul>
 
-        <Total total={total} />
+        <Total total={total} idSelectedElements={idSelectedElements}/>
       </>
     );
   } else {
@@ -89,11 +92,11 @@ function BurgerConstructor() {
   }
 }
 
-//идентификтатор получим пока так, потом с сервера
-const getRandomNum = () => Math.floor(Math.random() * 1000000);
+// //идентификтатор получим пока так, потом с сервера
+// const getRandomNum = () => Math.floor(Math.random() * 1000000);
 
 //Компонент кнопки ЗАКАЗА и здесь МОДАЛЬНОЕ окно
-function Total({ total }) {
+function Total({ total, idSelectedElements }) {
   // Код мод.окна
   const [state, setState] = React.useState({
     visible: false,
@@ -101,7 +104,15 @@ function Total({ total }) {
   });
 
   const handleOpenModal = () => {
-    setState({ visible: true, identifier: getRandomNum() });
+    postOrder(idSelectedElements)
+    .then((res)=>{
+      // console.log(res, res.order, res.order.number)
+    setState({ visible: true, identifier: res.order.number });}
+    )
+    .catch((error) => {console.log("Произошла ошибка: ", error);
+    setState({ ...state, visible: false });
+    });
+    // setState({ visible: true, identifier: getRandomNum() });
   };
 
   function handleCloseModal() {
@@ -161,15 +172,15 @@ function ReturnIngredients({ item, type, isLocked }) {
 }
 
 //Проверка типов данных
-ReturnIngredients.propTypes = {
-  item: ingredientPropTypes.isRequired,
-  type: PropTypes.string,
-  isLocked: PropTypes.bool.isRequired,
-};
+// ReturnIngredients.propTypes = {
+//   item: ingredientPropTypes.isRequired,
+//   type: PropTypes.string,
+//   isLocked: PropTypes.bool.isRequired,
+// };
 
-Total.propTypes = {
-  Total: PropTypes.number,
-};
+// Total.propTypes = {
+//   Total: PropTypes.number,
+// };
 
 // BurgerConstructor.propTypes = {
 //   array: PropTypes.arrayOf(ingredientPropTypes.isRequired),
