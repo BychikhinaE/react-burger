@@ -10,7 +10,7 @@ import styles from "./burger-constructor.module.css";
 //Контекст выбранных ингредиентов
 import { SelectedContext } from "../../services/selectedContext";
 //Функция отправки данных id-ингредиентов на сервер и получение номера заказа
-import { postOrder } from "../api";
+import { postOrder } from "../../utils/api";
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";

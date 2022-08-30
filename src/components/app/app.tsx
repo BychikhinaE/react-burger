@@ -8,7 +8,7 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 //Функция запроса данных на сервер
-import { getData } from "../api";
+import { getData } from "../../utils/api";
 
 function App() {
   //Стейт для выбранных ингредиентов

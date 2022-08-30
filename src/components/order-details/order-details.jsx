@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 function OrderDetails({ identifier }) {
-  React.useEffect(() => {}, []);
+
 
   return (
     <>
