@@ -1,7 +1,10 @@
 import styles from "./order-details.module.css";
 import PropTypes from "prop-types";
+import React from "react";
 
 function OrderDetails({ identifier }) {
+
+
   return (
     <>
       <h3 className="text text_type_digits-large mb-8 mt-6">{identifier}</h3>

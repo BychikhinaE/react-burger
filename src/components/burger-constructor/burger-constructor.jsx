@@ -7,6 +7,10 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
+//Контекст выбранных ингредиентов
+import { SelectedContext } from "../../services/selectedContext";
+//Функция отправки данных id-ингредиентов на сервер и получение номера заказа
+import { postOrder } from "../../utils/api";
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -16,25 +20,29 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
-function BurgerConstructor({ array }) {
-  //Мы еще не умеем отправлять и принимать заказ, поставила приветствие
-  if (array.some((item) => item.__v > 0)) {
+function BurgerConstructor() {
+  const { arraySelected } = React.useContext(SelectedContext);
+
+  //Пока ничего не заказано будет отображаться приветствие
+  if (arraySelected.length > 0) {
     //Найти в массиве выбранную булку
-    const bunCheck = array.find((item) => item.type === "bun" && item.__v > 0);
+    const bunCheck = arraySelected.find((item) => item.type === "bun");
 
     //Найти массив выбранного инопланетного наполнителя
-    const anotherIngredietsCheck = array.filter((item) => {
-      return (
-        (item.type === "sauce" && item.__v > 0) ||
-        (item.type === "main" && item.__v > 0)
-      );
+    const anotherIngredietsCheck = arraySelected.filter((item) => {
+      return item.type === "sauce" || item.type === "main";
     });
 
     //Сумма заказа
     const total = anotherIngredietsCheck.reduce(
-      (acc, p) => acc + p.price * p.__v,
+      (acc, p) => acc + p.price,
       bunCheck.price * 2
     );
+
+    //ID заказанных ингредиентов
+    const idSelectedElements = arraySelected
+      .map((item) => item._id)
+
 
     return (
       <>
@@ -47,16 +55,11 @@ function BurgerConstructor({ array }) {
           />
 
           <ul className={`${styles.scroll} custom-scroll text`}>
-            {anotherIngredietsCheck.reduce((insideBurger, item) => {
-              for (let i = item.__v; i > 0; i--) {
-                insideBurger.push(
-                  <ReturnIngredients
-                    item={item}
-                    key={`${item._id}-${i}`}
-                    isLocked={false}
-                  />
-                );
-              }
+            {anotherIngredietsCheck.reduce((insideBurger, item, index) => {
+              insideBurger.push(
+                <ReturnIngredients item={item} key={index} isLocked={false} />
+              );
+
               return insideBurger;
             }, [])}
           </ul>
@@ -69,7 +72,7 @@ function BurgerConstructor({ array }) {
           />
         </ul>
 
-        <Total total={total} />
+        <Total total={total} idSelectedElements={idSelectedElements} />
       </>
     );
   } else {
@@ -79,17 +82,14 @@ function BurgerConstructor({ array }) {
           <h2>Добро пожаловать!</h2>
           <p>Готовы сделать заказ?</p>
         </div>
-        <Total total="0" />
+        <Total total={0} />
       </>
     );
   }
 }
 
-//идентификтатор получим пока так, потом с сервера
-const getRandomNum = () => Math.floor(Math.random() * 1000000);
-
 //Компонент кнопки ЗАКАЗА и здесь МОДАЛЬНОЕ окно
-function Total({ total }) {
+function Total({ total, idSelectedElements }) {
   // Код мод.окна
   const [state, setState] = React.useState({
     visible: false,
@@ -97,7 +97,18 @@ function Total({ total }) {
   });
 
   const handleOpenModal = () => {
-    setState({ visible: true, identifier: getRandomNum() });
+    // if -чтобы не падать в ошибку запроса, если ничего не было заказано
+    if(idSelectedElements){
+      postOrder(idSelectedElements)
+      .then((res) => {
+        setState({ visible: true, identifier: res.order.number });
+      })
+      .catch((error) => {
+        console.log("Произошла ошибка: ", error);
+        setState({ ...state, visible: false });
+      });
+    }
+
   };
 
   function handleCloseModal() {
@@ -164,11 +175,8 @@ ReturnIngredients.propTypes = {
 };
 
 Total.propTypes = {
-  Total: PropTypes.number,
-};
-
-BurgerConstructor.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes.isRequired),
+  total: PropTypes.number,
+  idSelectedElements: PropTypes.array,
 };
 
 export default BurgerConstructor;

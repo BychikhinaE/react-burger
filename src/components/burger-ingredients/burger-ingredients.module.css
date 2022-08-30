@@ -1,6 +1,4 @@
-.gridTitle {
-  grid-area: title;
-}
+
 
 .gridIngred {
   grid-area: ingredients;
@@ -42,4 +40,9 @@
 
 .nav {
   display: flex;
+}
+
+.addInConstructor:hover{
+  cursor: pointer;
+  opacity: .5;
 }
