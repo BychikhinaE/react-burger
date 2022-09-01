@@ -4,7 +4,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 function OrderDetails() {
   const numberOrder = useSelector((state) => state.menu.order.numberOrder);
-console.log(numberOrder)
+
   return (
     <>
       <h3 className="text text_type_digits-large mb-8 mt-6">{numberOrder }</h3>

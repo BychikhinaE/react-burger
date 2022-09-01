@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
 import { useDispatch, useSelector } from "react-redux";
-
+import uniqid from "uniqid";
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -24,9 +24,8 @@ import OrderDetails from "../order-details/order-details";
 
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
 function BurgerConstructor() {
-  const selectedItems= useSelector((state) => state.menu.selectedItems);
+  const selectedItems = useSelector((state) => state.menu.selectedItems);
   //onst dispatch = useDispatch();
-
 
   // selectedItems.forEach((item) =>
   //     dispatch({type: GET_SELECTEDITEM_ID,  idItem: item._id}))
@@ -56,11 +55,15 @@ function BurgerConstructor() {
             type="top"
             isLocked={true}
           />
-{/* этот ключ не подходит? библиотека ui-id - создавать уникальный ключ */}
+          {/* этот ключ не подходит? библиотека ui-id - создавать уникальный ключ */}
           <ul className={`${styles.scroll} custom-scroll text`}>
-            {anotherIngredietsCheck.reduce((insideBurger, item, index) => {
+            {anotherIngredietsCheck.reduce((insideBurger, item) => {
               insideBurger.push(
-                <ReturnIngredients item={item} key={index} isLocked={false} />
+                <ReturnIngredients
+                  item={item}
+                  key={uniqid()}
+                  isLocked={false}
+                />
               );
 
               return insideBurger;
@@ -75,7 +78,7 @@ function BurgerConstructor() {
           />
         </ul>
 
-        <Total total={total}  />
+        <Total total={total} />
       </>
     );
   } else {
@@ -96,17 +99,7 @@ function Total({ total }) {
   // Код мод.окна
   const dispatch = useDispatch();
   const idArray = useSelector((state) => state.menu.order.idArray);
-
   const modalVisible = useSelector((state) => state.menu.order.modalVisible);
-
-
-  const handleOpenModal = () => {
-    dispatch(setSelectedItems(idArray));
-  };
-
-  function handleCloseModal() {
-    dispatch({ type: CLOSE_MODAL_NUMBER });
-  }
 
   return (
     <>
@@ -115,7 +108,12 @@ function Total({ total }) {
         <div className={`${styles.currencyIcon} pl-2 pr-10`}>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large" onClick={handleOpenModal}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => dispatch(setSelectedItems(idArray))}
+          disabled={idArray.length === 0}
+        >
           Оформить заказ
         </Button>
       </div>
@@ -123,8 +121,11 @@ function Total({ total }) {
       {/* Модальное окно*/}
       <>
         {modalVisible && (
-          <Modal header="" onClose={handleCloseModal}>
-            <OrderDetails  />
+          <Modal
+            header=""
+            onClose={() => dispatch({ type: CLOSE_MODAL_NUMBER })}
+          >
+            <OrderDetails />
           </Modal>
         )}
       </>
@@ -173,4 +174,3 @@ function ReturnIngredients({ item, type, isLocked }) {
 // };
 
 export default React.memo(BurgerConstructor);
-

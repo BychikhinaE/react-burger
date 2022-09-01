@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo }  from "react";
+import React, { useEffect, useMemo } from "react";
 
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
@@ -25,13 +25,10 @@ function App() {
         >
           Соберите бургер
         </h1>
-        { itemsRequest ?
-    <Loader size="large" /> :
-     <BurgerIngredients /> }
+        {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
         <BurgerConstructor />
       </main>
     </div>
-
   );
 }
 

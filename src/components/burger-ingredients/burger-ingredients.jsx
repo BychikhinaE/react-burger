@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
 import Modal from "../modal/modal";
@@ -28,6 +28,41 @@ const BurgerIngredients = () => {
   const items = useSelector((state) => state.menu.items);
   const currentTab = useSelector((state) => state.menu.currentTab);
 
+  const bunRef = useRef();
+  const sauceRef = useRef();
+  const mainRef = useRef();
+
+  useEffect(() => {
+    document.getElementById("scroll").addEventListener("wheel", function () {
+      const viewportCoords = document
+        .getElementById("scroll")
+        .getBoundingClientRect();
+
+      if (isVisible(bunRef.current, viewportCoords)) {
+        dispatch({
+          type: TAB_SWITCH,
+          value: "Булки",
+        });
+      }
+      if (isVisible(sauceRef.current, viewportCoords)) {
+        dispatch({
+          type: TAB_SWITCH,
+          value: "Соусы",
+        });
+      }
+      if (isVisible(mainRef.current, viewportCoords)) {
+        dispatch({
+          type: TAB_SWITCH,
+          value: "Начинки",
+        });
+      }
+    });
+  }, []);
+
+  function isVisible(elem, viewportCoords) {
+    let coordsChild = elem.getBoundingClientRect();
+    return coordsChild.top <= viewportCoords.top + 250;
+  }
 
   const onTabClick = (event) => {
     dispatch({
@@ -37,12 +72,6 @@ const BurgerIngredients = () => {
     const element = document.getElementById(event);
     element.scrollIntoView({ behavior: "smooth" });
   };
-  // useEffect(()=>{
-  //   document.getElementById("scroll").addEventListener('scroll', function() {
-
-  //   });
-  // },[])
-
   const selectedItems = useSelector((state) => state.menu.selectedItems);
 
   const onClickforBuy = (event) => {
@@ -59,7 +88,7 @@ const BurgerIngredients = () => {
     }
 
     dispatch({ type: GET_SELECTEDITEM, item: selectedIngrdnt });
-    dispatch({type: GET_SELECTEDITEM_ID,  idItem: selectedIngrdnt._id})
+    dispatch({ type: GET_SELECTEDITEM_ID, idItem: selectedIngrdnt._id });
   };
 
   const modalVisible = useSelector((state) => state.menu.modalVisible);
@@ -106,32 +135,38 @@ const BurgerIngredients = () => {
         </nav>
 
         <div className={`${styles.scroll} custom-scroll`} id="scroll">
-          <h2 className="text text_type_main-medium pb-6" id="Булки">
-            Булки
-          </h2>
-          <ReturnMenu
-            ingredientGroup="bun"
-            onClickforInfo={handleOpenModal}
-            onClickforBuy={onClickforBuy}
-          />
+          <div ref={bunRef}>
+            <h2 className="text text_type_main-medium pb-6" id="Булки">
+              Булки
+            </h2>
+            <ReturnMenu
+              ingredientGroup="bun"
+              onClickforInfo={handleOpenModal}
+              onClickforBuy={onClickforBuy}
+            />
+          </div>
 
-          <h2 className="text text_type_main-medium pb-4" id="Соусы">
-            Соусы
-          </h2>
-          <ReturnMenu
-            ingredientGroup="sauce"
-            onClickforInfo={handleOpenModal}
-            onClickforBuy={onClickforBuy}
-          />
+          <div ref={sauceRef}>
+            <h2 className="text text_type_main-medium pb-4" id="Соусы">
+              Соусы
+            </h2>
+            <ReturnMenu
+              ingredientGroup="sauce"
+              onClickforInfo={handleOpenModal}
+              onClickforBuy={onClickforBuy}
+            />
+          </div>
 
-          <h2 className="text text_type_main-medium pb-6" id="Начинки">
-            Начинки
-          </h2>
-          <ReturnMenu
-            ingredientGroup="main"
-            onClickforInfo={handleOpenModal}
-            onClickforBuy={onClickforBuy}
-          />
+          <div ref={mainRef}>
+            <h2 className="text text_type_main-medium pb-6" id="Начинки">
+              Начинки
+            </h2>
+            <ReturnMenu
+              ingredientGroup="main"
+              onClickforInfo={handleOpenModal}
+              onClickforBuy={onClickforBuy}
+            />
+          </div>
         </div>
       </section>
 
@@ -170,8 +205,7 @@ const ReturnMenu = ({ ingredientGroup, onClickforBuy, onClickforInfo }) => {
   );
 };
 
-
-const BurgerIngredient = ({ item, onClickforInfo, onClickforBuy}) => {
+const BurgerIngredient = ({ item, onClickforInfo, onClickforBuy }) => {
   const selectedItems = useSelector((state) => state.menu.selectedItems);
 
   let count = 0;
