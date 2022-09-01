@@ -7,29 +7,37 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
-//Контекст выбранных ингредиентов
-import { SelectedContext } from "../../services/selectedContext";
-//Функция отправки данных id-ингредиентов на сервер и получение номера заказа
-import { postOrder } from "../../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
 
+import {
+  setSelectedItems,
+  CLOSE_MODAL_NUMBER,
+  GET_SELECTEDITEM_ID,
+} from "../../services/actions/actions";
 //Модальное окно
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
 function BurgerConstructor() {
-  const { arraySelected } = React.useContext(SelectedContext);
+  const selectedItems= useSelector((state) => state.menu.selectedItems);
+  //onst dispatch = useDispatch();
+
+
+  // selectedItems.forEach((item) =>
+  //     dispatch({type: GET_SELECTEDITEM_ID,  idItem: item._id}))
 
   //Пока ничего не заказано будет отображаться приветствие
-  if (arraySelected.length > 0) {
+  if (selectedItems.length > 0) {
     //Найти в массиве выбранную булку
-    const bunCheck = arraySelected.find((item) => item.type === "bun");
+    const bunCheck = selectedItems.find((item) => item.type === "bun");
 
     //Найти массив выбранного инопланетного наполнителя
-    const anotherIngredietsCheck = arraySelected.filter((item) => {
+    const anotherIngredietsCheck = selectedItems.filter((item) => {
       return item.type === "sauce" || item.type === "main";
     });
 
@@ -38,11 +46,6 @@ function BurgerConstructor() {
       (acc, p) => acc + p.price,
       bunCheck.price * 2
     );
-
-    //ID заказанных ингредиентов
-    const idSelectedElements = arraySelected
-      .map((item) => item._id)
-
 
     return (
       <>
@@ -53,7 +56,7 @@ function BurgerConstructor() {
             type="top"
             isLocked={true}
           />
-
+{/* этот ключ не подходит? библиотека ui-id - создавать уникальный ключ */}
           <ul className={`${styles.scroll} custom-scroll text`}>
             {anotherIngredietsCheck.reduce((insideBurger, item, index) => {
               insideBurger.push(
@@ -72,7 +75,7 @@ function BurgerConstructor() {
           />
         </ul>
 
-        <Total total={total} idSelectedElements={idSelectedElements} />
+        <Total total={total}  />
       </>
     );
   } else {
@@ -89,30 +92,20 @@ function BurgerConstructor() {
 }
 
 //Компонент кнопки ЗАКАЗА и здесь МОДАЛЬНОЕ окно
-function Total({ total, idSelectedElements }) {
+function Total({ total }) {
   // Код мод.окна
-  const [state, setState] = React.useState({
-    visible: false,
-    identifier: "",
-  });
+  const dispatch = useDispatch();
+  const idArray = useSelector((state) => state.menu.order.idArray);
+
+  const modalVisible = useSelector((state) => state.menu.order.modalVisible);
+
 
   const handleOpenModal = () => {
-    // if -чтобы не падать в ошибку запроса, если ничего не было заказано
-    if(idSelectedElements){
-      postOrder(idSelectedElements)
-      .then((res) => {
-        setState({ visible: true, identifier: res.order.number });
-      })
-      .catch((error) => {
-        console.log("Произошла ошибка: ", error);
-        setState({ ...state, visible: false });
-      });
-    }
-
+    dispatch(setSelectedItems(idArray));
   };
 
   function handleCloseModal() {
-    setState({ visible: false, identifier: "" });
+    dispatch({ type: CLOSE_MODAL_NUMBER });
   }
 
   return (
@@ -129,9 +122,9 @@ function Total({ total, idSelectedElements }) {
 
       {/* Модальное окно*/}
       <>
-        {state.visible && (
+        {modalVisible && (
           <Modal header="" onClose={handleCloseModal}>
-            <OrderDetails identifier={state.identifier} />
+            <OrderDetails  />
           </Modal>
         )}
       </>
@@ -168,15 +161,16 @@ function ReturnIngredients({ item, type, isLocked }) {
 }
 
 //Проверка типов данных
-ReturnIngredients.propTypes = {
-  item: ingredientPropTypes.isRequired,
-  type: PropTypes.string,
-  isLocked: PropTypes.bool.isRequired,
-};
+// ReturnIngredients.propTypes = {
+//   item: ingredientPropTypes.isRequired,
+//   type: PropTypes.string,
+//   isLocked: PropTypes.bool.isRequired,
+// };
 
-Total.propTypes = {
-  total: PropTypes.number,
-  idSelectedElements: PropTypes.array,
-};
+// Total.propTypes = {
+//   total: PropTypes.number,
+//   idSelectedElements: PropTypes.array,
+// };
 
-export default BurgerConstructor;
+export default React.memo(BurgerConstructor);
+
