@@ -7,6 +7,7 @@
   row-gap: 16px;
   box-sizing: border-box;
   list-style: none;
+  min-height: 800px;
 }
 
 .scroll {
@@ -48,3 +49,6 @@
   transform: scale(1.5);
 }
 
+.onHover{
+  border: 2px solid green
+}

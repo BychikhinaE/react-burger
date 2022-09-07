@@ -40,8 +40,8 @@ function IngredientDetails({ ingredient }) {
 }
 
 //проверкa типов
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
-};
+// IngredientDetails.propTypes = {
+//   ingredient: ingredientPropTypes.isRequired,
+// };
 
 export default IngredientDetails;

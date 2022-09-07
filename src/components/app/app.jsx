@@ -1,4 +1,8 @@
 import React, { useEffect, useMemo } from "react";
+//DndProvider
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
@@ -25,8 +29,11 @@ function App() {
         >
           Соберите бургер
         </h1>
+        <DndProvider backend={HTML5Backend}>
         {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
         <BurgerConstructor />
+        </DndProvider>
+
       </main>
     </div>
   );

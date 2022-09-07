@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   ConstructorElement,
@@ -9,6 +9,7 @@ import {
 import styles from "./burger-constructor.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import uniqid from "uniqid";
+import { useDrop } from "react-dnd";
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -16,7 +17,8 @@ import ingredientPropTypes from "../../utils/ingredientPropTypes";
 import {
   setSelectedItems,
   CLOSE_MODAL_NUMBER,
-  GET_SELECTEDITEM_ID,
+  GET_SELECTED_ITEM,
+  DELETE_ITEM,
 } from "../../services/actions/actions";
 //Модальное окно
 import Modal from "../modal/modal";
@@ -25,80 +27,95 @@ import OrderDetails from "../order-details/order-details";
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
 function BurgerConstructor() {
   const selectedItems = useSelector((state) => state.menu.selectedItems);
-  //onst dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // selectedItems.forEach((item) =>
-  //     dispatch({type: GET_SELECTEDITEM_ID,  idItem: item._id}))
 
-  //Пока ничего не заказано будет отображаться приветствие
-  if (selectedItems.length > 0) {
-    //Найти в массиве выбранную булку
-    const bunCheck = selectedItems.find((item) => item.type === "bun");
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "items",
+    drop(itemId) {
+      // Отправим экшен с текущим перетаскиваемым элементом и названием доски
+      dispatch({
+        type: GET_SELECTED_ITEM,
+        id: itemId,
+      });
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
 
-    //Найти массив выбранного инопланетного наполнителя
-    const anotherIngredietsCheck = selectedItems.filter((item) => {
-      return item.type === "sauce" || item.type === "main";
-    });
 
-    //Сумма заказа
-    const total = anotherIngredietsCheck.reduce(
-      (acc, p) => acc + p.price,
-      bunCheck.price * 2
-    );
+  let bunCheck = [];
+  let total = '0';
+  let selectedItemsId = [];
+  let anotherIngredietsCheck = [];
 
-    return (
-      <>
-        <ul className={`${styles.gridConstr} text pl-4  mb-10`}>
+
+  // if (selectedItems.length > 0) {
+  //   console.log(selectedItems);
+  //   //Найти в массиве выбранную булку
+  //   bunCheck = selectedItems.find((item) => item.type === "bun");
+
+  //   //Найти массив выбранного инопланетного наполнителя
+  //   anotherIngredietsCheck  = selectedItems.filter((item) => {
+  //     return item.type === "sauce" || item.type === "main";
+  //   });
+
+//Сумма заказа
+// total = anotherIngredietsCheck.reduce(
+//   (acc, p) => acc + p.price,
+//   bunCheck.price * 2
+// );
+  //   selectedItemsId = selectedItems.forEach((element) => element._id);
+  // }
+
+
+
+
+  return (
+    <>
+      <ul
+        className={`${styles.gridConstr} ${
+          isHover ? styles.onHover : ""
+        } text pl-4  mb-10`}
+        ref={dropTarget}
+      >
+        {bunCheck.length !== 0 && (
           <ReturnIngredients
             item={bunCheck}
-            key={`${bunCheck._id}-top`}
+            //key={`${bunCheck._id}-top`}
             type="top"
             isLocked={true}
           />
-          {/* этот ключ не подходит? библиотека ui-id - создавать уникальный ключ */}
-          <ul className={`${styles.scroll} custom-scroll text`}>
-            {anotherIngredietsCheck.reduce((insideBurger, item) => {
-              insideBurger.push(
-                <ReturnIngredients
-                  item={item}
-                  key={uniqid()}
-                  isLocked={false}
-                />
-              );
+        )}
 
-              return insideBurger;
-            }, [])}
-          </ul>
+        <ul className={`${styles.scroll} custom-scroll text`} >
+          {selectedItems.length !== 0 &&
+            selectedItems.map((item) =>
+              <ReturnIngredients item={item} key={uniqid()} isLocked={false} />
+            )}
+        </ul>
 
+        {bunCheck.length !== 0 && (
           <ReturnIngredients
             item={bunCheck}
-            key={`${bunCheck._id}-bottom`}
+            //key={`${bunCheck._id}-bottom`}
             type="bottom"
             isLocked={true}
           />
-        </ul>
+        )}
+      </ul>
 
-        <Total total={total} />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <div className={`${styles.gridConstr} text text_type_main-large p-10`}>
-          <h2>Добро пожаловать!</h2>
-          <p>Готовы сделать заказ?</p>
-        </div>
-        <Total total={0} />
-      </>
-    );
-  }
+      <Total total={total} selectedItemsId={selectedItemsId}/>
+    </>
+  );
 }
 
 //Компонент кнопки ЗАКАЗА и здесь МОДАЛЬНОЕ окно
-function Total({ total }) {
+function Total({ total, selectedItemsId }) {
   // Код мод.окна
   const dispatch = useDispatch();
-  const idArray = useSelector((state) => state.menu.order.idArray);
+
   const modalVisible = useSelector((state) => state.menu.order.modalVisible);
 
   return (
@@ -111,8 +128,8 @@ function Total({ total }) {
         <Button
           type="primary"
           size="large"
-          onClick={() => dispatch(setSelectedItems(idArray))}
-          disabled={idArray.length === 0}
+          onClick={() => dispatch(setSelectedItems(selectedItemsId))}
+          disabled={selectedItemsId.length === 0}
         >
           Оформить заказ
         </Button>
@@ -173,4 +190,29 @@ function ReturnIngredients({ item, type, isLocked }) {
 //   idSelectedElements: PropTypes.array,
 // };
 
-export default React.memo(BurgerConstructor);
+export default BurgerConstructor;
+// const onDelete = () => {
+//   dispatch({
+//     type: DELETE_POSTPONED_ITEM,
+//     id
+//   });
+// };
+
+//  // Отображение DraggableAnimal в целевом элементе "default"
+//  const draggableAnimalPreview = (
+//   <div ref={drag} className={styles.animalElement}>
+//       {data.content}
+//   </div>
+// );
+
+// // Отображение DraggableAnimal в других целевых элементах
+// const draggableAnimalCard = (
+//   <div ref={drag} className={styles.item}>
+//       <span className={styles.animalItem}>
+//           {data.content}
+//       </span>
+//       <p>
+//           {data.description}
+//       </p>
+//   </div>
+// );

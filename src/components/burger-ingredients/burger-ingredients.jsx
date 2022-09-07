@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
+
+import { useDrag } from "react-dnd";
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
 import Modal from "../modal/modal";
@@ -11,29 +13,29 @@ import {
 import styles from "./burger-ingredients.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getItems } from "../../services/actions/actions";
+
 import { Loader } from "../loader/loader";
 import {
   TAB_SWITCH,
-  GET_SELECTEDITEM,
   GET_ITEM_FOR_VIEW,
   CLOSE_MODAL,
-  GET_SELECTEDITEM_ID,
 } from "../../services/actions/actions";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-
+  // Получим все карточки из хранилища
   const items = useSelector((state) => state.menu.items);
-  const currentTab = useSelector((state) => state.menu.currentTab);
 
+  //Настройка переключателя табов при скролле
+  const currentTab = useSelector((state) => state.menu.currentTab);
   const bunRef = useRef();
   const sauceRef = useRef();
   const mainRef = useRef();
 
   useEffect(() => {
-    document.getElementById("scroll").addEventListener("wheel", function () {
+    document.getElementById("scroll").addEventListener("scroll", function () {
+
       const viewportCoords = document
         .getElementById("scroll")
         .getBoundingClientRect();
@@ -58,12 +60,12 @@ const BurgerIngredients = () => {
       }
     });
   }, []);
-
+  //Функция контролирует приближение начала раздела меню к родительской верхней рамке
   function isVisible(elem, viewportCoords) {
     let coordsChild = elem.getBoundingClientRect();
     return coordsChild.top <= viewportCoords.top + 250;
   }
-
+  //Настройка пролистывания меню при клике на таб
   const onTabClick = (event) => {
     dispatch({
       type: TAB_SWITCH,
@@ -72,24 +74,25 @@ const BurgerIngredients = () => {
     const element = document.getElementById(event);
     element.scrollIntoView({ behavior: "smooth" });
   };
+
   const selectedItems = useSelector((state) => state.menu.selectedItems);
 
-  const onClickforBuy = (event) => {
-    event.stopPropagation();
-    const idElement = event.target.offsetParent.getAttribute("index");
-    const selectedIngrdnt = items.find((item) => item._id === idElement);
-    //Проверим что ингредиент - булка и удалим в массиве хлеб, если он там был
-    if (
-      (selectedIngrdnt.type === "bun") &
-      selectedItems.some((item) => item.type === "bun")
-    ) {
-      const bunIndex = selectedItems.findIndex((item) => item.type === "bun");
-      selectedItems.splice(bunIndex, 1);
-    }
+  // const onClickforBuy = (event) => {
+  //   event.stopPropagation();
+  //   const idElement = event.target.offsetParent.getAttribute("index");
+  //   const selectedIngrdnt = items.find((item) => item._id === idElement);
+  //   //Проверим что ингредиент - булка и удалим в массиве хлеб, если он там был
+  //   if (
+  //     (selectedIngrdnt.type === "bun") &
+  //     selectedItems.some((item) => item.type === "bun")
+  //   ) {
+  //     const bunIndex = selectedItems.findIndex((item) => item.type === "bun");
+  //     selectedItems.splice(bunIndex, 1);
+  //   }
 
-    dispatch({ type: GET_SELECTEDITEM, item: selectedIngrdnt });
-    dispatch({ type: GET_SELECTEDITEM_ID, idItem: selectedIngrdnt._id });
-  };
+  //   dispatch({ type: GET_SELECTEDITEM, item: selectedIngrdnt });
+  //   dispatch({ type: GET_SELECTEDITEM_ID, idItem: selectedIngrdnt._id });
+  // };
 
   const modalVisible = useSelector((state) => state.menu.modalVisible);
   const currenViewedItem = useSelector((state) => state.menu.currenViewedItem);
@@ -142,7 +145,6 @@ const BurgerIngredients = () => {
             <ReturnMenu
               ingredientGroup="bun"
               onClickforInfo={handleOpenModal}
-              onClickforBuy={onClickforBuy}
             />
           </div>
 
@@ -153,7 +155,6 @@ const BurgerIngredients = () => {
             <ReturnMenu
               ingredientGroup="sauce"
               onClickforInfo={handleOpenModal}
-              onClickforBuy={onClickforBuy}
             />
           </div>
 
@@ -164,7 +165,6 @@ const BurgerIngredients = () => {
             <ReturnMenu
               ingredientGroup="main"
               onClickforInfo={handleOpenModal}
-              onClickforBuy={onClickforBuy}
             />
           </div>
         </div>
@@ -183,7 +183,7 @@ const BurgerIngredients = () => {
 };
 
 //Вспомогательный компонент вернет элементы меню по разделам
-const ReturnMenu = ({ ingredientGroup, onClickforBuy, onClickforInfo }) => {
+const ReturnMenu = ({ ingredientGroup, onClickforInfo }) => {
   const items = useSelector((state) => state.menu.items);
   const itemsRequest = useSelector((state) => state.menu.itemsRequest);
 
@@ -198,39 +198,49 @@ const ReturnMenu = ({ ingredientGroup, onClickforBuy, onClickforInfo }) => {
           item={item}
           key={item._id}
           onClickforInfo={onClickforInfo}
-          onClickforBuy={onClickforBuy}
         />
       ))}
     </ul>
   );
 };
 
-const BurgerIngredient = ({ item, onClickforInfo, onClickforBuy }) => {
+//DragSource
+const BurgerIngredient = ({ item, onClickforInfo }) => {
   const selectedItems = useSelector((state) => state.menu.selectedItems);
 
   let count = 0;
-  if (selectedItems) {
-    selectedItems.forEach((elem) => {
-      if (elem._id === item._id) {
-        count++;
-      }
-    });
+  const currentId = item._id;
+
+
+  if (selectedItems.length>0) {
+    console.log( selectedItems, currentId)
+    // selectedItems.forEach((item) => {
+      // if (item._id === currentId) {
+      //   count++;
+      // }
+    // });
   }
+
+  const [, dragRef] = useDrag({
+    type: 'items',
+    item: { currentId },
+
+  });
 
   return (
     <li
       className={`${styles.item} mb-10`}
       index={item._id}
       onClick={onClickforInfo}
+      ref={dragRef}
     >
       {count !== 0 && <Counter count={count} size="default" />}
-      <img alt={item.name} src={item.image} />
-      {/* В ТЗ пока нет указаний как будет добавляться ингредиент в конструктор и
-        этот onClick={onClickforBuy} временное решение */}
+      <img alt={item.name} src={item.image}
+
+      />
       <div className={styles.price} title="Клик!">
         <p
           className={`text text_type_digits-default pt-2 pb-3 ${styles.addInConstructor}`}
-          onClick={onClickforBuy}
         >
           {item.price}
         </p>
@@ -246,9 +256,8 @@ const BurgerIngredient = ({ item, onClickforInfo, onClickforBuy }) => {
 //   array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 //   ingredientGroup: PropTypes.string.isRequired,
 //   onClickforInfo: PropTypes.func.isRequired,
-//   onClickforBuy: PropTypes.func.isRequired,
 // };
 
-//export default React.memo(BurgerIngredients);
-
 export default BurgerIngredients;
+
+//export default BurgerIngredients;

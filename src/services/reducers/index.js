@@ -3,6 +3,5 @@ import  {burgerIngredientsReducer } from './reducers'
 
 export const rootReducer= combineReducers({
   menu: burgerIngredientsReducer,
-
 })
 

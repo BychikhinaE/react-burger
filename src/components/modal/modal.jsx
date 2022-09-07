@@ -47,8 +47,8 @@ function Modal({ children, header, onClose }) {
 export default Modal;
 
 //проверкa типов PropTypes.
-Modal.propTypes = {
-  children: PropTypes.node.isRequired,
-  header: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
-};
+// Modal.propTypes = {
+//   children: PropTypes.node.isRequired,
+//   header: PropTypes.string,
+//   onClose: PropTypes.func.isRequired,
+// };
