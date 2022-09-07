@@ -35,7 +35,6 @@ const BurgerIngredients = () => {
 
   useEffect(() => {
     document.getElementById("scroll").addEventListener("scroll", function () {
-
       const viewportCoords = document
         .getElementById("scroll")
         .getBoundingClientRect();
@@ -74,25 +73,6 @@ const BurgerIngredients = () => {
     const element = document.getElementById(event);
     element.scrollIntoView({ behavior: "smooth" });
   };
-
-  const selectedItems = useSelector((state) => state.menu.selectedItems);
-
-  // const onClickforBuy = (event) => {
-  //   event.stopPropagation();
-  //   const idElement = event.target.offsetParent.getAttribute("index");
-  //   const selectedIngrdnt = items.find((item) => item._id === idElement);
-  //   //Проверим что ингредиент - булка и удалим в массиве хлеб, если он там был
-  //   if (
-  //     (selectedIngrdnt.type === "bun") &
-  //     selectedItems.some((item) => item.type === "bun")
-  //   ) {
-  //     const bunIndex = selectedItems.findIndex((item) => item.type === "bun");
-  //     selectedItems.splice(bunIndex, 1);
-  //   }
-
-  //   dispatch({ type: GET_SELECTEDITEM, item: selectedIngrdnt });
-  //   dispatch({ type: GET_SELECTEDITEM_ID, idItem: selectedIngrdnt._id });
-  // };
 
   const modalVisible = useSelector((state) => state.menu.modalVisible);
   const currenViewedItem = useSelector((state) => state.menu.currenViewedItem);
@@ -210,21 +190,19 @@ const BurgerIngredient = ({ item, onClickforInfo }) => {
 
   let count = 0;
   const currentId = item._id;
+  const currentType = item.type;
 
-
-  if (selectedItems.length>0) {
-    console.log( selectedItems, currentId)
-    // selectedItems.forEach((item) => {
-      // if (item._id === currentId) {
-      //   count++;
-      // }
-    // });
+  if (selectedItems.length > 0) {
+    selectedItems.forEach((item) => {
+      if (item._id === currentId) {
+        count++;
+      }
+    });
   }
 
   const [, dragRef] = useDrag({
-    type: 'items',
-    item: { currentId },
-
+    type: "items",
+    item: { currentId, currentType },
   });
 
   return (
@@ -235,10 +213,8 @@ const BurgerIngredient = ({ item, onClickforInfo }) => {
       ref={dragRef}
     >
       {count !== 0 && <Counter count={count} size="default" />}
-      <img alt={item.name} src={item.image}
-
-      />
-      <div className={styles.price} title="Клик!">
+      <img alt={item.name} src={item.image} />
+      <div className={styles.price}>
         <p
           className={`text text_type_digits-default pt-2 pb-3 ${styles.addInConstructor}`}
         >
@@ -259,5 +235,3 @@ const BurgerIngredient = ({ item, onClickforInfo }) => {
 // };
 
 export default BurgerIngredients;
-
-//export default BurgerIngredients;
