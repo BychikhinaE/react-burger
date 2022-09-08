@@ -14,9 +14,6 @@ import {
   UPDATE_TOTAL,
   UPDATE_LIST,
 } from "../actions/actions";
-// Для каждого экшена, который связан с запросом к API создан усилитель.
-// Для таких экшенов описан тип
-// _REQUEST , тип _SUCCESS , _ERROR .
 
 const initialState = {
   // список всех полученных с сервера ингредиентов,
@@ -37,6 +34,8 @@ const initialState = {
     total: "0",
     idSet: [],
   },
+  orderRequest: false,
+  orderFailed: false,
 };
 
 export const burgerIngredientsReducer = (state = initialState, action) => {
@@ -77,7 +76,7 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
     }
 
     case SET_SELECTEDITEM_REQUEST: {
-      return { ...state, itemsRequest: true };
+      return { ...state, orderRequest: true };
     }
 
     // получить номер заказа
@@ -89,27 +88,21 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
           numberOrder: action.number,
           modalVisible: true,
         },
-        itemsFailed: false,
-        itemsRequest: false,
+        orderFailed: false,
+        orderRequest: false,
       };
     }
 
     case SET_SELECTEDITEM_ERROR: {
-      return { ...state, itemsFailed: true, itemsRequest: false };
+      return { ...state, orderFailed: true, orderRequest: false };
     }
 
     case DELETE_ITEM: {
-      // return {
-      //   ...state,
-      //   selectedItems: [...state.selectedItems].filter(
-      //     (item) => item._id !== action.id
-      //   ),
-        return {
-          ...state,
-          selectedItems: [...state.selectedItems].filter(
-            (item, index) => index !== action.index
-          ),
-
+      return {
+        ...state,
+        selectedItems: [...state.selectedItems].filter(
+          (item, index) => index !== action.index
+        ),
       };
     }
 
@@ -137,15 +130,14 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
       };
     }
 
-   case UPDATE_LIST: {
-    state.selectedItems[action.dragIndex] = action.hoverItem;
-    state.selectedItems[action.hoverIndex] = action.dragItem
-    return{
-      ...state,
-      selectedItems: [...state.selectedItems]
-
+    case UPDATE_LIST: {
+      state.selectedItems[action.dragIndex] = action.hoverItem;
+      state.selectedItems[action.hoverIndex] = action.dragItem;
+      return {
+        ...state,
+        selectedItems: [...state.selectedItems],
+      };
     }
-   }
 
     default: {
       return state;

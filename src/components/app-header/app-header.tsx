@@ -38,4 +38,4 @@ const AppHeader =()=> {
   }
 
 
-export default AppHeader;
+export default React.memo(AppHeader);
