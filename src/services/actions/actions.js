@@ -16,7 +16,7 @@ export const CLOSE_MODAL_ORDER = 'CLOSE_MODAL_ORDER'
 
 export const  TAB_SWITCH = 'TAB_SWITCH';
 export const UPDATE_TOTAL = 'UPDATE_TOTAL';
-
+export const UPDATE_LIST = 'UPDATE_LIST';
 export function getItems() {
   return function(dispatch) {
     dispatch({

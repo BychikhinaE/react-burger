@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import {
   ConstructorElement,
@@ -9,7 +9,7 @@ import {
 import styles from "./burger-constructor.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import uniqid from "uniqid";
-import { useDrop } from "react-dnd";
+import { useDrop, useDrag } from "react-dnd";
 
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -20,6 +20,7 @@ import {
   GET_SELECTED_ITEM,
   DELETE_ITEM,
   UPDATE_TOTAL,
+  UPDATE_LIST,
 } from "../../services/actions/actions";
 //Модальное окно
 import Modal from "../modal/modal";
@@ -32,13 +33,16 @@ function BurgerConstructor() {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "items",
+
     drop: ({ currentId, currentType }) => {
       if (
         (currentType === "bun") &
         selectedItems.some((item) => item.type === "bun")
       ) {
-        const bunIndex = selectedItems.findIndex((item) => item.type === "bun");
-        selectedItems.splice(bunIndex, 1);
+        dispatch({
+          type: DELETE_ITEM,
+          index: 0,
+        });
       }
 
       // Отправим экшен с текущим перетаскиваемым элементом
@@ -68,11 +72,12 @@ function BurgerConstructor() {
           .filter((item) => item.type === "bun")
           // Отрисуем массив
           .map((item) => (
-            <ReturnIngredients
+            <ReturnIngredient
               item={item}
               key={uniqid()}
               position="top"
               isLocked={true}
+              index={0}
             />
           ))}
 
@@ -80,8 +85,8 @@ function BurgerConstructor() {
           {selectedItems
             .filter((item) => item.type === "sauce" || item.type === "main")
             // Отрисуем массив
-            .map((item) => (
-              <ReturnIngredients item={item} key={uniqid()} isLocked={false} />
+            .map((item, index) => (
+              <ReturnIngredient item={item} index={index+1} key={uniqid()} isLocked={false} />
             ))}
         </ul>
 
@@ -89,7 +94,7 @@ function BurgerConstructor() {
           .filter((item) => item.type === "bun")
           // Отрисуем массив
           .map((item) => (
-            <ReturnIngredients
+            <ReturnIngredient
               item={item}
               key={uniqid()}
               position="bottom"
@@ -145,7 +150,7 @@ function Total() {
 }
 
 //Вспомогательный компонент вернёт разметку ингредиента взависимости от переданных параметров
-function ReturnIngredients({ item, position, isLocked }) {
+function ReturnIngredient({ item, index, position, isLocked }) {
   let halfBun = "";
   if (position === "top") {
     halfBun = " (верх)";
@@ -153,22 +158,76 @@ function ReturnIngredients({ item, position, isLocked }) {
   if (position === "bottom") {
     halfBun = " (низ)";
   }
-  const currentItem = useRef();
+  const ref = useRef();
   const dispatch = useDispatch();
 
   function deleteItem() {
-    console.log(currentItem);
     dispatch({
       type: DELETE_ITEM,
-      id: item._id,
+      index: index,
     });
     dispatch({
       type: UPDATE_TOTAL,
     });
   }
 
+  const selectedItems = useSelector((state) => state.menu.selectedItems);
+//Функция отвечающая за отправку экшена для перерисовки
+  const moveItem = (dragIndex, hoverIndex) => {
+    // dragItem-перетаскиваемый элемент
+    const dragItem = selectedItems[dragIndex];
+    const hoverItem = selectedItems[hoverIndex];
+
+      dispatch({
+        type: UPDATE_LIST,
+        dragIndex: dragIndex,
+        hoverIndex: hoverIndex,
+        hoverItem: hoverItem,
+        dragItem: dragItem,
+      });
+
+};
+
+ const [{ isDragging }, drag] = useDrag(() => ({
+  type: 'main',
+  item: { id: item._id, index: index },
+  collect: (monitor) => {
+    return {
+      isDragging: monitor.isDragging(),
+    };
+  },
+}));
+
+const [{ isHover }, drop] = useDrop({
+  accept: 'main',
+
+  hover(item) {
+    if (!ref.current) {
+      return;
+    }
+    const dragIndex = item.index;
+    const hoverIndex = index;
+    if (dragIndex === hoverIndex) {
+      return;
+    }
+    moveItem(dragIndex, hoverIndex);
+
+    item.index = hoverIndex;
+  },
+
+  collect: (monitor) => {
+    return {
+      isHover: monitor.isOver(),
+    };
+  },
+});
+
+    drag(drop(ref));
+
   return (
-    <li className={`${styles.item} text`} ref={currentItem}>
+    <li className={`${styles.item} text`} ref={ref}
+     style={{ opacity: isDragging || isHover ? 0 : 1 }}
+    >
       {item.type === "bun" ? (
         <div className={styles.emptyIcon}></div>
       ) : (

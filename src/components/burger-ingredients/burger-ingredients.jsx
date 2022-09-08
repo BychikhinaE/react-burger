@@ -192,6 +192,7 @@ const BurgerIngredient = ({ item, onClickforInfo }) => {
   const currentId = item._id;
   const currentType = item.type;
 
+
   if (selectedItems.length > 0) {
     selectedItems.forEach((item) => {
       if (item._id === currentId) {

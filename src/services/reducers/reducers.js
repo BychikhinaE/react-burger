@@ -12,6 +12,7 @@ import {
   CLOSE_MODAL,
   CLOSE_MODAL_ORDER,
   UPDATE_TOTAL,
+  UPDATE_LIST,
 } from "../actions/actions";
 // Для каждого экшена, который связан с запросом к API создан усилитель.
 // Для таких экшенов описан тип
@@ -98,11 +99,17 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
     }
 
     case DELETE_ITEM: {
-      return {
-        ...state,
-        selectedItems: [...state.selectedItems].filter(
-          (item) => item._id !== action.id
-        ),
+      // return {
+      //   ...state,
+      //   selectedItems: [...state.selectedItems].filter(
+      //     (item) => item._id !== action.id
+      //   ),
+        return {
+          ...state,
+          selectedItems: [...state.selectedItems].filter(
+            (item, index) => index !== action.index
+          ),
+
       };
     }
 
@@ -129,6 +136,16 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
         },
       };
     }
+
+   case UPDATE_LIST: {
+    state.selectedItems[action.dragIndex] = action.hoverItem;
+    state.selectedItems[action.hoverIndex] = action.dragItem
+    return{
+      ...state,
+      selectedItems: [...state.selectedItems]
+
+    }
+   }
 
     default: {
       return state;
