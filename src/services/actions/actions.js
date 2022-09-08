@@ -12,11 +12,11 @@ export const SET_SELECTEDITEM_SUCCESS = 'SET_SELECTEDITEM_SUCCESS';
 export const  SET_SELECTEDITEM_ERROR = ' SET_SELECTEDITEM_ERROR';
 export const GET_ITEM_FOR_VIEW = 'GET_ITEM_FOR_VIEW';
 export const CLOSE_MODAL='CLOSE_MODAL';
-export const CLOSE_MODAL_NUMBER = 'CLOSE_MODAL_NUMBER'
+export const CLOSE_MODAL_ORDER = 'CLOSE_MODAL_ORDER'
 
 export const  TAB_SWITCH = 'TAB_SWITCH';
-
-
+export const UPDATE_TOTAL = 'UPDATE_TOTAL';
+export const UPDATE_LIST = 'UPDATE_LIST';
 export function getItems() {
   return function(dispatch) {
     dispatch({
