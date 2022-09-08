@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
-
+import React, { useEffect, useRef } from "react";
 import { useDrag } from "react-dnd";
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
@@ -74,6 +73,7 @@ const BurgerIngredients = () => {
     element.scrollIntoView({ behavior: "smooth" });
   };
 
+  //Код модального окна
   const modalVisible = useSelector((state) => state.menu.modalVisible);
   const currenViewedItem = useSelector((state) => state.menu.currenViewedItem);
 
@@ -187,12 +187,9 @@ const ReturnMenu = ({ ingredientGroup, onClickforInfo }) => {
 //DragSource
 const BurgerIngredient = ({ item, onClickforInfo }) => {
   const selectedItems = useSelector((state) => state.menu.selectedItems);
-
+  //Счетчик
   let count = 0;
   const currentId = item._id;
-  const currentType = item.type;
-
-
   if (selectedItems.length > 0) {
     selectedItems.forEach((item) => {
       if (item._id === currentId) {
@@ -201,6 +198,7 @@ const BurgerIngredient = ({ item, onClickforInfo }) => {
     });
   }
 
+  const currentType = item.type
   const [, dragRef] = useDrag({
     type: "items",
     item: { currentId, currentType },
@@ -229,10 +227,13 @@ const BurgerIngredient = ({ item, onClickforInfo }) => {
 };
 
 //Проверка типов данных
-// ReturnMenu.propTypes = {
-//   array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-//   ingredientGroup: PropTypes.string.isRequired,
-//   onClickforInfo: PropTypes.func.isRequired,
-// };
+ReturnMenu.propTypes = {
+  ingredientGroup: PropTypes.string.isRequired,
+  onClickforInfo: PropTypes.func.isRequired,
+};
 
-export default BurgerIngredients;
+BurgerIngredient.propTypes = {
+  item: ingredientPropTypes.isRequired,
+  onClickforInfo: PropTypes.func.isRequired,
+};
+export default  React.memo(BurgerIngredients);

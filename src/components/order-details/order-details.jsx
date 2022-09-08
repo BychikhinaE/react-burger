@@ -1,7 +1,6 @@
 import styles from "./order-details.module.css";
-import PropTypes from "prop-types";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
+
 function OrderDetails() {
   const numberOrder = useSelector((state) => state.menu.order.numberOrder);
 
@@ -21,7 +20,4 @@ function OrderDetails() {
 }
 
 export default OrderDetails;
-//проверкa типов PropTypes.
-// OrderDetails.propTypes = {
-//   identifier: PropTypes.number.isRequired,
-// };
+

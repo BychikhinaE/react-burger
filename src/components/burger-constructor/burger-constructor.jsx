@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import {
   ConstructorElement,
@@ -10,7 +10,7 @@ import styles from "./burger-constructor.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import uniqid from "uniqid";
 import { useDrop, useDrag } from "react-dnd";
-
+import { Loader } from "../loader/loader";
 //Проверка типа внутреннего объекта массива данных
 import ingredientPropTypes from "../../utils/ingredientPropTypes";
 
@@ -33,15 +33,16 @@ function BurgerConstructor() {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "items",
-
     drop: ({ currentId, currentType }) => {
+      //Проверим, если перетаскиваемый элемент - хлеб
       if (
         (currentType === "bun") &
         selectedItems.some((item) => item.type === "bun")
       ) {
+        const bunIndex = selectedItems.findIndex((item) => item.type === "bun");
         dispatch({
           type: DELETE_ITEM,
-          index: 0,
+          index: bunIndex,
         });
       }
 
@@ -55,9 +56,6 @@ function BurgerConstructor() {
         type: UPDATE_TOTAL,
       });
     },
-    // collect: (monitor) => ({
-    //   isHover: monitor.isOver(),
-    // }),
   });
 
   return (
@@ -70,9 +68,8 @@ function BurgerConstructor() {
       >
         {selectedItems
           .filter((item) => item.type === "bun")
-          // Отрисуем массив
           .map((item) => (
-            <ReturnIngredient
+            <ReturnBun
               item={item}
               key={uniqid()}
               position="top"
@@ -84,17 +81,20 @@ function BurgerConstructor() {
         <ul className={`${styles.scroll} custom-scroll text`}>
           {selectedItems
             .filter((item) => item.type === "sauce" || item.type === "main")
-            // Отрисуем массив
             .map((item, index) => (
-              <ReturnIngredient item={item} index={index+1} key={uniqid()} isLocked={false} />
+              <ReturnIngredient
+                item={item}
+                index={index + 1}
+                key={uniqid()}
+                isLocked={false}
+              />
             ))}
         </ul>
 
         {selectedItems
           .filter((item) => item.type === "bun")
-          // Отрисуем массив
           .map((item) => (
-            <ReturnIngredient
+            <ReturnBun
               item={item}
               key={uniqid()}
               position="bottom"
@@ -112,7 +112,8 @@ function BurgerConstructor() {
 function Total() {
   // Код мод.окна
   const dispatch = useDispatch();
-
+  const orderRequest = useSelector((state) => state.menu.orderRequest);
+  //Массив id элементов в заказе
   const idSet = useSelector((state) => state.menu.order.idSet);
   const total = useSelector((state) => state.menu.order.total);
   const modalVisible = useSelector((state) => state.menu.order.modalVisible);
@@ -141,7 +142,8 @@ function Total() {
             header=""
             onClose={() => dispatch({ type: CLOSE_MODAL_ORDER })}
           >
-            <OrderDetails />
+            {orderRequest ? <Loader size="large" /> : <OrderDetails />}
+
           </Modal>
         )}
       </>
@@ -149,8 +151,8 @@ function Total() {
   );
 }
 
-//Вспомогательный компонент вернёт разметку ингредиента взависимости от переданных параметров
-function ReturnIngredient({ item, index, position, isLocked }) {
+//Компонент для булочек
+function ReturnBun({ item, position, isLocked }) {
   let halfBun = "";
   if (position === "top") {
     halfBun = " (верх)";
@@ -158,10 +160,27 @@ function ReturnIngredient({ item, index, position, isLocked }) {
   if (position === "bottom") {
     halfBun = " (низ)";
   }
+
+  return (
+    <li className={`${styles.item} text`}>
+      <div className={styles.emptyIcon}></div>
+      <ConstructorElement
+        type={position}
+        isLocked={isLocked}
+        text={`${item.name}${halfBun}`}
+        price={item.price}
+        thumbnail={item.image}
+      />
+    </li>
+  );
+}
+
+//Компонент для остальных ингредиентов
+function ReturnIngredient({ item, index, isLocked }) {
   const ref = useRef();
   const dispatch = useDispatch();
-
-  function deleteItem() {
+  //Колбэк для пропса handleClose в ConstructorElement
+  const deleteItem = useCallback(() => {
     dispatch({
       type: DELETE_ITEM,
       index: index,
@@ -169,14 +188,15 @@ function ReturnIngredient({ item, index, position, isLocked }) {
     dispatch({
       type: UPDATE_TOTAL,
     });
-  }
+  }, [dispatch, index]);
 
   const selectedItems = useSelector((state) => state.menu.selectedItems);
-//Функция отвечающая за отправку экшена для перерисовки
-  const moveItem = (dragIndex, hoverIndex) => {
-    // dragItem-перетаскиваемый элемент
-    const dragItem = selectedItems[dragIndex];
-    const hoverItem = selectedItems[hoverIndex];
+  //Функция отвечающая за отправку экшена для перерисовки
+  const moveItem = useCallback(
+    (dragIndex, hoverIndex) => {
+      // dragItem-перетаскиваемый элемент
+      const dragItem = selectedItems[dragIndex];
+      const hoverItem = selectedItems[hoverIndex];
 
       dispatch({
         type: UPDATE_LIST,
@@ -185,58 +205,55 @@ function ReturnIngredient({ item, index, position, isLocked }) {
         hoverItem: hoverItem,
         dragItem: dragItem,
       });
+    },
+    [dispatch, selectedItems]
+  );
 
-};
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "main",
+    item: { index },
+    collect: (monitor) => {
+      return {
+        isDragging: monitor.isDragging(),
+      };
+    },
+  }));
 
- const [{ isDragging }, drag] = useDrag(() => ({
-  type: 'main',
-  item: { id: item._id, index: index },
-  collect: (monitor) => {
-    return {
-      isDragging: monitor.isDragging(),
-    };
-  },
-}));
+  const [{ isHover }, drop] = useDrop({
+    accept: "main",
+    hover(item) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      moveItem(dragIndex, hoverIndex);
 
-const [{ isHover }, drop] = useDrop({
-  accept: 'main',
+      item.index = hoverIndex;
+    },
 
-  hover(item) {
-    if (!ref.current) {
-      return;
-    }
-    const dragIndex = item.index;
-    const hoverIndex = index;
-    if (dragIndex === hoverIndex) {
-      return;
-    }
-    moveItem(dragIndex, hoverIndex);
+    collect: (monitor) => {
+      return {
+        isHover: monitor.isOver(),
+      };
+    },
+  });
 
-    item.index = hoverIndex;
-  },
-
-  collect: (monitor) => {
-    return {
-      isHover: monitor.isOver(),
-    };
-  },
-});
-
-    drag(drop(ref));
+  drag(drop(ref));
 
   return (
-    <li className={`${styles.item} text`} ref={ref}
-     style={{ opacity: isDragging || isHover ? 0 : 1 }}
+    <li
+      className={`${styles.item} text`}
+      ref={ref}
+      style={{ opacity: isDragging || isHover ? 0 : 1 }}
     >
-      {item.type === "bun" ? (
-        <div className={styles.emptyIcon}></div>
-      ) : (
-        <DragIcon type="primary" />
-      )}
+      <DragIcon type="primary" />
       <ConstructorElement
-        type={position}
         isLocked={isLocked}
-        text={`${item.name}${halfBun}`}
+        text={`${item.name}`}
         price={item.price}
         thumbnail={item.image}
         handleClose={deleteItem}
@@ -246,15 +263,16 @@ const [{ isHover }, drop] = useDrop({
 }
 
 //Проверка типов данных
-// ReturnIngredients.propTypes = {
-//   item: ingredientPropTypes.isRequired,
-//   type: PropTypes.string,
-//   isLocked: PropTypes.bool.isRequired,
-// };
+ReturnIngredient.propTypes = {
+  item: ingredientPropTypes.isRequired,
+  index: PropTypes.number,
+  isLocked: PropTypes.bool.isRequired,
+};
+ReturnBun.propTypes = {
+  item: ingredientPropTypes.isRequired,
+  position: PropTypes.string,
+  isLocked: PropTypes.bool.isRequired,
+};
 
-// Total.propTypes = {
-//   total: PropTypes.number,
-//   idSelectedElements: PropTypes.array,
-// };
 
-export default BurgerConstructor;
+export default React.memo(BurgerConstructor);

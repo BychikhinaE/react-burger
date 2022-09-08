@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 //DndProvider
-
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -30,13 +29,12 @@ function App() {
           Соберите бургер
         </h1>
         <DndProvider backend={HTML5Backend}>
-        {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
-        <BurgerConstructor />
+          {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
+          <BurgerConstructor />
         </DndProvider>
-
       </main>
     </div>
   );
 }
 
-export default React.memo(App);
+export default App;
