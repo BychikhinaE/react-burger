@@ -5,6 +5,7 @@
   gap: 8px;
 }
 
-.drag{
-  opacity: 0;
+.emptyIcon {
+  width: 24px;
+  content: "";
 }

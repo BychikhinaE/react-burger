@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import styles from "./burger-constructor.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,14 +9,10 @@ import Total from "../total/total";
 import {
   ADD_SELECTED_ITEM,
   DELETE_ITEM,
-  UPDATE_COUNTERS,
 } from "../../services/actions/constructor";
-import { UPDATE_TOTAL } from "../../services/actions/order";
-import {
-  BunConstructor,
-  IngredientConstructor,
-} from "../ingredient-constructor/ingredient-constructor";
+import IngredientConstructor from "../ingredient-constructor/ingredient-constructor";
 
+import BunConstructor from "../bun-constructor/bun-constructor";
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
 function BurgerConstructor() {
   const selectedItems = useSelector((state) => state.constr.selectedItems);
@@ -40,21 +36,10 @@ function BurgerConstructor() {
       // Отправим экшен с текущим перетаскиваемым элементом
       dispatch({
         type: ADD_SELECTED_ITEM,
-        item: currentItem,
+        item: { ...currentItem, sysid: uniqid() },
       });
     },
   });
-
-  //Подписываемся на обновления выбранных ингредиентов
-  useEffect(() => {
-    dispatch({
-      type: UPDATE_TOTAL,
-      selectedItems: selectedItems,
-    });
-    dispatch({
-      type: UPDATE_COUNTERS,
-    });
-  }, [dispatch, selectedItems]);
 
   return (
     <>
@@ -69,7 +54,7 @@ function BurgerConstructor() {
             item.type === INGREDIENT_TYPES.BUN && (
               <BunConstructor
                 item={item}
-                key={uniqid()}
+                key={item.sysid}
                 position="top"
                 isLocked={true}
                 index={index}
@@ -84,7 +69,7 @@ function BurgerConstructor() {
                 <IngredientConstructor
                   item={item}
                   index={index}
-                  key={uniqid()}
+                  key={item.sysid}
                   isLocked={false}
                 />
               )
@@ -96,7 +81,7 @@ function BurgerConstructor() {
             item.type === INGREDIENT_TYPES.BUN && (
               <BunConstructor
                 item={item}
-                key={uniqid()}
+                key={item.sysid}
                 position="bottom"
                 isLocked={true}
               />

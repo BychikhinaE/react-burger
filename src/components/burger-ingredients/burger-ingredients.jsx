@@ -81,6 +81,17 @@ const BurgerIngredients = () => {
     dispatch({ type: CLOSE_MODAL });
   }
 
+  //Счетчик заказанных ингридиентов, потом пробросим пропсами до каждой карточки
+  const selectedItems = useSelector((state) => state.constr.selectedItems);
+  const counters = selectedItems.reduce((prevVal, item) => {
+    if (!prevVal[item._id]) {
+      prevVal[item._id] = 1;
+    } else {
+      prevVal[item._id]++;
+    }
+    return prevVal;
+  }, {});
+
   return (
     <>
       <section className={styles.gridIngred}>
@@ -118,6 +129,7 @@ const BurgerIngredients = () => {
             <IngredientsGroup
               ingredientGroup={INGREDIENT_TYPES.BUN}
               onClickforInfo={handleOpenModal}
+              counters={counters}
             />
           </div>
 
@@ -128,6 +140,7 @@ const BurgerIngredients = () => {
             <IngredientsGroup
               ingredientGroup={INGREDIENT_TYPES.SAUCE}
               onClickforInfo={handleOpenModal}
+              counters={counters}
             />
           </div>
 
@@ -138,6 +151,7 @@ const BurgerIngredients = () => {
             <IngredientsGroup
               ingredientGroup={INGREDIENT_TYPES.MAIN}
               onClickforInfo={handleOpenModal}
+              counters={counters}
             />
           </div>
         </div>

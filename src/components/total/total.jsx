@@ -12,15 +12,32 @@ import { Loader } from "../loader/loader";
 //Модальное окно
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { INGREDIENT_TYPES } from "../../utils/constants";
 
 //Компонент кнопки ЗАКАЗА и здесь МОДАЛЬНОЕ окно
 function Total() {
+  const selectedItems = useSelector((state) => state.constr.selectedItems);
+  //Здесь считаем сумму заказа и формируем список айдишек для отправки на сервер
+  let priceSecondBun = 0;
+  let bunId = undefined;
+  if (selectedItems.some((item) => item.type === INGREDIENT_TYPES.BUN)) {
+    const bun = selectedItems.find(
+      (item) => item.type === INGREDIENT_TYPES.BUN
+    );
+    priceSecondBun = bun.price;
+    bunId = bun._id;
+  }
+  const idSet = [...selectedItems.map((item) => item._id), bunId];
+  const total = selectedItems.reduce(
+    (acc, item) => acc + item.price,
+    priceSecondBun
+  );
+
   // Код мод.окна
   const dispatch = useDispatch();
   const orderRequest = useSelector((state) => state.order.orderRequest);
   //Массив id элементов в заказе
-  const idSet = useSelector((state) => state.order.idSet);
-  const total = useSelector((state) => state.order.total);
+
   const modalVisible = useSelector((state) => state.order.modalVisible);
   function submitOrder() {
     dispatch(setSelectedItems(idSet));
@@ -39,7 +56,7 @@ function Total() {
           type="primary"
           size="large"
           onClick={submitOrder}
-          disabled={idSet.length === 1}
+          disabled={idSet.some((item) => item === undefined)}
         >
           Оформить заказ
         </Button>

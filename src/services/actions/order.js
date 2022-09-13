@@ -3,7 +3,6 @@ export const SUBMIT_ORDER_REQUEST = "SUBMIT_ORDER_REQUEST";
 export const SUBMIT_ORDER_SUCCESS = "SUBMIT_ORDER_SUCCESS";
 export const SUBMIT_ORDER_ERROR = " SUBMIT_ORDER_ERROR";
 export const CLOSE_MODAL_ORDER = "CLOSE_MODAL_ORDER";
-export const UPDATE_TOTAL = "UPDATE_TOTAL";
 
 //Отправляем заказ на сервер
 export function setSelectedItems(id) {

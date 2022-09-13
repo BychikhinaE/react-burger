@@ -2,13 +2,11 @@ import {
   ADD_SELECTED_ITEM,
   DELETE_ITEM,
   TOGGLE_LIST,
-  UPDATE_COUNTERS,
 } from "../actions/constructor";
 
 const initialStateConstructor = {
   // список всех ингредиентов в текущем конструкторе бургера,
   selectedItems: [],
-  counters: {},
 };
 
 export const constructorReducer = (state = initialStateConstructor, action) => {
@@ -19,19 +17,7 @@ export const constructorReducer = (state = initialStateConstructor, action) => {
         selectedItems: [...state.selectedItems, action.item],
       };
     }
-    case UPDATE_COUNTERS: {
-      return {
-        ...state,
-        counters: state.selectedItems.reduce((prevVal, item) => {
-          if (!prevVal[item._id]) {
-            prevVal[item._id] = 1;
-          } else {
-            prevVal[item._id]++;
-          }
-          return prevVal;
-        }, {}),
-      };
-    }
+
     case DELETE_ITEM: {
       return {
         ...state,
@@ -42,11 +28,17 @@ export const constructorReducer = (state = initialStateConstructor, action) => {
     }
 
     case TOGGLE_LIST: {
-      state.selectedItems[action.dragIndex] = action.hoverItem;
-      state.selectedItems[action.hoverIndex] = action.dragItem;
       return {
         ...state,
-        selectedItems: [...state.selectedItems],
+        selectedItems: state.selectedItems.map((item, index, array) => {
+          if (index === action.hoverIndex) {
+            return array[action.dragIndex];
+          }
+          if (index === action.dragIndex) {
+            return array[action.hoverIndex];
+          }
+          return item;
+        }),
       };
     }
 
