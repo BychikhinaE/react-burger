@@ -2,7 +2,7 @@ import styles from "./order-details.module.css";
 import {  useSelector } from "react-redux";
 
 function OrderDetails() {
-  const numberOrder = useSelector((state) => state.menu.order.numberOrder);
+  const numberOrder = useSelector((state) => state.order.numberOrder);
 
   return (
     <>

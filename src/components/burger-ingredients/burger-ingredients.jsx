@@ -1,24 +1,19 @@
 import React, { useEffect, useRef } from "react";
-import { useDrag } from "react-dnd";
-import PropTypes from "prop-types";
-import ingredientPropTypes from "../../utils/ingredientPropTypes";
+
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
-
-import { Loader } from "../loader/loader";
+import { TAB_NAME, INGREDIENT_TYPES } from "../../utils/constants";
+import { TAB_SWITCH } from "../../services/actions/menu";
 import {
-  TAB_SWITCH,
   GET_ITEM_FOR_VIEW,
   CLOSE_MODAL,
-} from "../../services/actions/actions";
+} from "../../services/actions/ingredient";
+import IngredientsGroup from "../ingredients-group/ingredients-group";
+import { getDistanceBetweenPoints } from "../../utils/utils";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
@@ -31,38 +26,37 @@ const BurgerIngredients = () => {
   const bunRef = useRef();
   const sauceRef = useRef();
   const mainRef = useRef();
+  //Меняет активность у вкладок по мере скролла меню высчитывая самый близкий заголовок к верхней границе родителя
+  function changeTab() {
+    const viewportCoords = document
+      .getElementById("scroll")
+      .getBoundingClientRect();
 
-  useEffect(() => {
-    document.getElementById("scroll").addEventListener("scroll", function () {
-      const viewportCoords = document
-        .getElementById("scroll")
-        .getBoundingClientRect();
-
-      if (isVisible(bunRef.current, viewportCoords)) {
-        dispatch({
+    getDistanceBetweenPoints(bunRef.current, viewportCoords) <
+    getDistanceBetweenPoints(sauceRef.current, viewportCoords)
+      ? dispatch({
           type: TAB_SWITCH,
-          value: "Булки",
-        });
-      }
-      if (isVisible(sauceRef.current, viewportCoords)) {
-        dispatch({
+          value: TAB_NAME.BUN,
+        })
+      : getDistanceBetweenPoints(sauceRef.current, viewportCoords) <
+        getDistanceBetweenPoints(mainRef.current, viewportCoords)
+      ? dispatch({
           type: TAB_SWITCH,
-          value: "Соусы",
-        });
-      }
-      if (isVisible(mainRef.current, viewportCoords)) {
-        dispatch({
+          value: TAB_NAME.SAUCE,
+        })
+      : dispatch({
           type: TAB_SWITCH,
-          value: "Начинки",
+          value: TAB_NAME.MAIN,
         });
-      }
-    });
-  }, []);
-  //Функция контролирует приближение начала раздела меню к родительской верхней рамке
-  function isVisible(elem, viewportCoords) {
-    let coordsChild = elem.getBoundingClientRect();
-    return coordsChild.top <= viewportCoords.top + 250;
   }
+  useEffect(() => {
+    const scrollBlock = document.getElementById("scroll");
+    scrollBlock.addEventListener("scroll", changeTab);
+    return function cleanup() {
+      scrollBlock.removeEventListener("scroll", changeTab);
+    };
+  }, []);
+
   //Настройка пролистывания меню при клике на таб
   const onTabClick = (event) => {
     dispatch({
@@ -74,13 +68,12 @@ const BurgerIngredients = () => {
   };
 
   //Код модального окна
-  const modalVisible = useSelector((state) => state.menu.modalVisible);
-  const currenViewedItem = useSelector((state) => state.menu.currenViewedItem);
+  const modalVisible = useSelector((state) => state.info.modalVisible);
+  const currenViewedItem = useSelector((state) => state.info.currenViewedItem);
 
   const handleOpenModal = (Event) => {
     const targetIndex = Event.currentTarget.getAttribute("index");
     const target = items.find((item) => item._id === targetIndex);
-
     dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
   };
 
@@ -93,24 +86,24 @@ const BurgerIngredients = () => {
       <section className={styles.gridIngred}>
         <nav className={`${styles.nav} text text_type_main-default pb-10`}>
           <Tab
-            value="Булки"
-            active={currentTab === "Булки"}
+            value={TAB_NAME.BUN}
+            active={currentTab === TAB_NAME.BUN}
             onClick={onTabClick}
           >
             Булки
           </Tab>
 
           <Tab
-            value="Соусы"
-            active={currentTab === "Соусы"}
+            value={TAB_NAME.SAUCE}
+            active={currentTab === TAB_NAME.SAUCE}
             onClick={onTabClick}
           >
             Соусы
           </Tab>
 
           <Tab
-            value="Начинки"
-            active={currentTab === "Начинки"}
+            value={TAB_NAME.MAIN}
+            active={currentTab === TAB_NAME.MAIN}
             onClick={onTabClick}
           >
             Начинки
@@ -119,31 +112,31 @@ const BurgerIngredients = () => {
 
         <div className={`${styles.scroll} custom-scroll`} id="scroll">
           <div ref={bunRef}>
-            <h2 className="text text_type_main-medium pb-6" id="Булки">
+            <h2 className="text text_type_main-medium pb-6" id={TAB_NAME.BUN}>
               Булки
             </h2>
-            <ReturnMenu
-              ingredientGroup="bun"
+            <IngredientsGroup
+              ingredientGroup={INGREDIENT_TYPES.BUN}
               onClickforInfo={handleOpenModal}
             />
           </div>
 
           <div ref={sauceRef}>
-            <h2 className="text text_type_main-medium pb-4" id="Соусы">
+            <h2 className="text text_type_main-medium pb-4" id={TAB_NAME.SAUCE}>
               Соусы
             </h2>
-            <ReturnMenu
-              ingredientGroup="sauce"
+            <IngredientsGroup
+              ingredientGroup={INGREDIENT_TYPES.SAUCE}
               onClickforInfo={handleOpenModal}
             />
           </div>
 
           <div ref={mainRef}>
-            <h2 className="text text_type_main-medium pb-6" id="Начинки">
+            <h2 className="text text_type_main-medium pb-6" id={TAB_NAME.MAIN}>
               Начинки
             </h2>
-            <ReturnMenu
-              ingredientGroup="main"
+            <IngredientsGroup
+              ingredientGroup={INGREDIENT_TYPES.MAIN}
               onClickforInfo={handleOpenModal}
             />
           </div>
@@ -162,78 +155,4 @@ const BurgerIngredients = () => {
   );
 };
 
-//Вспомогательный компонент вернет элементы меню по разделам
-const ReturnMenu = ({ ingredientGroup, onClickforInfo }) => {
-  const items = useSelector((state) => state.menu.items);
-  const itemsRequest = useSelector((state) => state.menu.itemsRequest);
-
-  const currentObject = items.filter((item) => item.type === ingredientGroup);
-
-  return itemsRequest ? (
-    <Loader size="large" />
-  ) : (
-    <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
-      {currentObject.map((item) => (
-        <BurgerIngredient
-          item={item}
-          key={item._id}
-          onClickforInfo={onClickforInfo}
-        />
-      ))}
-    </ul>
-  );
-};
-
-//DragSource
-const BurgerIngredient = ({ item, onClickforInfo }) => {
-  const selectedItems = useSelector((state) => state.menu.selectedItems);
-  //Счетчик
-  let count = 0;
-  const currentId = item._id;
-  if (selectedItems.length > 0) {
-    selectedItems.forEach((item) => {
-      if (item._id === currentId) {
-        count++;
-      }
-    });
-  }
-
-  const currentType = item.type
-  const [, dragRef] = useDrag({
-    type: "items",
-    item: { currentId, currentType },
-  });
-
-  return (
-    <li
-      className={`${styles.item} mb-10`}
-      index={item._id}
-      onClick={onClickforInfo}
-      ref={dragRef}
-    >
-      {count !== 0 && <Counter count={count} size="default" />}
-      <img alt={item.name} src={item.image} />
-      <div className={styles.price}>
-        <p
-          className={`text text_type_digits-default pt-2 pb-3 ${styles.addInConstructor}`}
-        >
-          {item.price}
-        </p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p className="text text_type_main-default pb-5">{item.name}</p>
-    </li>
-  );
-};
-
-//Проверка типов данных
-ReturnMenu.propTypes = {
-  ingredientGroup: PropTypes.string.isRequired,
-  onClickforInfo: PropTypes.func.isRequired,
-};
-
-BurgerIngredient.propTypes = {
-  item: ingredientPropTypes.isRequired,
-  onClickforInfo: PropTypes.func.isRequired,
-};
-export default  React.memo(BurgerIngredients);
+export default React.memo(BurgerIngredients);

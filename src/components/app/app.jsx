@@ -9,7 +9,7 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { Loader } from "../loader/loader";
 import { useDispatch, useSelector } from "react-redux";
-import { getItems } from "../../services/actions/actions";
+import { getItems } from "../../services/actions/menu";
 
 function App() {
   const dispatch = useDispatch();

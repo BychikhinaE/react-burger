@@ -1,0 +1,11 @@
+.gridButton {
+  grid-area: button;
+  align-self: start;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.currencyIcon{
+  transform: scale(1.5);
+}

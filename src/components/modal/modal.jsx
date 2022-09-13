@@ -1,8 +1,3 @@
-//компонент Modal — шапка с заголовком и иконкой закрытия;
-//содержимое модального окна передается в компонент Modal как children ;
-//логика навешивания и удаления обработчиков события нажатия
-//клавиши "Esc" описана в компоненте Modal ;
-
 import ReactDOM from "react-dom";
 import React from "react";
 import PropTypes from "prop-types";
