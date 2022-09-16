@@ -27,7 +27,7 @@ function Total() {
     priceSecondBun = bun.price;
     bunId = bun._id;
   }
-  const idSet = [...selectedItems.map((item) => item._id), bunId];
+  const idSet = [bunId, ...selectedItems.filter(item => item.type !== INGREDIENT_TYPES.BUN).map(item => item._id), bunId];
   const total = selectedItems.reduce(
     (acc, item) => acc + item.price,
     priceSecondBun

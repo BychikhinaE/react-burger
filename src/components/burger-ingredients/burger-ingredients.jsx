@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
@@ -83,14 +83,22 @@ const BurgerIngredients = () => {
 
   //Счетчик заказанных ингридиентов, потом пробросим пропсами до каждой карточки
   const selectedItems = useSelector((state) => state.constr.selectedItems);
-  const counters = selectedItems.reduce((prevVal, item) => {
-    if (!prevVal[item._id]) {
-      prevVal[item._id] = 1;
-    } else {
-      prevVal[item._id]++;
-    }
-    return prevVal;
-  }, {});
+  const counters = useMemo(
+    () =>
+      selectedItems.reduce((prevVal, item) => {
+        if (!prevVal[item._id]) {
+          if (item.type === INGREDIENT_TYPES.BUN) {
+            prevVal[item._id] = 2;
+          } else {
+            prevVal[item._id] = 1;
+          }
+        } else {
+          prevVal[item._id]++;
+        }
+        return prevVal;
+      }, {}),
+    [selectedItems]
+  );
 
   return (
     <>
