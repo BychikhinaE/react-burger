@@ -1,0 +1,3 @@
+export const ADD_SELECTED_ITEM = "ADD_SELECTED_ITEM";
+export const DELETE_ITEM = "DELETE_ITEM";
+export const TOGGLE_LIST = "TOGGLE_LIST";

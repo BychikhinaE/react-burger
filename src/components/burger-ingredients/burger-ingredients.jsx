@@ -1,144 +1,175 @@
-import React from "react";
-import PropTypes from "prop-types";
-import ingredientPropTypes from "../../utils/ingredientPropTypes";
+import React, { useEffect, useRef, useMemo } from "react";
+
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
-import { ProductContext } from "../../services/productContext";
-import { SelectedContext } from "../../services/selectedContext";
+
+import { useDispatch, useSelector } from "react-redux";
+import { TAB_NAME, INGREDIENT_TYPES } from "../../utils/constants";
+import { TAB_SWITCH } from "../../services/actions/menu";
+import {
+  GET_ITEM_FOR_VIEW,
+  CLOSE_MODAL,
+} from "../../services/actions/ingredient";
+import IngredientsGroup from "../ingredients-group/ingredients-group";
+import { getDistanceBetweenPoints } from "../../utils/utils";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
-  //принимает контекст всех ингредиентов с сервера
-  const array = React.useContext(ProductContext);
-  //влияет на контекст выбранных ингредиентов
-  const { setArraySelected } = React.useContext(SelectedContext);
-  //стейт компонента Tab
-  const [current, setCurrent] = React.useState("Булки");
+  const dispatch = useDispatch();
+  // Получим все карточки из хранилища
+  const items = useSelector((state) => state.menu.items);
 
-  //Код добавления ингредиента в конструктор
-  function onClickforBuy(event) {
-    event.stopPropagation();
-    dispatch(event);
+  //Настройка переключателя табов при скролле
+  const currentTab = useSelector((state) => state.menu.currentTab);
+  const bunRef = useRef();
+  const sauceRef = useRef();
+  const mainRef = useRef();
+  //Меняет активность у вкладок по мере скролла меню высчитывая самый близкий заголовок к верхней границе родителя
+  function changeTab() {
+    const viewportCoords = document
+      .getElementById("scroll")
+      .getBoundingClientRect();
+
+    getDistanceBetweenPoints(bunRef.current, viewportCoords) <
+    getDistanceBetweenPoints(sauceRef.current, viewportCoords)
+      ? dispatch({
+          type: TAB_SWITCH,
+          value: TAB_NAME.BUN,
+        })
+      : getDistanceBetweenPoints(sauceRef.current, viewportCoords) <
+        getDistanceBetweenPoints(mainRef.current, viewportCoords)
+      ? dispatch({
+          type: TAB_SWITCH,
+          value: TAB_NAME.SAUCE,
+        })
+      : dispatch({
+          type: TAB_SWITCH,
+          value: TAB_NAME.MAIN,
+        });
   }
+  useEffect(() => {
+    const scrollBlock = document.getElementById("scroll");
+    scrollBlock.addEventListener("scroll", changeTab);
+    return function cleanup() {
+      scrollBlock.removeEventListener("scroll", changeTab);
+    };
+  }, []);
 
-  //Здесь собираются в массив selectedIngrdnts выбранные ингредиенты и обновляется контекст setArraySelected
-  function reducer(selectedIngrdnts, event) {
-    const idElement = event.target.offsetParent.getAttribute("index");
+  //Настройка пролистывания меню при клике на таб
+  const onTabClick = (event) => {
+    dispatch({
+      type: TAB_SWITCH,
+      value: event,
+    });
+    const element = document.getElementById(event);
+    element.scrollIntoView({ behavior: "smooth" });
+  };
 
-    const selectedIngrdnt = array.find((item) => item._id === idElement);
-
-    //Проверим что ингредиент - булка и удалим в массиве хлеб, если он там был
-    if (
-      (selectedIngrdnt.type === "bun") &
-      selectedIngrdnts.some((item) => item.type === "bun")
-    ) {
-      const bunIndex = selectedIngrdnts.findIndex(
-        (item) => item.type === "bun"
-      );
-      selectedIngrdnts.splice(bunIndex, 1);
-    }
-
-    return [...selectedIngrdnts, selectedIngrdnt];
-  }
-  const [selectedIngrdnts, dispatch] = React.useReducer(reducer, []);
-
-  React.useEffect(() => {
-    setArraySelected(selectedIngrdnts);
-  }, [selectedIngrdnts, setArraySelected]);
-
-  // Код мод.окна просмотра полной информации об ингредиенте
-  const [state, setState] = React.useState({
-    visible: false,
-    ingredient: {},
-  });
+  //Код модального окна
+  const modalVisible = useSelector((state) => state.info.modalVisible);
+  const currenViewedItem = useSelector((state) => state.info.currenViewedItem);
 
   const handleOpenModal = (Event) => {
     const targetIndex = Event.currentTarget.getAttribute("index");
-    const target = array.find((item) => item._id === targetIndex);
-    setState({ visible: true, ingredient: target });
+    const target = items.find((item) => item._id === targetIndex);
+    dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
   };
 
   function handleCloseModal() {
-    setState({ visible: false, ingredient: {} });
+    dispatch({ type: CLOSE_MODAL });
   }
+
+  //Счетчик заказанных ингридиентов, потом пробросим пропсами до каждой карточки
+  const selectedItems = useSelector((state) => state.constr.selectedItems);
+  const counters = useMemo(
+    () =>
+      selectedItems.reduce((prevVal, item) => {
+        if (!prevVal[item._id]) {
+          if (item.type === INGREDIENT_TYPES.BUN) {
+            prevVal[item._id] = 2;
+          } else {
+            prevVal[item._id] = 1;
+          }
+        } else {
+          prevVal[item._id]++;
+        }
+        return prevVal;
+      }, {}),
+    [selectedItems]
+  );
 
   return (
     <>
       <section className={styles.gridIngred}>
         <nav className={`${styles.nav} text text_type_main-default pb-10`}>
-          <a className={styles.link} href="#buns">
-            <Tab
-              value="Булки"
-              active={current === "Булки"}
-              onClick={setCurrent}
-            >
-              Булки
-            </Tab>
-          </a>
-          <a className={styles.link} href="#souce">
-            <Tab
-              value="Соусы"
-              active={current === "Соусы"}
-              onClick={setCurrent}
-            >
-              Соусы
-            </Tab>
-          </a>
-          <a className={styles.link} href="#mains">
-            <Tab
-              value="Начинки"
-              active={current === "Начинки"}
-              onClick={setCurrent}
-            >
-              Начинки
-            </Tab>
-          </a>
+          <Tab
+            value={TAB_NAME.BUN}
+            active={currentTab === TAB_NAME.BUN}
+            onClick={onTabClick}
+          >
+            Булки
+          </Tab>
+
+          <Tab
+            value={TAB_NAME.SAUCE}
+            active={currentTab === TAB_NAME.SAUCE}
+            onClick={onTabClick}
+          >
+            Соусы
+          </Tab>
+
+          <Tab
+            value={TAB_NAME.MAIN}
+            active={currentTab === TAB_NAME.MAIN}
+            onClick={onTabClick}
+          >
+            Начинки
+          </Tab>
         </nav>
 
-        <div className={`${styles.scroll} custom-scroll`}>
-          <h2 className="text text_type_main-medium pb-6" id="buns">
-            Булки
-          </h2>
-          <ReturnMenu
-            array={array}
-            ingredientGroup="bun"
-            onClickforInfo={handleOpenModal}
-            onClickforBuy={onClickforBuy}
-          />
+        <div className={`${styles.scroll} custom-scroll`} id="scroll">
+          <div ref={bunRef}>
+            <h2 className="text text_type_main-medium pb-6" id={TAB_NAME.BUN}>
+              Булки
+            </h2>
+            <IngredientsGroup
+              ingredientGroup={INGREDIENT_TYPES.BUN}
+              onClickforInfo={handleOpenModal}
+              counters={counters}
+            />
+          </div>
 
-          <h2 className="text text_type_main-medium pb-4" id="souce">
-            Соусы
-          </h2>
-          <ReturnMenu
-            array={array}
-            ingredientGroup="sauce"
-            onClickforInfo={handleOpenModal}
-            onClickforBuy={onClickforBuy}
-          />
+          <div ref={sauceRef}>
+            <h2 className="text text_type_main-medium pb-4" id={TAB_NAME.SAUCE}>
+              Соусы
+            </h2>
+            <IngredientsGroup
+              ingredientGroup={INGREDIENT_TYPES.SAUCE}
+              onClickforInfo={handleOpenModal}
+              counters={counters}
+            />
+          </div>
 
-          <h2 className="text text_type_main-medium pb-6" id="mains">
-            Начинки
-          </h2>
-          <ReturnMenu
-            array={array}
-            ingredientGroup="main"
-            onClickforInfo={handleOpenModal}
-            onClickforBuy={onClickforBuy}
-          />
+          <div ref={mainRef}>
+            <h2 className="text text_type_main-medium pb-6" id={TAB_NAME.MAIN}>
+              Начинки
+            </h2>
+            <IngredientsGroup
+              ingredientGroup={INGREDIENT_TYPES.MAIN}
+              onClickforInfo={handleOpenModal}
+              counters={counters}
+            />
+          </div>
         </div>
       </section>
 
       {/* Модальное окно*/}
       <>
-        {state.visible && (
+        {modalVisible && (
           <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-            <IngredientDetails ingredient={state.ingredient} />
+            <IngredientDetails ingredient={currenViewedItem} />
           </Modal>
         )}
       </>
@@ -146,50 +177,4 @@ const BurgerIngredients = () => {
   );
 };
 
-//Вспомогательный компонент вернет элементы меню по разделам
-const ReturnMenu = ({
-  array,
-  ingredientGroup,
-  onClickforInfo,
-  onClickforBuy,
-}) => {
-  const currentObject = array.filter((item) => item.type === ingredientGroup);
-
-  return (
-    <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
-      {currentObject.map((item) => (
-        <li
-          className={`${styles.item} mb-10`}
-          key={item._id}
-          index={item._id}
-          onClick={onClickforInfo}
-        >
-          {/* <Counter count={0} size="default" /> */}
-          <img alt={item.name} src={item.image} />
-          {/* В ТЗ пока нет указаний как будет добавляться ингредиент в конструктор и
-          этот onClick={onClickforBuy} временное решение */}
-          <div className={styles.price} title="Клик!">
-            <p
-              className={`text text_type_digits-default pt-2 pb-3 ${styles.addInConstructor}`}
-              onClick={onClickforBuy}
-            >
-              {item.price}
-            </p>
-            <CurrencyIcon type="primary" />
-          </div>
-          <p className="text text_type_main-default pb-5">{item.name}</p>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-//Проверка типов данных
-ReturnMenu.propTypes = {
-  array: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
-  ingredientGroup: PropTypes.string.isRequired,
-  onClickforInfo: PropTypes.func.isRequired,
-  onClickforBuy: PropTypes.func.isRequired,
-};
-
-export default BurgerIngredients;
+export default React.memo(BurgerIngredients);

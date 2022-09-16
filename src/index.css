@@ -1,6 +1,12 @@
 body {
-  width: 100%;
+  /* width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: center; */
   font-family: Arial, sans-serif;
+}
+
+/* центровщик - добавлен в header main */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
 }

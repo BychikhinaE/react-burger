@@ -1,6 +1,6 @@
 .main {
   display: grid;
-  grid-template-columns: repeat(2, minmax(1fr, 600px));
+  grid-template-columns: minmax(300px, 600px) 1fr;
   column-gap: 20px;
   grid-template-areas: "title title"
                         "ingredients constructor"
