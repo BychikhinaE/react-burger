@@ -1,13 +1,12 @@
 .header {
-  display: flex;
   align-items: center;
-  max-width: 1240px;
-  width: 100vw;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
 }
 
 .nav {
   display: flex;
+  padding-right: 4vw;
 }
 
 .item {
@@ -20,8 +19,4 @@
   background: inherit;
   text-align: center;
   display: flex;
-}
-
-.logo{
-  transform: translateX(-100px);
 }

@@ -70,7 +70,7 @@ export default function IngredientConstructor({ item, index, isLocked }) {
       }`}
       ref={ref}
     >
-      <DragIcon type="primary" />
+      <div className={styles.shrink}><DragIcon type="primary" /></div>
       <ConstructorElement
         type={undefined}
         isLocked={isLocked}

@@ -17,7 +17,7 @@ const IngredientsGroup = ({ ingredientGroup, onClickforInfo, counters }) => {
   return itemsRequest ? (
     <Loader size="large" />
   ) : (
-    <ul className={`${styles.list} pr-2 pl-4 pb-10`}>
+    <ul className={`${styles.list} pr-2 pl-4 `}>
       {currentObject.map((item) => (
         <BurgerIngredientMenu
           item={item}

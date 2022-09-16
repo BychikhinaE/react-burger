@@ -1,7 +1,6 @@
 .gridButton {
   grid-area: button;
-  align-self: start;
-  margin-left: auto;
+  place-self: start end;
   display: flex;
   align-items: center;
 }

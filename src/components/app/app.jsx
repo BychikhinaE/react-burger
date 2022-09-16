@@ -20,9 +20,9 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="p-10">
+    <>
       <AppHeader />
-      <main className={styles.main}>
+      <main className={`${styles.main} pb-10 container pr-10 pl-10`}>
         <h1
           className={`text text_type_main-large pt-10 pb-5 ${styles.gridTitle}`}
         >
@@ -33,7 +33,7 @@ function App() {
           <BurgerConstructor />
         </DndProvider>
       </main>
-    </div>
+    </>
   );
 }
 

@@ -8,3 +8,7 @@
 .drag{
   opacity: 0;
 }
+
+.shrink{
+  flex-shrink: 0;
+}

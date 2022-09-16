@@ -56,7 +56,7 @@ function Total() {
           type="primary"
           size="large"
           onClick={submitOrder}
-          disabled={idSet.some((item) => item === undefined)}
+          disabled={bunId === undefined}
         >
           Оформить заказ
         </Button>
