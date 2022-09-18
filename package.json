@@ -27,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +50,8 @@
     ]
   },
   "devDependencies": {
-    "@types/uniqid": "^5.3.2"
-  }
+    "@types/uniqid": "^5.3.2",
+    "gh-pages": "^4.0.0"
+  },
+  "homepage": "./"
 }
