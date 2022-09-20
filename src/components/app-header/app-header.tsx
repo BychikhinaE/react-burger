@@ -6,17 +6,39 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
+import { NavLink, useHistory } from "react-router-dom";
 
 const AppHeader = () => {
+  // const history = useHistory();
+  // const login = useCallback(
+  //   () => {
+  //       history.replace({ pathname: '/list' });
+  //   },
+  //   [history]
+  // );
   return (
     <header className={`${styles.header} pt-10 container pr-10 pl-10`}>
       <nav className={`${styles.nav} mt-4 mb-4`}>
         <div className={`${styles.item} pr-4 pt-4 pb-4`}>
           <BurgerIcon type="primary" />
+          {/* <NavLink
+            to={{ pathname: `/list/${id}` }}
+            className={`${styles.chat} text text_type_main-default pl-2`}
+            activeClassName={styles.activeChat}
+          >
+            Конструктор
+          </NavLink> */}
           <h2 className="text text_type_main-default pl-2">Конструктор</h2>
         </div>
         <div className={`${styles.item} pl-5 pr-5 pt-4 pb-4 ml-4`}>
           <ListIcon type="secondary" />
+          {/* <NavLink
+            to={{ pathname: `/list/${id}` }}
+            className={`${styles.chat} text text_type_main-default pl-2`}
+            activeClassName={styles.activeChat}
+          >
+            Лента заказов
+          </NavLink> */}
           <h2 className="text text_type_main-default text_color_inactive pl-2">
             Лента заказов
           </h2>
@@ -25,9 +47,11 @@ const AppHeader = () => {
       <Logo />
       <div className={`${styles.button} pl-5`}>
         <ProfileIcon type="secondary" />
-        <h2 className="text text_type_main-default text_color_inactive pl-2">
+        <button className="text text_type_main-default text_color_inactive pl-2"
+        // onclick={login}
+        >
           Личный кабинет
-        </h2>
+        </button>
       </div>
     </header>
   );

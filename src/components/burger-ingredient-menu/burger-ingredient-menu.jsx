@@ -7,6 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredient-menu.module.css";
 
+import { Link, useRouteMatch } from "react-router-dom";
 //DragSource
 const BurgerIngredientMenu = ({ item, onClickforInfo, counters }) => {
   const currentItem = item;
@@ -16,6 +17,8 @@ const BurgerIngredientMenu = ({ item, onClickforInfo, counters }) => {
     item: { currentItem },
   });
 
+  const { url } = useRouteMatch();
+
   return (
     <li
       className={`${styles.item} mb-10`}
@@ -23,15 +26,19 @@ const BurgerIngredientMenu = ({ item, onClickforInfo, counters }) => {
       onClick={onClickforInfo}
       ref={dragRef}
     >
-      {typeof counters[item._id] !== "undefined" && (
-        <Counter count={counters[item._id]} size="default" />
-      )}
-      <img alt={item.name} src={item.image} />
-      <div className={styles.price}>
-        <p className="text text_type_digits-default pt-2 pb-3">{item.price}</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p className="text text_type_main-default pb-5">{item.name}</p>
+      {/* <Link to={{ pathname: `/${url}/${item._id}` }} className={styles.link}> */}
+        {typeof counters[item._id] !== "undefined" && (
+          <Counter count={counters[item._id]} size="default" />
+        )}
+        <img alt={item.name} src={item.image} />
+        <div className={styles.price}>
+          <p className="text text_type_digits-default pt-2 pb-3">
+            {item.price}
+          </p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <p className="text text_type_main-default pb-5">{item.name}</p>
+      {/* </Link> */}
     </li>
   );
 };

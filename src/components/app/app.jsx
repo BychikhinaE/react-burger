@@ -3,6 +3,16 @@ import React, { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
+//Route
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  LoginPage,
+  NotFound404,
+  ForgotPasswordPage,
+  RegisterPage,
+  ResetPasswordPage,
+} from "./pages";
+
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
@@ -23,15 +33,39 @@ function App() {
     <>
       <AppHeader />
       <main className={`${styles.main} pb-10 container pr-10 pl-10`}>
-        <h1
-          className={`text text_type_main-large pt-10 pb-5 ${styles.gridTitle}`}
-        >
-          Соберите бургер
-        </h1>
-        <DndProvider backend={HTML5Backend}>
-          {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
-          <BurgerConstructor />
-        </DndProvider>
+        <Router>
+          <Switch>
+            <Route path="/" exact={true}>
+              <h1
+                className={`text text_type_main-large pt-10 pb-5 ${styles.gridTitle}`}
+              >
+                Соберите бургер
+              </h1>
+              <DndProvider backend={HTML5Backend}>
+                {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
+                <BurgerConstructor />
+              </DndProvider>
+            </Route>
+            <Route path="/login" exact={true}>
+              <LoginPage />
+            </Route>
+            {/* <Route path={`/list/:country/:personId`} exact={true}>
+          <код модального окна сюда вынести?/>
+        </Route> */}
+            <Route path="/register" exact={true}>
+              <RegisterPage />
+            </Route>
+            <Route path="/forgot-password" exact={true}>
+              <ForgotPasswordPage />
+            </Route>
+            <Route path="/reset-password" exact={true}>
+              <ResetPasswordPage />
+            </Route>
+            <Route>
+              <NotFound404 />
+            </Route>
+          </Switch>
+        </Router>
       </main>
     </>
   );

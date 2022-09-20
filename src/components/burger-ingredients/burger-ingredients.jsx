@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo } from "react";
+import { BrowserRouter as Router, Switch, Route, useParams, useRouteMatch } from 'react-router-dom';
 
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
@@ -100,6 +101,8 @@ const BurgerIngredients = () => {
     [selectedItems]
   );
 
+  const { path } = useRouteMatch();
+// const chatId = useParams()
   return (
     <>
       <section className={styles.gridIngred}>
@@ -167,11 +170,21 @@ const BurgerIngredients = () => {
 
       {/* Модальное окно*/}
       <>
+        {/* добавим роут для просмотра  */}
+        <Switch>
+        <Route path={`${path}/:chatId`}>
+
         {modalVisible && (
           <Modal header="Детали ингредиента" onClose={handleCloseModal}>
+
             <IngredientDetails ingredient={currenViewedItem} />
+
           </Modal>
         )}
+
+        </Route>
+      </Switch>
+
       </>
     </>
   );
