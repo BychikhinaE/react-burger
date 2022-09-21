@@ -10,6 +10,7 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { Loader } from "../loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getItems } from "../../services/actions/menu";
+import {LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage} from "../pages/index"
 
 function App() {
   const dispatch = useDispatch();
@@ -22,16 +23,27 @@ function App() {
   return (
     <>
       <AppHeader />
-      <main className={`${styles.main} pb-10 container pr-10 pl-10`}>
-        <h1
-          className={`text text_type_main-large pt-10 pb-5 ${styles.gridTitle}`}
+      <main className={styles.main}>
+
+        {/* <LoginPage /> */}
+        {/* <RegisterPage /> */}
+        {/* <ForgotPasswordPage/> */}
+        {/* <ResetPasswordPage /> */}
+        <ProfilePage />
+        {/* <section
+          aria-label="HomePage"
+          className={`${styles.grid} pb-10 container pr-10 pl-10`}
         >
-          Соберите бургер
-        </h1>
-        <DndProvider backend={HTML5Backend}>
-          {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
-          <BurgerConstructor />
-        </DndProvider>
+          <h1
+            className={`text text_type_main-large pt-10 pb-5 ${styles.gridTitle}`}
+          >
+            Соберите бургер
+          </h1>
+          <DndProvider backend={HTML5Backend}>
+            {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
+            <BurgerConstructor />
+          </DndProvider>
+        </section> */}
       </main>
     </>
   );

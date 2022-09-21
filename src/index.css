@@ -1,12 +1,18 @@
-body {
-  /* width: 100%;
+#root {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
   display: flex;
-  justify-content: center; */
+  justify-content: center;
   font-family: Arial, sans-serif;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  place-content: stretch;
 }
 
 /* центровщик - добавлен в header main */
-.container {
+/* .container {
   max-width: 1240px;
   margin: 0 auto;
-}
+} */
