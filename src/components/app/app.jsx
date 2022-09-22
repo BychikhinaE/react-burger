@@ -10,7 +10,7 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { Loader } from "../loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getItems } from "../../services/actions/menu";
-import {LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage} from "../pages/index"
+import {LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage} from "../../pages/index"
 
 function App() {
   const dispatch = useDispatch();
