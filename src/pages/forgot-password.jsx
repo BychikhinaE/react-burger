@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef } from "react";
-// import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
@@ -88,9 +88,10 @@ export function ForgotPasswordPage() {
         >
           <div className={styles.joinform}>
             <p className="text">Вспомнили пароль?</p>
-            <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/login" className={`${styles.link} ml-1`}>Войти</Link>
+            {/* <a className={`${styles.link} ml-1`} href="#">
               Войти
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

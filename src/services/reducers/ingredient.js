@@ -11,10 +11,18 @@ const initialState = {
 export const ingredientReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ITEM_FOR_VIEW: {
-      return { ...state, currenViewedItem: action.item, modalVisible: true };
+      return {
+        // ...state,
+         currenViewedItem: action.item,
+        modalVisible: true
+      };
     }
     case CLOSE_MODAL: {
-      return { ...state, currenViewedItem: {}, modalVisible: false };
+      return {
+        // ...state,
+         currenViewedItem: {},
+      modalVisible: false
+    };
     }
 
     default: {

@@ -26,3 +26,19 @@ function getResponse(res) {
   }
   return Promise.reject(`Что-то пошло не так: ${res.status}`);
 }
+
+
+export function createUser(data) {
+  return fetch(`${API}/auth/register`, {
+    method: "POST",
+    headers: {
+     "Content-Type": "application/json",
+    },
+    body: JSON.stringify(
+      {
+        "email": data.email,
+        "password": data.password,
+        "name": data.name }
+      ),
+  }).then(getResponse);
+}

@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useRef } from "react";
-// import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link, useHistory } from "react-router-dom";
+
 import styles from "./page-form.module.css";
 import {
   Button,
@@ -56,6 +57,15 @@ export function LoginPage() {
   const onChangePassword = (e) => {
     setValue(e.target.value);
   };
+
+  const history = useHistory();
+  const login = useCallback(
+    () => {
+        history.replace({ pathname: '/login' });
+    },
+    [history]
+  );
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -113,15 +123,17 @@ export function LoginPage() {
         >
           <div className={styles.joinform}>
             <p className="text">Вы - новый пользователь?</p>
-            <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/register" className={`${styles.link} ml-1`}>Зарегистрироваться</Link>
+            {/* <a className={`${styles.link} ml-1`} href="#">
               Зарегистрироваться
-            </a>
+            </a> */}
           </div>
           <div className={`${styles.joinform} mt-4`}>
             <p className="text">Забыли пароль?</p>
-            <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/forgot-password" className={`${styles.link} ml-1`}>Восстановить пароль</Link>
+            {/* <a className={`${styles.link} ml-1`} href="#">
               Восстановить пароль
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

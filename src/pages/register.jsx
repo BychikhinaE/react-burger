@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useRef } from "react";
-// import { Redirect, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {  Link } from "react-router-dom";
 
 import styles from "./page-form.module.css";
 import {
@@ -10,21 +11,38 @@ import {
   EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  setDataNewUser,
+
+} from "../services/actions/user";
 
 export function RegisterPage() {
-  const [form, setValue] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
+  const userDataRequest = useSelector((state) => state.auth.userDataRequest);
+const email = useSelector((state) => state.auth.email);
+const password = useSelector((state) => state.auth.password);
+const userName = useSelector((state) => state.auth.userName);
+  // function submitData(e) {
+  //   e.preventDefault();
+  //   console.log(e.target)
+  //   // dispatch(setDataNewUser(data));
+  // }
+  const [form, setValue] = useState({ name: "", email: "", password: "" });
 
   const onChange = (e) => {
+
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  // let login = useCallback(
-  //   e => {
-  //     e.preventDefault();
-  //     auth.signIn(form);
-  //   },
-  //   [auth, form]
-  // );
+  const submitUserData = useCallback(
+    e => {
+      e.preventDefault();
+      console.log(form)
+      // dispatch(setDataNewUser(data));
+      // auth.signIn(form);
+    },
+    []
+  );
 
   // if (auth.user) {
   //   return (
@@ -36,27 +54,17 @@ export function RegisterPage() {
   //   );
   //     }
   //Код инпута
-  const [isVisible, setVisible] = useState(false);
+  // const [isVisible, setVisible] = useState(false);
 
   // const [value, setValue] = React.useState('value')
   const inputRef = useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    alert("Icon Click Callback");
-  };
-
-  const [valueE, setValueEmail] = React.useState();
-  const onChangeEmail = (e) => {
-    setValue(e.target.value);
-  };
+// const onChange = () => {
+//   console.log('1')
+// }
 
   //     const EyeOff = props => <ShowIcon type="primary" onClick={props.onClick}/>
   // const Eye = props => <HideIcon type="primary" onClick={props.onClick}/>
 
-  const [valueP, setValuePassword] = React.useState();
-  const onChangePassword = (e) => {
-    setValue(e.target.value);
-  };
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -65,24 +73,27 @@ export function RegisterPage() {
             Регистрация
           </h1>
           <Input
-            type={"text"}
-            placeholder={"Имя"}
-            onChange={(e) => setValue(e.target.value)}
-            value={form.email}
-            name={"email"}
+            type="text"
+            placeholder="Имя"
+            onChange={onChange}
+            value={form.name}
+            name="name"
             error={false}
             ref={inputRef}
-            onIconClick={onIconClick}
-            errorText={"Ошибка"}
+            errorText="Ошибка"
           />
-          <EmailInput onChange={onChangeEmail} value={valueE} name={"email"} />
+          <EmailInput
+          onChange={onChange}
+          value={form.email}
+          name="email"
+          />
           <PasswordInput
-            onChange={onChangePassword}
-            value={valueP}
-            name={"password"}
+            onChange={onChange}
+            value={form.password}
+            name="password"
           />
 
-          <Button onClick={() => {}} type="primary" size="medium">
+          <Button onClick={submitUserData} type="primary" size="medium" htmlType='submit'>
             Зарегистрироваться
           </Button>
         </form>
@@ -91,9 +102,10 @@ export function RegisterPage() {
         >
           <div className={styles.joinform}>
             <p className="text">Уже зарегистрированы?</p>
-            <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/login" className={`${styles.link} ml-1`}>Войти</Link>
+            {/* <a className={`${styles.link} ml-1`} href="#">
               Войти
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

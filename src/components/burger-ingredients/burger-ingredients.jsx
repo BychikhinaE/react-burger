@@ -14,6 +14,14 @@ import {
 } from "../../services/actions/ingredient";
 import IngredientsGroup from "../ingredients-group/ingredients-group";
 import { getDistanceBetweenPoints } from "../../utils/utils";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useParams,
+  useRouteMatch,
+  useHistory,
+} from "react-router-dom";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
@@ -67,14 +75,34 @@ const BurgerIngredients = () => {
     element.scrollIntoView({ behavior: "smooth" });
   };
 
-  //Код модального окна
+  //Код модального окнаs
   const modalVisible = useSelector((state) => state.info.modalVisible);
-  const currenViewedItem = useSelector((state) => state.info.currenViewedItem);
 
+  const history = useHistory();
+  // const { url } = useRouteMatch();
+
+  // const onClickforInfo = useCallback(
+  //   () => {
+  //       history.replace({ pathname: `/${currentId}` });
+  //   },
+  //   [currentId, history]
+  // );
+  let user = true;
+  // const handleOpenModal = (Event) => {
+  //   const targetIndex = Event.currentTarget.getAttribute("index");
+  //   const target = items.find((item) => item._id === targetIndex);
+  //   dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
+  //   isVisible = true
+  // };
   const handleOpenModal = (Event) => {
     const targetIndex = Event.currentTarget.getAttribute("index");
     const target = items.find((item) => item._id === targetIndex);
-    dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
+    if (user) {
+      dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
+    }
+    // else {
+    //   history.replace({ pathname: `/${targetIndex}` });
+    // }
   };
 
   function handleCloseModal() {
@@ -99,6 +127,9 @@ const BurgerIngredients = () => {
       }, {}),
     [selectedItems]
   );
+
+  const { path } = useRouteMatch();
+  const chatId = useParams();
 
   return (
     <>
@@ -167,11 +198,16 @@ const BurgerIngredients = () => {
 
       {/* Модальное окно*/}
       <>
+        {/* добавим роут для просмотра  */}
+        {/* <Switch>
+          <Route path={`${path}/:${chatId}`}> */}
         {modalVisible && (
           <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-            <IngredientDetails ingredient={currenViewedItem} />
+            <IngredientDetails />
           </Modal>
         )}
+        {/* </Route>
+        </Switch> */}
       </>
     </>
   );
