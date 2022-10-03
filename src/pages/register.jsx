@@ -1,69 +1,34 @@
 import React, { useCallback, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  Link } from "react-router-dom";
-
+import { Link, useHistory, useLocation } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
-  ShowIcon,
-  HideIcon,
   PasswordInput,
   EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  setDataNewUser,
-
-} from "../services/actions/user";
+import { addNewUser } from "../services/actions/user";
 
 export function RegisterPage() {
   const dispatch = useDispatch();
-  const userDataRequest = useSelector((state) => state.auth.userDataRequest);
-const email = useSelector((state) => state.auth.email);
-const password = useSelector((state) => state.auth.password);
-const userName = useSelector((state) => state.auth.userName);
-  // function submitData(e) {
-  //   e.preventDefault();
-  //   console.log(e.target)
-  //   // dispatch(setDataNewUser(data));
-  // }
-  const [form, setValue] = useState({ name: "", email: "", password: "" });
-
+  const history = useHistory();
+  const { pathname, state } = useLocation();
+  console.log(pathname, state)
   const onChange = (e) => {
-
-    setValue({ ...form, [e.target.name]: e.target.value });
+    history.replace({
+      pathname: pathname,
+      state: {
+        ...state,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
-  const submitUserData = useCallback(
-    e => {
-      e.preventDefault();
-      console.log(form)
-      // dispatch(setDataNewUser(data));
-      // auth.signIn(form);
-    },
-    []
-  );
-
-  // if (auth.user) {
-  //   return (
-  //     <Redirect
-  //       to={{
-  //         pathname: '/'
-  //       }}
-  //     />
-  //   );
-  //     }
-  //Код инпута
-  // const [isVisible, setVisible] = useState(false);
-
-  // const [value, setValue] = React.useState('value')
-  const inputRef = useRef(null);
-// const onChange = () => {
-//   console.log('1')
-// }
-
-  //     const EyeOff = props => <ShowIcon type="primary" onClick={props.onClick}/>
-  // const Eye = props => <HideIcon type="primary" onClick={props.onClick}/>
+  const submitUserData = (e) => {
+    e.preventDefault();
+    dispatch(addNewUser(history, pathname));
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -76,24 +41,28 @@ const userName = useSelector((state) => state.auth.userName);
             type="text"
             placeholder="Имя"
             onChange={onChange}
-            value={form.name}
+            value={state && state.name ? state.name : ""}
             name="name"
             error={false}
-            ref={inputRef}
             errorText="Ошибка"
           />
           <EmailInput
-          onChange={onChange}
-          value={form.email}
-          name="email"
+            onChange={onChange}
+            value={state && state.email ? state.email : ""}
+            name="email"
           />
           <PasswordInput
             onChange={onChange}
-            value={form.password}
+            value={state && state.password ? state.password : ""}
             name="password"
           />
 
-          <Button onClick={submitUserData} type="primary" size="medium" htmlType='submit'>
+          <Button
+            onClick={submitUserData}
+            type="primary"
+            size="medium"
+            htmlType="submit"
+          >
             Зарегистрироваться
           </Button>
         </form>
@@ -102,10 +71,9 @@ const userName = useSelector((state) => state.auth.userName);
         >
           <div className={styles.joinform}>
             <p className="text">Уже зарегистрированы?</p>
-            <Link to="/login" className={`${styles.link} ml-1`}>Войти</Link>
-            {/* <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/login" className={`${styles.link} ml-1`}>
               Войти
-            </a> */}
+            </Link>
           </div>
         </div>
       </div>

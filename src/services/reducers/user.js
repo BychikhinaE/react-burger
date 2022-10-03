@@ -2,16 +2,12 @@ import {
   SUBMIT_PROFILE_REQUEST,
   SUBMIT_PROFILE_SUCCESS,
   SUBMIT_PROFILE_ERROR,
-
 } from "../actions/user";
 
 const initialState = {
-  userData: NaN,
+  userData: {},
   userDataRequest: false,
   userDataFailed: false,
-  email: '',
-  password: '',
-  userName: '',
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -20,7 +16,6 @@ export const userReducer = (state = initialState, action) => {
       return { ...state, userDataRequest: true };
     }
 
-    // получить
     case SUBMIT_PROFILE_SUCCESS: {
       return {
         ...state,
@@ -33,8 +28,6 @@ export const userReducer = (state = initialState, action) => {
     case SUBMIT_PROFILE_ERROR: {
       return { ...state, userDataFailed: true, userDataRequest: false };
     }
-
-
 
     default: {
       return state;

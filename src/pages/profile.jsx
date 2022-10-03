@@ -1,48 +1,42 @@
 import React, { useCallback } from "react";
 import styles from "./profile.module.css";
-import { useHistory, Link } from "react-router-dom";
-import {
-  Button,
-  ShowIcon,
-  HideIcon,
-  PasswordInput,
-  EmailInput,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useHistory, NavLink, Switch, Route } from "react-router-dom";
+import { ProfileInfo } from "./profile-info";
+import { ProfileОrderHistory } from "./profile-order-history";
 
 export function ProfilePage() {
-  const history = useHistory();
-  const onClick = useCallback(() => {
-    history.replace({ pathname: "/list" });
-  }, [history]);
-
   return (
     <section aria-label="profile-page" className={`${styles.grid} pl-10`}>
       <nav className={`${styles.nav} text text_type_main-medium `}>
         <ul>
           <li>
-            <Link
+            <NavLink
+              exact
               to="/profile"
-              className={`${styles.linkActive} ${styles.link} text mt-4`}
+              className={`${styles.link} text mt-4`}
+              activeStyle={styles.linkActive}
             >
               Профиль
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
+              exact
               to="/profile/orders"
               className={`${styles.link} text text_color_inactive mt-4`}
+              activeStyle={styles.linkActive}
             >
               История заказов
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
-              to="/shop"
+            <NavLink
+              to="/login"
               className={`${styles.link} text text_color_inactive mt-4`}
+              activeStyle={styles.linkActive}
             >
               Выход
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>
@@ -51,37 +45,14 @@ export function ProfilePage() {
       >
         В этом разделе вы можете изменить&nbsp;свои персональные данные
       </p>
-      <div className={styles.inputName}>
-        <Input
-          type={"text"}
-          placeholder={"Имя"}
-          // onChange={}
-          icon={"EditIcon"}
-          // value={email}
-          name={"name"}
-          error={false}
-          // ref={inputRef}
-          // onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          // size={'medium'}
-        />
-      </div>
-      <div className={styles.inputEmail}>
-        <EmailInput
-          // type={"text"}
-          // placeholder={"E-mail"}
-          // onChange={onChangeEmail}
-          // value={valueE}
-          name={"email"}
-        />
-      </div>
-      <div className={styles.inputPassword}>
-        <PasswordInput
-          // onChange={onChangePassword}
-          // value={valueP}
-          name={"password"}
-        />
-      </div>
+      <Switch>
+        <Route path="/profile" exact={true}>
+          <ProfileInfo />
+        </Route>
+        <Route path="/profile/orders" exact={true}>
+          <ProfileОrderHistory />
+        </Route>
+      </Switch>
     </section>
   );
 }

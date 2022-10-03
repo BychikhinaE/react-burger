@@ -15,6 +15,7 @@ import {
   ConstructorPage,
   NotFound404,
   InfoFood,
+  OrderListPage,
 } from "../../pages/index";
 
 function App() {
@@ -30,28 +31,27 @@ function App() {
         <AppHeader />
         <main className={styles.main}>
           <Switch>
-            <Route path="/" exact={true}>
-              <ConstructorPage />
-            </Route>
-            <Route path="/login" exact={true}>
-              <LoginPage />
-            </Route>
-            {/* <Route path={`/:id`} children={<InfoFood />} exact={true} /> */}
-            <Route path="/register" exact={true}>
-              <RegisterPage />
-            </Route>
-            <Route path="/forgot-password" exact={true}>
-              <ForgotPasswordPage />
-            </Route>
-            <Route path="/reset-password" exact={true}>
-              <ResetPasswordPage />
-            </Route>
-            <Route path="/profile" exact={true}>
-              <ProfilePage />
-            </Route>
-            <Route>
-              <NotFound404 />
-            </Route>
+            <Route path="/" children={<ConstructorPage />} exact={true} />
+            <Route path="/login" children={<LoginPage />} exact={true} />
+            <Route
+              path="/ingredients/:id"
+              children={<InfoFood />}
+              exact={true}
+            />
+            <Route path="/register" children={<RegisterPage />} exact={true} />
+            <Route
+              path="/forgot-password"
+              children={<ForgotPasswordPage />}
+              exact={true}
+            />
+            <Route
+              path="/reset-password"
+              children={<ResetPasswordPage />}
+              exact={true}
+            />
+            <Route path="/profile" children={<ProfilePage />} exact={true} />
+            <Route path="/order-list" exact={true} />
+            <Route children={<NotFound404 />} />
           </Switch>
         </main>
       </Router>

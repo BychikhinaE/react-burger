@@ -6,4 +6,5 @@ import{ProfilePage}from "./profile"
 import {ConstructorPage} from './constructor'
 import {NotFound404} from './not-found'
 import {InfoFood} from './info-food'
-export {LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, ConstructorPage, NotFound404, InfoFood}
+import {OrderListPage} from './order-list'
+export {LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, ConstructorPage, NotFound404, InfoFood, OrderListPage}

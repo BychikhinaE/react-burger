@@ -1,5 +1,5 @@
 import React, {useCallback} from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -9,6 +9,7 @@ import {
 import styles from "./app-header.module.css";
 
 const AppHeader = () => {
+  const { pathname } = useLocation();
   const history = useHistory();
   const login = useCallback(
     () => {
@@ -21,7 +22,7 @@ const AppHeader = () => {
     <header className={`${styles.header} pt-10 container pr-10 pl-10`}>
       <nav className={`${styles.nav} mt-4 mb-4`}>
         <div className={`${styles.item} pr-4 pt-4 pb-4`}>
-          <BurgerIcon type="primary" />
+          <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
           <NavLink
             to={{ pathname: `/` }}
             className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
@@ -29,10 +30,9 @@ const AppHeader = () => {
           >
             Конструктор
           </NavLink>
-          {/* <h2 className="text text_type_main-default pl-2">Конструктор</h2> */}
         </div>
         <div className={`${styles.item} pl-5 pr-5 pt-4 pb-4 ml-4`}>
-          <ListIcon type="secondary" />
+          <ListIcon type={pathname === "/order-list" ? "primary" : "secondary"} />
           <NavLink
             to={{ pathname: `/feed` }}
             className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
@@ -44,7 +44,7 @@ const AppHeader = () => {
       </nav>
       <Logo />
       <div className={`${styles.button__container} pl-5`}>
-        <ProfileIcon type="secondary" />
+        <ProfileIcon type={pathname.startsWith("/profile") ? "primary" : "secondary"} />
 
         <button
           className={`${styles.button} text text_type_main-default text_color_inactive pl-2`}
