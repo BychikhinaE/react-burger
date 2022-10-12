@@ -8,22 +8,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useHistory, useLocation } from "react-router-dom";
 import styles from "./profile.module.css";
-import {updateUser} from '../services/actions/user'
-
+import { updateUser } from "../services/actions/user";
+import { SAVE_PASSWORD } from "../services/actions/password";
 
 function ProfileInfo() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { pathname, state } = useLocation();
-  console.log(pathname, state)
 
-  const { name, email } = useSelector(
-    (state) => state.user.userData
-  );
+  const { name, email } = useSelector((state) => state.user.userData);
 
-  const password = useSelector(
-    (state) => state.password.password
-  );
+  const password = useSelector((state) => state.password.password);
 
   const onChange = (e) => {
     history.replace({
@@ -33,7 +28,6 @@ function ProfileInfo() {
         [e.target.name]: e.target.value,
       },
     });
-
   };
 
   const cancel = () => {
@@ -43,12 +37,16 @@ function ProfileInfo() {
     });
   };
 
-  const handleSubmit = ()=>{
-    console.log('foo')
+  const handleSubmit = () => {
     dispatch(updateUser(history, pathname));
-    cancel()
-  }
-
+    if (history.location.state.password) {
+      dispatch({
+        type: SAVE_PASSWORD,
+        password: history.location.state.password,
+      });
+    }
+    cancel();
+  };
 
   return (
     <>
@@ -58,7 +56,6 @@ function ProfileInfo() {
           placeholder="Имя"
           onChange={onChange}
           icon="EditIcon"
-
           value={state && state.name ? state.name : name}
           name="name"
         />
@@ -73,30 +70,25 @@ function ProfileInfo() {
       </div>
       <div className={styles.inputPassword}>
         <PasswordInput
-        placeholder="Пароль"
+          placeholder="Пароль"
           onChange={onChange}
           value={state && state.password ? state.password : password}
           name="password"
         />
       </div>
 
-{history.location.state !== undefined && (
-  <div className={styles.buttons}>
-      <Button
-              type="secondary"
-              size="medium"
-              onClick={cancel}
-            >
-              Отмена
-            </Button>
-            <Button type="primary" size="medium" onClick={handleSubmit}>
-              Сохранить
-            </Button>
-  </div>
-)}
+      {history.location.state !== undefined && (
+        <div className={styles.buttons}>
+          <Button type="secondary" size="medium" onClick={cancel}>
+            Отмена
+          </Button>
+          <Button type="primary" size="medium" onClick={handleSubmit}>
+            Сохранить
+          </Button>
+        </div>
+      )}
     </>
   );
 }
-
 
 export default React.memo(ProfileInfo);

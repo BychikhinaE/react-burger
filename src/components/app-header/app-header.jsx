@@ -1,5 +1,5 @@
-import React, {useCallback} from "react";
-import { NavLink, useHistory, useLocation, Link } from "react-router-dom";
+import React from "react";
+import { NavLink, useLocation, Link } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -7,7 +7,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
-import { useDispatch, useSelector } from "react-redux";
+
 
 const AppHeader = () => {
   const { pathname } = useLocation();

@@ -13,7 +13,7 @@ export function ResetPasswordPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { pathname, state } = useLocation();
-console.log(pathname, state)
+
   const onChange = (e) => {
     history.replace({
       pathname: pathname,
@@ -30,18 +30,13 @@ console.log(pathname, state)
 
   const isAuth = useSelector((state) => state.user.isAuth);
   if (isAuth) {
-    return (
-      <Redirect
-        to={ state?.from || '/' }
-      />
-    );
+    return <Redirect to={state?.from || "/"} />;
   }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <form className={styles.form}
-        >
+        <form className={styles.form}>
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Восстановление пароля
           </h1>

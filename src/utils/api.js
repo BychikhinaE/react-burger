@@ -30,7 +30,6 @@ function getResponse(res) {
 
 //Создать пользователя
 export function createUser(data) {
-  console.log("createUser" + data);
   return fetch(`${API}/auth/register`, {
     method: "POST",
     headers: {
@@ -53,7 +52,6 @@ export function postForgotPassword(data) {
 
 //Сбросить пароль
 export function postResetPassword(data) {
-  console.log(data);
   return fetch(`${API}/password-reset/reset`, {
     method: "POST",
     headers: {
@@ -67,14 +65,14 @@ export function postResetPassword(data) {
 export function loginRequest(data) {
   return fetch(`${API}/auth/login`, {
     method: "POST",
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
     },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
     body: JSON.stringify(data),
   }).then(getResponse);
 }
@@ -143,4 +141,3 @@ export function updateUserData(data) {
     body: JSON.stringify(data),
   }).then(getResponse);
 }
-

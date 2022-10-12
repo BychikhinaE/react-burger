@@ -8,6 +8,7 @@ export const POST_RESET_PASSWORD_REQUEST = "POST_RESET_PASSWORD_REQUEST";
 export const POST_RESET_PASSWORD_SUCCESS = "POST_RESET_PASSWORD_SUCCESS";
 export const POST_RESET_PASSWORD_ERROR = "POST_RESET_PASSWORD_ERROR";
 
+export const SAVE_PASSWORD = "SAVE_PASSWORD";
 
 export function postForgotPasswordAction(history, pathname) {
   return function (dispatch) {
@@ -15,9 +16,7 @@ export function postForgotPasswordAction(history, pathname) {
       type: POST_FORGOT_PASSWORD_REQUEST,
     });
     postForgotPassword(history.location.state).then((res) => {
-      console.log('history.location.state' + history.location.state)
       if (res && res.success) {
-        console.log(res)
         dispatch({
           type: POST_FORGOT_PASSWORD_SUCCESS,
           data: res.success,
@@ -30,7 +29,7 @@ export function postForgotPasswordAction(history, pathname) {
         history.push({
           pathname: "/reset-password",
           state: {},
-        })
+        });
       } else {
         dispatch({
           type: POST_FORGOT_PASSWORD_ERROR,
@@ -41,14 +40,12 @@ export function postForgotPasswordAction(history, pathname) {
 }
 
 export function postResetPasswordAction(history, pathname) {
-  console.log('history.location.state' + history.location.state)
   return function (dispatch) {
     dispatch({
       type: POST_RESET_PASSWORD_REQUEST,
     });
     postResetPassword(history.location.state).then((res) => {
       if (res && res.success) {
-        console.log(res)
         dispatch({
           type: POST_RESET_PASSWORD_SUCCESS,
           data: res,
@@ -60,7 +57,7 @@ export function postResetPasswordAction(history, pathname) {
         history.push({
           pathname: "/profile",
           state: {},
-        })
+        });
       } else {
         dispatch({
           type: POST_RESET_PASSWORD_ERROR,
@@ -69,4 +66,3 @@ export function postResetPasswordAction(history, pathname) {
     });
   };
 }
-

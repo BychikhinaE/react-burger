@@ -127,7 +127,7 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         userData: action.data,
         getUserRequest: false,
-        auth: true,
+        isAuth: true,
       };
     }
     case GET_USER_ERROR: {

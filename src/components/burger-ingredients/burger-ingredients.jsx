@@ -15,12 +15,7 @@ import {
 import IngredientsGroup from "../ingredients-group/ingredients-group";
 import { getDistanceBetweenPoints } from "../../utils/utils";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useParams,
-  useRouteMatch,
-  useHistory,
+ useHistory,
 } from "react-router-dom";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
@@ -77,24 +72,9 @@ const BurgerIngredients = () => {
 
   //Код модального окнаs
   const modalVisible = useSelector((state) => state.info.modalVisible);
-
   const history = useHistory();
-  // const { url } = useRouteMatch();
-
-  // const onClickforInfo = useCallback(
-  //   () => {
-  //       history.replace({ pathname: `/${currentId}` });
-  //   },
-  //   [currentId, history]
-  // );
-  //let user = true;
-  // const handleOpenModal = (Event) => {
-  //   const targetIndex = Event.currentTarget.getAttribute("index");
-  //   const target = items.find((item) => item._id === targetIndex);
-  //   dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
-  //   isVisible = true
-  // };
   const isAuth = useSelector((state) => state.user.isAuth);
+
   const handleOpenModal = (Event) => {
     const targetIndex = Event.currentTarget.getAttribute("index");
     const target = items.find((item) => item._id === targetIndex);
@@ -128,9 +108,6 @@ const BurgerIngredients = () => {
       }, {}),
     [selectedItems]
   );
-
-  const { path } = useRouteMatch();
-  const chatId = useParams();
 
   return (
     <>

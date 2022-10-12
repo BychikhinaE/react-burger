@@ -1,4 +1,3 @@
-import React, { useCallback, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
@@ -9,14 +8,13 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { addNewUser } from "../services/actions/user";
+import { SAVE_PASSWORD } from "../services/actions/password";
 
 export function RegisterPage() {
-
-
   const dispatch = useDispatch();
   const history = useHistory();
   const { pathname, state } = useLocation();
-  console.log('useLocation', pathname, state)
+
   const onChange = (e) => {
     history.replace({
       pathname: pathname,
@@ -30,15 +28,15 @@ export function RegisterPage() {
   const submitUserData = (e) => {
     e.preventDefault();
     dispatch(addNewUser(history, pathname));
+    dispatch({
+      type: SAVE_PASSWORD,
+      password: history.location.state.password,
+    });
   };
 
   const isAuth = useSelector((state) => state.user.isAuth);
   if (isAuth) {
-    return (
-      <Redirect
-        to={ state?.from || '/' }
-      />
-    );
+    return <Redirect to={state?.from || "/"} />;
   }
 
   return (

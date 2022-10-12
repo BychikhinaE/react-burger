@@ -1,18 +1,7 @@
 import styles from "./ingredient-details.module.css";
-import ingredientPropTypes from "../../utils/ingredientPropTypes";
-import { useParams, useRouteMatch } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-function IngredientDetails(
-
-  ) {
-  //   const {itemId } = useParams();
-  //   const items = useSelector((state) => state.menu.items);
-  // const ingredient = items.find((item)=> item._id === itemId)
-  // const { url } = useRouteMatch();
-  // console.log(url)
-  // const {id } = useParams();
-  // console.log(id)
+function IngredientDetails() {
   const ingredient = useSelector((state) => state.info.currenViewedItem);
   return (
     <>
@@ -49,10 +38,5 @@ function IngredientDetails(
     </>
   );
 }
-
-//проверкa типов
-// IngredientDetails.propTypes = {
-//   ingredient: ingredientPropTypes.isRequired,
-// };
 
 export default IngredientDetails;

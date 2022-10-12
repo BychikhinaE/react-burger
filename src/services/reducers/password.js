@@ -5,6 +5,7 @@ import {
   POST_RESET_PASSWORD_REQUEST,
   POST_RESET_PASSWORD_SUCCESS,
   POST_RESET_PASSWORD_ERROR,
+  SAVE_PASSWORD,
 } from "../actions/password";
 
 const passwordInitialState = {
@@ -20,6 +21,13 @@ const passwordInitialState = {
 
 export const passwordReducer = (state = passwordInitialState, action) => {
   switch (action.type) {
+    case SAVE_PASSWORD: {
+      return {
+        ...state,
+        password: action.password,
+      };
+    }
+
     case POST_FORGOT_PASSWORD_REQUEST: {
       return {
         ...state,
