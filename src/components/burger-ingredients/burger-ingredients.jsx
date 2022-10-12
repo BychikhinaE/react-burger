@@ -21,6 +21,7 @@ import {
   useParams,
   useRouteMatch,
   useHistory,
+  useLocation,
 } from "react-router-dom";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
@@ -129,8 +130,17 @@ const BurgerIngredients = () => {
     [selectedItems]
   );
 
-  const { path } = useRouteMatch();
-  const chatId = useParams();
+
+  let location = useLocation();
+
+
+
+
+  const onClose = () => {
+    history.goBack();
+    // dispatch({ type: CLOSE_MODAL })
+  };
+  let background = location.state && location.state.background;
 
   return (
     <>
@@ -199,11 +209,17 @@ const BurgerIngredients = () => {
 
       {/* Модальное окно*/}
       <>
-        {modalVisible && (
-          <Modal header="Детали ингредиента" onClose={handleCloseModal}>
+      <Switch
+          location={background || location}
+          >
+            {background && (
+          <Route path="/ingredients/:id">
+<Modal header="Детали ингредиента" onClose={handleCloseModal}>
             <IngredientDetails />
           </Modal>
-        )}
+          </Route>)}
+
+        </Switch>
       </>
     </>
   );

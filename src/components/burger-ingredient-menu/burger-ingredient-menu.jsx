@@ -31,15 +31,15 @@ const BurgerIngredientMenu = ({ item,
   const location = useLocation();
 
   return (
-    <li
+    <Link
       className={`${styles.item} mb-10`}
       index={currentId}
       onClick={onClickforInfo}
       ref={dragRef}
-      // to={{
-      //   pathname: `/ingredients/${currentId}`,
-      //   state: { background: location },
-      // }}
+      to={{
+        pathname: `/ingredients/${currentId}`,
+        state: { background: location },
+      }}
     >
       {/* <Link to={{
           pathname: `/ingredients/${currentId}`,
@@ -58,7 +58,7 @@ const BurgerIngredientMenu = ({ item,
           <CurrencyIcon type="primary" />
         </div>
         <p className="text text_type_main-default pb-5">{item.name}</p>
-     </li>
+     </Link>
     // </Link>
   );
 };

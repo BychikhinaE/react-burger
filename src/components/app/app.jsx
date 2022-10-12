@@ -34,18 +34,21 @@ import {
 
 function App() {
   const dispatch = useDispatch();
-  // const location = useLocation();
-  // const history = useHistory();
+  // let location = useLocation();
+  const history = useHistory();
+  const {  pathname } = useLocation();
+
   useEffect(() => {
     dispatch(getItems());
     dispatch(getUser());
-    // history.replace({ state: {} });
-  }, []);
+    history.replace({ pathname: pathname,
+      state: undefined });
+  }, [dispatch, history, pathname]);
 
-  // const onClose = () => {
-  //   history.goBack();
-  //   dispatch({ type: CLOSE_MODAL })
-  // };
+  const onClose = () => {
+    history.goBack();
+    // dispatch({ type: CLOSE_MODAL })
+  };
 
   // let background = location.state && location.state.background;
 
