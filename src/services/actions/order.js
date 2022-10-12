@@ -6,7 +6,6 @@ export const CLOSE_MODAL_ORDER = "CLOSE_MODAL_ORDER";
 
 //Отправляем заказ на сервер
 export function setSelectedItems(id) {
-  console.log(id);
   return function (dispatch) {
     dispatch({
       type: SUBMIT_ORDER_REQUEST,

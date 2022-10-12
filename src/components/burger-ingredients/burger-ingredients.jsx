@@ -14,6 +14,9 @@ import {
 } from "../../services/actions/ingredient";
 import IngredientsGroup from "../ingredients-group/ingredients-group";
 import { getDistanceBetweenPoints } from "../../utils/utils";
+import {
+ useHistory,
+} from "react-router-dom";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
@@ -67,14 +70,20 @@ const BurgerIngredients = () => {
     element.scrollIntoView({ behavior: "smooth" });
   };
 
-  //Код модального окна
+  //Код модального окнаs
   const modalVisible = useSelector((state) => state.info.modalVisible);
-  const currenViewedItem = useSelector((state) => state.info.currenViewedItem);
+  const history = useHistory();
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   const handleOpenModal = (Event) => {
     const targetIndex = Event.currentTarget.getAttribute("index");
     const target = items.find((item) => item._id === targetIndex);
-    dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
+    if (isAuth) {
+      dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
+    }
+    else {
+      history.replace({ pathname:  `/ingredients/${targetIndex}` });
+    }
   };
 
   function handleCloseModal() {
@@ -169,7 +178,7 @@ const BurgerIngredients = () => {
       <>
         {modalVisible && (
           <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-            <IngredientDetails ingredient={currenViewedItem} />
+            <IngredientDetails />
           </Modal>
         )}
       </>

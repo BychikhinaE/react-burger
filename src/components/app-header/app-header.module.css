@@ -15,8 +15,25 @@
   align-items: center;
 }
 
-.button {
-  background: inherit;
+.button__container {
   text-align: center;
   display: flex;
+}
+
+/* .button{
+  background: inherit;
+  border: none;
+  cursor: pointer;
+} */
+
+.button:hover {
+  opacity: .5;
+}
+
+.activeLink{
+  color: white;
+}
+
+.link{
+  text-decoration: none;
 }

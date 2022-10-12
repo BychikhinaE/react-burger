@@ -1,0 +1,14 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 600px) 1fr;
+  column-gap: 20px;
+  grid-template-areas: "title title"
+                        "ingredients constructor"
+                        "ingredients button";
+  grid-template-rows: auto auto
+                      1fr auto ;
+}
+
+.gridTitle {
+  grid-area: title;
+}

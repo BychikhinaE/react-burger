@@ -1,7 +1,8 @@
 import styles from "./ingredient-details.module.css";
-import ingredientPropTypes from "../../utils/ingredientPropTypes";
+import { useSelector } from "react-redux";
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() {
+  const ingredient = useSelector((state) => state.info.currenViewedItem);
   return (
     <>
       <img
@@ -37,10 +38,5 @@ function IngredientDetails({ ingredient }) {
     </>
   );
 }
-
-//проверкa типов
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
-};
 
 export default IngredientDetails;

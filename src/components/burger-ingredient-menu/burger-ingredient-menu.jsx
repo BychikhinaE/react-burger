@@ -8,9 +8,11 @@ import {
 import styles from "./burger-ingredient-menu.module.css";
 
 //DragSource
-const BurgerIngredientMenu = ({ item, onClickforInfo, counters }) => {
+const BurgerIngredientMenu = ({ item,
+   onClickforInfo,
+   counters }) => {
   const currentItem = item;
-
+  const currentId = item._id;
   const [, dragRef] = useDrag({
     type: "items",
     item: { currentItem },
@@ -19,20 +21,22 @@ const BurgerIngredientMenu = ({ item, onClickforInfo, counters }) => {
   return (
     <li
       className={`${styles.item} mb-10`}
-      index={item._id}
+      index={currentId}
       onClick={onClickforInfo}
       ref={dragRef}
     >
-      {typeof counters[item._id] !== "undefined" && (
-        <Counter count={counters[item._id]} size="default" />
-      )}
-      <img alt={item.name} src={item.image} />
-      <div className={styles.price}>
-        <p className="text text_type_digits-default pt-2 pb-3">{item.price}</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p className="text text_type_main-default pb-5">{item.name}</p>
-    </li>
+        {typeof counters[currentId] !== "undefined" && (
+          <Counter count={counters[currentId]} size="default" />
+        )}
+        <img alt={item.name} src={item.image} />
+        <div className={styles.price}>
+          <p className="text text_type_digits-default pt-2 pb-3">
+            {item.price}
+          </p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <p className="text text_type_main-default pb-5">{item.name}</p>
+     </li>
   );
 };
 

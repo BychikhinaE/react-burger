@@ -1,61 +1,46 @@
-import React, { useCallback, useState, useRef } from "react";
-// import { Redirect, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./page-form.module.css";
 import {
   Button,
-  ShowIcon,
-  HideIcon,
   PasswordInput,
   EmailInput,
-  Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { signIn } from "../services/actions/user";
 
 export function LoginPage() {
-  const [form, setValue] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { pathname, state } = useLocation();
+
+  useEffect(() => {
+    history.replace({
+      pathname: pathname,
+      state: {},
+    });
+  }, []);
 
   const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    history.replace({
+      pathname: pathname,
+      state: {
+        ...state,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
-  // let login = useCallback(
-  //   e => {
-  //     e.preventDefault();
-  //     auth.signIn(form);
-  //   },
-  //   [auth, form]
-  // );
-
-  // if (auth.user) {
-  //   return (
-  //     <Redirect
-  //       to={{
-  //         pathname: '/'
-  //       }}
-  //     />
-  //   );
-  //     }
-  //Код инпута
-  const [isVisible, setVisible] = useState(false);
-
-  // const [value, setValue] = React.useState('value')
-  const inputRef = useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    alert("Icon Click Callback");
+  const login = (e) => {
+    e.preventDefault();
+    dispatch(signIn(history, pathname));
   };
 
-  const [valueE, setValueEmail] = React.useState();
-  const onChangeEmail = (e) => {
-    setValue(e.target.value);
-  };
+  const isAuth = useSelector((state) => state.user.isAuth);
+  if (isAuth) {
+    return <Redirect to={state?.from || "/"} />;
+  }
 
-  //     const EyeOff = props => <ShowIcon type="primary" onClick={props.onClick}/>
-  // const Eye = props => <HideIcon type="primary" onClick={props.onClick}/>
-
-  const [valueP, setValuePassword] = React.useState();
-  const onChangePassword = (e) => {
-    setValue(e.target.value);
-  };
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -64,47 +49,23 @@ export function LoginPage() {
             Вход
           </h1>
           <EmailInput
-            // type={"text"}
-            // placeholder={"E-mail"}
-            onChange={onChangeEmail}
-            value={valueE}
-            name={"email"}
+            placeholder="E-mail"
+            onChange={onChange}
+            value={state && state.email ? state.email : ""}
+            name="email"
           />
-          {/* <Input
-            type={"text"}
-            placeholder={"E-mail"}
-            onChange={(e) => setValue(e.target.value)}
-            // icon={'CurrencyIcon'}
-            value={form.email}
-            name={"email"}
-            error={false}
-            ref={inputRef}
-            onIconClick={onIconClick}
-            errorText={"Ошибка"}
-            // size={'medium'}
-          /> */}
           <PasswordInput
-            onChange={onChangePassword}
-            value={valueP}
-            name={"password"}
+            onChange={onChange}
+            value={state && state.password ? state.password : ""}
+            name="password"
+            placeholder="Пароль"
           />
-          {/* <Input
-            type={isVisible ? "text" : "password"}
-            placeholder={"Пароль"}
-            onChange={(e) => setValue(e.target.value)}
-            icon={isVisible ? "HideIcon" : "ShowIcon"}
-            // icon={isVisible ? EyeOff : Eye}
-            value={form.password}
-            name={"password"}
-            error={false}
-            ref={inputRef}
-            onIconClick={() => setVisible(!isVisible)}
-            errorText={"Ошибка"}
-            // size={"medium"}
-          /> */}
-
-          {/* login */}
-          <Button onClick={() => {}} type="primary" size="medium">
+          <Button
+            type="primary"
+            size="medium"
+            htmlType="submit"
+            onClick={login}
+          >
             Войти
           </Button>
         </form>
@@ -113,15 +74,15 @@ export function LoginPage() {
         >
           <div className={styles.joinform}>
             <p className="text">Вы - новый пользователь?</p>
-            <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/register" className={`${styles.link} ml-1`}>
               Зарегистрироваться
-            </a>
+            </Link>
           </div>
           <div className={`${styles.joinform} mt-4`}>
             <p className="text">Забыли пароль?</p>
-            <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/forgot-password" className={`${styles.link} ml-1`}>
               Восстановить пароль
-            </a>
+            </Link>
           </div>
         </div>
       </div>

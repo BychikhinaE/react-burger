@@ -1,62 +1,44 @@
-import React, { useCallback, useState, useRef } from "react";
-// import { Redirect, Link } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
-  ShowIcon,
-  HideIcon,
   PasswordInput,
   EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { addNewUser } from "../services/actions/user";
+import { SAVE_PASSWORD } from "../services/actions/password";
 
 export function RegisterPage() {
-  const [form, setValue] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { pathname, state } = useLocation();
 
   const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    history.replace({
+      pathname: pathname,
+      state: {
+        ...state,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
-  // let login = useCallback(
-  //   e => {
-  //     e.preventDefault();
-  //     auth.signIn(form);
-  //   },
-  //   [auth, form]
-  // );
-
-  // if (auth.user) {
-  //   return (
-  //     <Redirect
-  //       to={{
-  //         pathname: '/'
-  //       }}
-  //     />
-  //   );
-  //     }
-  //Код инпута
-  const [isVisible, setVisible] = useState(false);
-
-  // const [value, setValue] = React.useState('value')
-  const inputRef = useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    alert("Icon Click Callback");
+  const submitUserData = (e) => {
+    e.preventDefault();
+    dispatch(addNewUser(history, pathname));
+    dispatch({
+      type: SAVE_PASSWORD,
+      password: history.location.state.password,
+    });
   };
 
-  const [valueE, setValueEmail] = React.useState();
-  const onChangeEmail = (e) => {
-    setValue(e.target.value);
-  };
+  const isAuth = useSelector((state) => state.user.isAuth);
+  if (isAuth) {
+    return <Redirect to={state?.from || "/"} />;
+  }
 
-  //     const EyeOff = props => <ShowIcon type="primary" onClick={props.onClick}/>
-  // const Eye = props => <HideIcon type="primary" onClick={props.onClick}/>
-
-  const [valueP, setValuePassword] = React.useState();
-  const onChangePassword = (e) => {
-    setValue(e.target.value);
-  };
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -65,24 +47,31 @@ export function RegisterPage() {
             Регистрация
           </h1>
           <Input
-            type={"text"}
-            placeholder={"Имя"}
-            onChange={(e) => setValue(e.target.value)}
-            value={form.email}
-            name={"email"}
+            type="text"
+            placeholder="Имя"
+            onChange={onChange}
+            value={state && state.name ? state.name : ""}
+            name="name"
             error={false}
-            ref={inputRef}
-            onIconClick={onIconClick}
-            errorText={"Ошибка"}
+            errorText="Ошибка"
           />
-          <EmailInput onChange={onChangeEmail} value={valueE} name={"email"} />
+          <EmailInput
+            onChange={onChange}
+            value={state && state.email ? state.email : ""}
+            name="email"
+          />
           <PasswordInput
-            onChange={onChangePassword}
-            value={valueP}
-            name={"password"}
+            onChange={onChange}
+            value={state && state.password ? state.password : ""}
+            name="password"
           />
 
-          <Button onClick={() => {}} type="primary" size="medium">
+          <Button
+            onClick={submitUserData}
+            type="primary"
+            size="medium"
+            htmlType="submit"
+          >
             Зарегистрироваться
           </Button>
         </form>
@@ -91,9 +80,9 @@ export function RegisterPage() {
         >
           <div className={styles.joinform}>
             <p className="text">Уже зарегистрированы?</p>
-            <a className={`${styles.link} ml-1`} href="#">
+            <Link to="/login" className={`${styles.link} ml-1`}>
               Войти
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,0 +1,36 @@
+.container{
+  max-width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.head{
+  position: absolute;
+  top: 0;
+  left: 40px;
+  z-index: 1;
+}
+
+.gif{
+width: 100%;
+filter: grayscale(.5);
+}
+
+.goBack {
+position: absolute;
+z-index: 1;
+bottom: 60px;
+left: 47%;
+background-color: inherit;
+color: rgb(134, 134, 134);
+font-size: 24px;
+cursor: pointer;
+transition: all 1s;
+border: none;
+}
+
+.goBack:hover{
+  transform: scale(1.2);
+  color: white;
+}
+

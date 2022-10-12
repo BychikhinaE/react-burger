@@ -1,50 +1,60 @@
-import React, { useEffect } from "react";
-//DndProvider
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
+import { useEffect } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { Loader } from "../loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getItems } from "../../services/actions/menu";
-import {LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage} from "../../pages/index"
+import { getUser } from "../../services/actions/user.js";
+import { ProtectedRoute } from "../protected-route/protected-route";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import {
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  ProfilePage,
+  ConstructorPage,
+  NotFound404,
+  InfoFood,
+  OrderListPage,
+} from "../../pages/index";
 
 function App() {
   const dispatch = useDispatch();
-  const itemsRequest = useSelector((state) => state.menu.itemsRequest);
-
   useEffect(() => {
     dispatch(getItems());
-  }, [dispatch]);
+    dispatch(getUser());
+  }, []);
 
   return (
     <>
-      <AppHeader />
-      <main className={styles.main}>
-
-        {/* <LoginPage /> */}
-        {/* <RegisterPage /> */}
-        {/* <ForgotPasswordPage/> */}
-        {/* <ResetPasswordPage /> */}
-        <ProfilePage />
-        {/* <section
-          aria-label="HomePage"
-          className={`${styles.grid} pb-10 container pr-10 pl-10`}
-        >
-          <h1
-            className={`text text_type_main-large pt-10 pb-5 ${styles.gridTitle}`}
-          >
-            Соберите бургер
-          </h1>
-          <DndProvider backend={HTML5Backend}>
-            {itemsRequest ? <Loader size="large" /> : <BurgerIngredients />}
-            <BurgerConstructor />
-          </DndProvider>
-        </section> */}
-      </main>
+      <Router>
+        <AppHeader />
+        <main className={styles.main}>
+          <Switch>
+            <Route path="/" children={<ConstructorPage />} exact />
+            <Route path="/login" children={<LoginPage />} exact />
+            <Route path="/ingredients/:id" children={<InfoFood />} exact />
+            <Route path="/register" children={<RegisterPage />} exact />
+            <Route
+              path="/forgot-password"
+              children={<ForgotPasswordPage />}
+              exact
+            />
+            <Route
+              path="/reset-password"
+              children={<ResetPasswordPage />}
+              exact
+            />
+            <ProtectedRoute path="/profile" children={<ProfilePage />} exact />
+            <Route path="/order-list" children={<OrderListPage />} exact />
+            <Route children={<NotFound404 />} />
+          </Switch>
+        </main>
+      </Router>
     </>
   );
 }
