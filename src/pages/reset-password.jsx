@@ -8,6 +8,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { postResetPasswordAction } from "../services/actions/password";
+import { SAVE_PASSWORD } from "../services/actions/password";
 
 export function ResetPasswordPage() {
   const dispatch = useDispatch();
@@ -26,6 +27,10 @@ export function ResetPasswordPage() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(postResetPasswordAction(history, pathname));
+    dispatch({
+      type: SAVE_PASSWORD,
+      password: history.location.state.password,
+    });
   }
 
   const isAuth = useSelector((state) => state.user.isAuth);
@@ -36,7 +41,7 @@ export function ResetPasswordPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <form className={styles.form}>
+        <form className={styles.form} method="post" onSubmit={handleSubmit}>
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Восстановление пароля
           </h1>
@@ -55,7 +60,7 @@ export function ResetPasswordPage() {
             name="token"
             error={false}
           />
-          <Button onClick={handleSubmit} type="primary" size="medium">
+          <Button type="primary" size="medium">
             Сохранить
           </Button>
         </form>

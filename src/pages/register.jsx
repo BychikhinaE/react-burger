@@ -42,7 +42,7 @@ export function RegisterPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <form className={styles.form}>
+        <form className={styles.form} method="post" onSubmit={submitUserData}>
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Регистрация
           </h1>
@@ -67,10 +67,8 @@ export function RegisterPage() {
           />
 
           <Button
-            onClick={submitUserData}
             type="primary"
             size="medium"
-            htmlType="submit"
           >
             Зарегистрироваться
           </Button>

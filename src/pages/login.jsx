@@ -44,7 +44,7 @@ export function LoginPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={login} method="post">
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Вход
           </h1>
@@ -63,8 +63,6 @@ export function LoginPage() {
           <Button
             type="primary"
             size="medium"
-            htmlType="submit"
-            onClick={login}
           >
             Войти
           </Button>
