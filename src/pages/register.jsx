@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
@@ -11,10 +11,12 @@ import {
 import { addNewUser } from "../services/actions/user";
 
 export function RegisterPage() {
+
+
   const dispatch = useDispatch();
   const history = useHistory();
   const { pathname, state } = useLocation();
-  console.log(pathname, state)
+  console.log('useLocation', pathname, state)
   const onChange = (e) => {
     history.replace({
       pathname: pathname,
@@ -29,6 +31,15 @@ export function RegisterPage() {
     e.preventDefault();
     dispatch(addNewUser(history, pathname));
   };
+
+  const isAuth = useSelector((state) => state.user.isAuth);
+  if (isAuth) {
+    return (
+      <Redirect
+        to={ state?.from || '/' }
+      />
+    );
+  }
 
   return (
     <div className={styles.wrapper}>

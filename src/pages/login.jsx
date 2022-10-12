@@ -1,16 +1,25 @@
-import React from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-
+import React, {useCallback, useEffect} from "react";
+import { Link, useHistory, useLocation, Redirect, } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./page-form.module.css";
 import {
   Button,
   PasswordInput,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import {signIn} from '../services/actions/user'
 
 export function LoginPage() {
+  const dispatch = useDispatch();
   const history = useHistory();
   const { pathname, state } = useLocation();
+  console.log(pathname, state)
+
+useEffect(()=>{
+  history.replace({
+    pathname: pathname,
+    state:  {}})},
+ [])
 
   const onChange = (e) => {
     history.replace({
@@ -22,10 +31,27 @@ export function LoginPage() {
     });
   };
 
+  const login =
+    e => {
+      e.preventDefault();
+      console.log('login'  + history.location.state)
+      dispatch(signIn(history, pathname));
+    }
+
+  const isAuth = useSelector((state) => state.user.isAuth);
+  if (isAuth) {
+    return (
+      <Redirect
+        to={ state?.from || '/' }
+      />
+    );
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <form className={styles.form}>
+        <form className={styles.form}
+        >
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Вход
           </h1>
@@ -41,7 +67,7 @@ export function LoginPage() {
             name="password"
             placeholder="Пароль"
           />
-          <Button onClick={() => {}} type="primary" size="medium">
+          <Button  type="primary" size="medium" htmlType="submit" onClick={login}>
             Войти
           </Button>
         </form>

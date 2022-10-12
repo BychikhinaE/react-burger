@@ -20,11 +20,11 @@
   display: flex;
 }
 
-.button{
+/* .button{
   background: inherit;
   border: none;
   cursor: pointer;
-}
+} */
 
 .button:hover {
   opacity: .5;

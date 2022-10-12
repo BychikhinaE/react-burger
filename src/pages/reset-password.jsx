@@ -1,6 +1,6 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
@@ -27,13 +27,20 @@ console.log(pathname, state)
     e.preventDefault();
     dispatch(postResetPasswordAction(history, pathname));
   }
+
+  const isAuth = useSelector((state) => state.user.isAuth);
+  if (isAuth) {
+    return (
+      <Redirect
+        to={ state?.from || '/' }
+      />
+    );
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <form className={styles.form}
-          // name="resetPasswordForm"
-          // onSubmit={handleSubmit}
-          // method="POST"
         >
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Восстановление пароля

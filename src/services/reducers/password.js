@@ -8,12 +8,14 @@ import {
 } from "../actions/password";
 
 const passwordInitialState = {
+  password: '',
   forgotPasswordData: {},
   forgotPasswordRequest: false,
   forgotPasswordFailed: false,
   resetPasswordData: {},
   resetPasswordRequest: false,
   resetPasswordFailed: false,
+  updatePasswordStatus: false,
 };
 
 export const passwordReducer = (state = passwordInitialState, action) => {

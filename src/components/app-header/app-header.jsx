@@ -1,5 +1,5 @@
 import React, {useCallback} from "react";
-import { NavLink, useHistory, useLocation } from "react-router-dom";
+import { NavLink, useHistory, useLocation, Link } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -7,22 +7,15 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
+import { useDispatch, useSelector } from "react-redux";
 
 const AppHeader = () => {
   const { pathname } = useLocation();
-  const history = useHistory();
-  const login = useCallback(
-    () => {
-        history.replace({ pathname: '/login' });
-    },
-    [history]
-  );
-
   return (
     <header className={`${styles.header} pt-10 container pr-10 pl-10`}>
       <nav className={`${styles.nav} mt-4 mb-4`}>
         <div className={`${styles.item} pr-4 pt-4 pb-4`}>
-          <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
+          <BurgerIcon type={pathname.endsWith('/')  ? "primary" : "secondary"} />
           <NavLink
             to={{ pathname: `/` }}
             className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
@@ -32,9 +25,9 @@ const AppHeader = () => {
           </NavLink>
         </div>
         <div className={`${styles.item} pl-5 pr-5 pt-4 pb-4 ml-4`}>
-          <ListIcon type={pathname === "/order-list" ? "primary" : "secondary"} />
+          <ListIcon type={pathname.endsWith("/order-list") ? "primary" : "secondary"} />
           <NavLink
-            to={{ pathname: `/feed` }}
+            to={{ pathname: `/order-list` }}
             className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
             activeClassName={styles.activeLink}
           >
@@ -44,14 +37,14 @@ const AppHeader = () => {
       </nav>
       <Logo />
       <div className={`${styles.button__container} pl-5`}>
-        <ProfileIcon type={pathname.startsWith("/profile") ? "primary" : "secondary"} />
+        <ProfileIcon type="secondary" />
 
-        <button
-          className={`${styles.button} text text_type_main-default text_color_inactive pl-2`}
-          onClick={login}
+        <Link
+          className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
+          to={{ pathname: `/profile` }}
         >
           Личный кабинет
-        </button>
+        </Link>
       </div>
     </header>
   );

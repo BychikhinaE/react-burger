@@ -20,6 +20,18 @@ row-gap: 20px;
  display: block;
 
 }
+.exit{
+  text-decoration: none;
+ display: block;
+ background-color: inherit;
+ border: none;
+ cursor: pointer;
+}
+
+.exit:hover{
+color: rgba(240, 68, 68, .5)
+}
+
 .inputName{
   grid-area: 1/2/2/3;
 }
@@ -38,4 +50,8 @@ row-gap: 20px;
 
 .linkActive{
   color: white;
+}
+
+.buttons{
+  grid-area: 4/2/5/3;
 }

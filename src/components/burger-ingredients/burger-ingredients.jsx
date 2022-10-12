@@ -87,22 +87,23 @@ const BurgerIngredients = () => {
   //   },
   //   [currentId, history]
   // );
-  let user = true;
+  //let user = true;
   // const handleOpenModal = (Event) => {
   //   const targetIndex = Event.currentTarget.getAttribute("index");
   //   const target = items.find((item) => item._id === targetIndex);
   //   dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
   //   isVisible = true
   // };
+  const isAuth = useSelector((state) => state.user.isAuth);
   const handleOpenModal = (Event) => {
     const targetIndex = Event.currentTarget.getAttribute("index");
     const target = items.find((item) => item._id === targetIndex);
-    if (user) {
+    if (isAuth) {
       dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
     }
-    // else {
-    //   history.replace({ pathname: `/${targetIndex}` });
-    // }
+    else {
+      history.replace({ pathname:  `/ingredients/${targetIndex}` });
+    }
   };
 
   function handleCloseModal() {
@@ -198,16 +199,11 @@ const BurgerIngredients = () => {
 
       {/* Модальное окно*/}
       <>
-        {/* добавим роут для просмотра  */}
-        {/* <Switch>
-          <Route path={`${path}/:${chatId}`}> */}
         {modalVisible && (
           <Modal header="Детали ингредиента" onClose={handleCloseModal}>
             <IngredientDetails />
           </Modal>
         )}
-        {/* </Route>
-        </Switch> */}
       </>
     </>
   );

@@ -6,7 +6,7 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredient-menu.module.css";
-import { Link, useRouteMatch, useHistory, useParams } from "react-router-dom";
+import { Link, useRouteMatch, useHistory, useParams, useLocation } from "react-router-dom";
 import { useCallback} from 'react'
 //DragSource
 const BurgerIngredientMenu = ({ item,
@@ -27,14 +27,25 @@ const BurgerIngredientMenu = ({ item,
   //   },
   //   [currentId, history]
   // );
+
+  const location = useLocation();
+
   return (
     <li
       className={`${styles.item} mb-10`}
       index={currentId}
       onClick={onClickforInfo}
       ref={dragRef}
+      // to={{
+      //   pathname: `/ingredients/${currentId}`,
+      //   state: { background: location },
+      // }}
     >
-      {/* <Link to={`/${currentId}`} className={styles.link}> */}
+      {/* <Link to={{
+          pathname: `/ingredients/${currentId}`,
+          state: { background: location },
+        }}
+        className={styles.link}> */}
       {/* <Link to={{ pathname: `/${url}/${currentId}` }} className={styles.link}> */}
         {typeof counters[currentId] !== "undefined" && (
           <Counter count={counters[currentId]} size="default" />
@@ -47,8 +58,8 @@ const BurgerIngredientMenu = ({ item,
           <CurrencyIcon type="primary" />
         </div>
         <p className="text text_type_main-default pb-5">{item.name}</p>
-      {/* </Link> */}
-    </li>
+     </li>
+    // </Link>
   );
 };
 
