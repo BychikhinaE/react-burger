@@ -79,7 +79,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuth: false,
-        userData: { email: "", name: "" },
+        userData: {},
         logoutRequest: false,
       };
     }

@@ -1,8 +1,15 @@
 import styles from "./ingredient-details.module.css";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 function IngredientDetails() {
-  const ingredient = useSelector((state) => state.info.currenViewedItem);
+  const items = useSelector((state) => state.menu.items);
+  const { id } = useParams();
+  const ingredient = items.find((item) => item._id === id);
+
+  if (!ingredient) {
+    return null;
+  }
   return (
     <>
       <img

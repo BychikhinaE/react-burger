@@ -48,7 +48,7 @@ export function postResetPasswordAction(history, pathname) {
       if (res && res.success) {
         dispatch({
           type: POST_RESET_PASSWORD_SUCCESS,
-          data: res,
+          data: res.success,
         });
         history.replace({
           pathname: pathname,
@@ -62,6 +62,7 @@ export function postResetPasswordAction(history, pathname) {
         dispatch({
           type: POST_RESET_PASSWORD_ERROR,
         });
+        console.log(res);
       }
     });
   };

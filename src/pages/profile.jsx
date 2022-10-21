@@ -6,8 +6,6 @@ import ProfileInfo from "./profile-info";
 import { ProfileОrderHistory } from "./profile-order-history";
 import { signOut } from "../services/actions/user";
 
-import { deleteCookie } from "../utils/utils";
-
 export function ProfilePage() {
   const dispatch = useDispatch();
   const history = useHistory();
