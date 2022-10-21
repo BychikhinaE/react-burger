@@ -1,24 +1,23 @@
 import { useEffect } from "react";
 import styles from "./info-food.module.css";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { CLOSE_MODAL } from "../services/actions/ingredient";
+
 
 export function InfoFood() {
   const { id } = useParams();
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const onClose = () => {
     history.replace({
       pathname: "/",
     });
-    dispatch({ type: CLOSE_MODAL });
   };
 
   const items = useSelector((state) => state.menu.items);
-  const ingredient = items.find((item) => item._id === id);
+  const ingredient = items.find(item => item._id === id);
+
   //логика навешивания и удаления обработчиков события нажатия клавиши "Esc"
   useEffect(() => {
     const handleEscClose = (evt) => {
@@ -32,6 +31,10 @@ export function InfoFood() {
       document.removeEventListener("keydown", handleEscClose);
     };
   }, []);
+
+  if (!ingredient) {
+    return null;
+  }
 
   return (
     <div className={`${styles.wrapper} pt-15 pl-10 pr-10`}>

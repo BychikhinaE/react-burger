@@ -8,6 +8,7 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { signIn } from "../services/actions/user";
+import { SAVE_PASSWORD } from "../services/actions/password";
 
 export function LoginPage() {
   const dispatch = useDispatch();
@@ -34,6 +35,10 @@ export function LoginPage() {
   const login = (e) => {
     e.preventDefault();
     dispatch(signIn(history, pathname));
+    dispatch({
+      type: SAVE_PASSWORD,
+      password: history.location.state.password,
+    });
   };
 
   const isAuth = useSelector((state) => state.user.isAuth);
@@ -60,10 +65,7 @@ export function LoginPage() {
             name="password"
             placeholder="Пароль"
           />
-          <Button
-            type="primary"
-            size="medium"
-          >
+          <Button type="primary" size="medium">
             Войти
           </Button>
         </form>

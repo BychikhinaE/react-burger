@@ -1,28 +1,17 @@
 import React, { useEffect, useRef, useMemo } from "react";
 
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { TAB_NAME, INGREDIENT_TYPES } from "../../utils/constants";
 import { TAB_SWITCH } from "../../services/actions/menu";
-import {
-  GET_ITEM_FOR_VIEW,
-  CLOSE_MODAL,
-} from "../../services/actions/ingredient";
 import IngredientsGroup from "../ingredients-group/ingredients-group";
 import { getDistanceBetweenPoints } from "../../utils/utils";
-import {
- useHistory,
-} from "react-router-dom";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  // Получим все карточки из хранилища
-  const items = useSelector((state) => state.menu.items);
 
   //Настройка переключателя табов при скролле
   const currentTab = useSelector((state) => state.menu.currentTab);
@@ -69,26 +58,6 @@ const BurgerIngredients = () => {
     const element = document.getElementById(event);
     element.scrollIntoView({ behavior: "smooth" });
   };
-
-  //Код модального окнаs
-  const modalVisible = useSelector((state) => state.info.modalVisible);
-  const history = useHistory();
-  const isAuth = useSelector((state) => state.user.isAuth);
-
-  const handleOpenModal = (Event) => {
-    const targetIndex = Event.currentTarget.getAttribute("index");
-    const target = items.find((item) => item._id === targetIndex);
-    if (isAuth) {
-      dispatch({ type: GET_ITEM_FOR_VIEW, item: target });
-    }
-    else {
-      history.replace({ pathname:  `/ingredients/${targetIndex}` });
-    }
-  };
-
-  function handleCloseModal() {
-    dispatch({ type: CLOSE_MODAL });
-  }
 
   //Счетчик заказанных ингридиентов, потом пробросим пропсами до каждой карточки
   const selectedItems = useSelector((state) => state.constr.selectedItems);
@@ -145,7 +114,6 @@ const BurgerIngredients = () => {
             </h2>
             <IngredientsGroup
               ingredientGroup={INGREDIENT_TYPES.BUN}
-              onClickforInfo={handleOpenModal}
               counters={counters}
             />
           </div>
@@ -156,7 +124,6 @@ const BurgerIngredients = () => {
             </h2>
             <IngredientsGroup
               ingredientGroup={INGREDIENT_TYPES.SAUCE}
-              onClickforInfo={handleOpenModal}
               counters={counters}
             />
           </div>
@@ -167,21 +134,11 @@ const BurgerIngredients = () => {
             </h2>
             <IngredientsGroup
               ingredientGroup={INGREDIENT_TYPES.MAIN}
-              onClickforInfo={handleOpenModal}
               counters={counters}
             />
           </div>
         </div>
       </section>
-
-      {/* Модальное окно*/}
-      <>
-        {modalVisible && (
-          <Modal header="Детали ингредиента" onClose={handleCloseModal}>
-            <IngredientDetails />
-          </Modal>
-        )}
-      </>
     </>
   );
 };

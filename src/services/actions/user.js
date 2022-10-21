@@ -50,14 +50,11 @@ export function addNewUser(history, pathname) {
           pathname: pathname,
           state: {},
         });
-        history.push({
-          pathname: "/profile",
-          state: {},
-        });
       } else {
         dispatch({
           type: SUBMIT_PROFILE_ERROR,
         });
+        console.log("createUser" + res.message);
       }
     });
   };
@@ -85,15 +82,11 @@ export function signIn(history, pathname) {
           pathname: pathname,
           state: {},
         });
-        history.push({
-          pathname: "/",
-          state: {},
-        });
       } else {
         dispatch({
           type: USER_LOGIN_ERROR,
         });
-        console.log(res.message);
+        console.log("loginRequest" + res.message);
       }
     });
   };
@@ -110,8 +103,8 @@ export function signOut(history) {
         dispatch({
           type: USER_LOGOUT_SUCCESS,
         });
-        deleteCookie(refreshToken);
-        deleteCookie(getCookie("accessToken"));
+        deleteCookie("refreshToken");
+        deleteCookie("accessToken");
 
         history.push({
           pathname: "/login",
@@ -121,6 +114,7 @@ export function signOut(history) {
         dispatch({
           type: USER_LOGOUT_ERROR,
         });
+        console.log("logoutRequest" + res.message);
       }
     });
   };
@@ -135,7 +129,7 @@ export function getUser() {
       getCookie("accessToken") === undefined &&
       getCookie("refreshToken") === undefined
     ) {
-      return console.log("нет никого туть");
+      return;
     }
     if (getCookie("accessToken") !== undefined) {
       getUserData().then((res) => {
@@ -148,6 +142,7 @@ export function getUser() {
           dispatch({
             type: GET_USER_ERROR,
           });
+          console.log("getUserData" + res.message);
         }
       });
     } else {
@@ -166,6 +161,7 @@ export function getUser() {
             dispatch({
               type: GET_USER_ERROR,
             });
+            console.log("getUserData" + res.message);
           }
         });
       });
@@ -197,6 +193,7 @@ export function updateUser(history, pathname) {
           dispatch({
             type: USER_UPDATE_ERROR,
           });
+          console.log("updateUserData" + res.message);
         }
       });
     } else {
@@ -219,6 +216,7 @@ export function updateUser(history, pathname) {
             dispatch({
               type: USER_UPDATE_ERROR,
             });
+            console.log("updateUserData" + res.message);
           }
         });
       });

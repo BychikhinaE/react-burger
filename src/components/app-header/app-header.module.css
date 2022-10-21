@@ -20,16 +20,6 @@
   display: flex;
 }
 
-/* .button{
-  background: inherit;
-  border: none;
-  cursor: pointer;
-} */
-
-.button:hover {
-  opacity: .5;
-}
-
 .activeLink{
   color: white;
 }

@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import BurgerIngredientMenu from "../burger-ingredient-menu/burger-ingredient-menu";
 import styles from "./ingredients-group.module.css";
 
-const IngredientsGroup = ({ ingredientGroup, onClickforInfo, counters }) => {
+const IngredientsGroup = ({ ingredientGroup,
+  counters }) => {
   const items = useSelector((state) => state.menu.items);
   const itemsRequest = useSelector((state) => state.menu.itemsRequest);
 
@@ -22,7 +23,6 @@ const IngredientsGroup = ({ ingredientGroup, onClickforInfo, counters }) => {
         <BurgerIngredientMenu
           item={item}
           key={item._id}
-          onClickforInfo={onClickforInfo}
           counters={counters}
         />
       ))}
@@ -33,7 +33,6 @@ const IngredientsGroup = ({ ingredientGroup, onClickforInfo, counters }) => {
 //Проверка типов данных
 IngredientsGroup.propTypes = {
   ingredientGroup: PropTypes.string.isRequired,
-  onClickforInfo: PropTypes.func.isRequired,
 };
 
 export default IngredientsGroup;
