@@ -1,6 +1,6 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
@@ -10,27 +10,29 @@ import { postForgotPasswordAction } from "../services/actions/password";
 
 export function ForgotPasswordPage() {
   const dispatch = useDispatch();
+  const [valueEmail, setValueEmail] = useState("");
   const history = useHistory();
-  const { pathname, state } = useLocation();
-
-  const onChange = (e) => {
-    history.replace({
-      pathname: pathname,
-      state: {
-        ...state,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
+  const forgotPasswordStatus = useSelector(
+    (state) => state.password.forgotPasswordStatus
+  );
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(postForgotPasswordAction(history, pathname));
+    dispatch(postForgotPasswordAction({ email: valueEmail }));
   }
+
+  useEffect(() => {
+    if (forgotPasswordStatus) {
+      history.replace({
+        pathname: "/reset-password",
+        state: { from: "forgot-password" },
+      });
+    }
+  }, [history, forgotPasswordStatus]);
 
   const isAuth = useSelector((state) => state.user.isAuth);
   if (isAuth) {
-    return <Redirect to={state?.from || "/"} />;
+    return <Redirect to={{ pathname: "/" }} />;
   }
 
   return (
@@ -42,14 +44,11 @@ export function ForgotPasswordPage() {
           </h1>
           <EmailInput
             placeholder="Укажите E-mail"
-            onChange={onChange}
-            value={state && state.email ? state.email : ""}
+            onChange={(e) => setValueEmail(e.target.value)}
+            value={valueEmail}
             name="email"
           />
-          <Button
-            type="primary"
-            size="medium"
-          >
+          <Button type="primary" size="medium">
             Восстановить
           </Button>
         </form>

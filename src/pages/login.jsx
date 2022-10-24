@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./page-form.module.css";
 import {
@@ -11,39 +11,24 @@ import { signIn } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
 
 export function LoginPage() {
+  const [valuePassword, setValuePassword] = useState("");
+  const [valueEmail, setValueEmail] = useState("");
+
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { pathname, state } = useLocation();
-
-  useEffect(() => {
-    history.replace({
-      pathname: pathname,
-      state: {},
-    });
-  }, []);
-
-  const onChange = (e) => {
-    history.replace({
-      pathname: pathname,
-      state: {
-        ...state,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
+  const location = useLocation();
 
   const login = (e) => {
     e.preventDefault();
-    dispatch(signIn(history, pathname));
+    dispatch(signIn({ email: valueEmail, password: valuePassword }));
     dispatch({
       type: SAVE_PASSWORD,
-      password: history.location.state.password,
+      password: valuePassword,
     });
   };
 
   const isAuth = useSelector((state) => state.user.isAuth);
   if (isAuth) {
-    return <Redirect to={state?.from || "/"} />;
+    return <Redirect to={location?.state?.from || "/"} />;
   }
 
   return (
@@ -55,13 +40,13 @@ export function LoginPage() {
           </h1>
           <EmailInput
             placeholder="E-mail"
-            onChange={onChange}
-            value={state && state.email ? state.email : ""}
+            onChange={(e) => setValueEmail(e.target.value)}
+            value={valueEmail}
             name="email"
           />
           <PasswordInput
-            onChange={onChange}
-            value={state && state.password ? state.password : ""}
+            onChange={(e) => setValuePassword(e.target.value)}
+            value={valuePassword}
             name="password"
             placeholder="Пароль"
           />

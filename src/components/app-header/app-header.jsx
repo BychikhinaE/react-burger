@@ -38,7 +38,7 @@ const AppHeader = () => {
           </NavLink>
         </div>
       </nav>
-      <Logo />
+      <Link to={{ pathname: `/` }}><Logo /></Link>
       <div className={`${styles.button__container} pl-5`}>
         <ProfileIcon type="secondary" />
         <Link

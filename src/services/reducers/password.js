@@ -9,9 +9,10 @@ import {
 } from "../actions/password";
 
 const passwordInitialState = {
-  password: '',
+  password: "",
   forgotPasswordRequest: false,
   forgotPasswordFailed: false,
+  forgotPasswordStatus: false,
   resetPasswordRequest: false,
   resetPasswordFailed: false,
   updatePasswordStatus: false,
@@ -38,6 +39,7 @@ export const passwordReducer = (state = passwordInitialState, action) => {
         ...state,
         forgotPasswordFailed: false,
         forgotPasswordRequest: false,
+        forgotPasswordStatus: action.data,
       };
     }
 
@@ -46,6 +48,7 @@ export const passwordReducer = (state = passwordInitialState, action) => {
         ...state,
         forgotPasswordFailed: true,
         forgotPasswordRequest: false,
+        forgotPasswordStatus: action.data,
       };
     }
 
@@ -79,7 +82,3 @@ export const passwordReducer = (state = passwordInitialState, action) => {
     }
   }
 };
-
-
-
-

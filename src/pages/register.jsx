@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
+import { Link, useLocation, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
@@ -9,28 +9,27 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { addNewUser } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
+import { useState } from "react";
 
 export function RegisterPage() {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { pathname, state } = useLocation();
-
-  const onChange = (e) => {
-    history.replace({
-      pathname: pathname,
-      state: {
-        ...state,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
+  const { state } = useLocation();
+  const [newName, setNewName] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
 
   const submitUserData = (e) => {
     e.preventDefault();
-    dispatch(addNewUser(history, pathname));
+    dispatch(
+      addNewUser({
+        email: newEmail,
+        password: newPassword,
+        name: newName,
+      })
+    );
     dispatch({
       type: SAVE_PASSWORD,
-      password: history.location.state.password,
+      password: newPassword,
     });
   };
 
@@ -49,27 +48,24 @@ export function RegisterPage() {
           <Input
             type="text"
             placeholder="Имя"
-            onChange={onChange}
-            value={state && state.name ? state.name : ""}
+            onChange={(e) => setNewName(e.target.value)}
+            value={newName}
             name="name"
             error={false}
             errorText="Ошибка"
           />
           <EmailInput
-            onChange={onChange}
-            value={state && state.email ? state.email : ""}
+            onChange={(e) => setNewEmail(e.target.value)}
+            value={newEmail}
             name="email"
           />
           <PasswordInput
-            onChange={onChange}
-            value={state && state.password ? state.password : ""}
+            onChange={(e) => setNewPassword(e.target.value)}
+            value={newPassword}
             name="password"
           />
 
-          <Button
-            type="primary"
-            size="medium"
-          >
+          <Button type="primary" size="medium">
             Зарегистрироваться
           </Button>
         </form>

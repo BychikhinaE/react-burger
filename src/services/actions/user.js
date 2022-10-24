@@ -29,13 +29,13 @@ export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const GET_USER_ERROR = "GET_USER_ERROR";
 
 //Отправляем данные нового пользователя на сервер
-export function addNewUser(history, pathname) {
+export function addNewUser(data) {
   return function (dispatch) {
     dispatch({
       type: SUBMIT_PROFILE_REQUEST,
     });
-    createUser(history.location.state).then((res) => {
-      if (res && res.success) {
+    createUser(data)
+      .then((res) => {
         const accessToken = res.accessToken.split("Bearer ")[1];
         const refreshToken = res.refreshToken;
         if (accessToken && refreshToken) {
@@ -46,27 +46,23 @@ export function addNewUser(history, pathname) {
           type: SUBMIT_PROFILE_SUCCESS,
           data: res.user,
         });
-        history.replace({
-          pathname: pathname,
-          state: {},
-        });
-      } else {
+      })
+      .catch((res) => {
         dispatch({
           type: SUBMIT_PROFILE_ERROR,
         });
         console.log("createUser" + res.message);
-      }
-    });
+      });
   };
 }
 
-export function signIn(history, pathname) {
+export function signIn(data) {
   return function (dispatch) {
     dispatch({
       type: USER_LOGIN_REQUEST,
     });
-    loginRequest(history.location.state).then((res) => {
-      if (res && res.success) {
+    loginRequest(data)
+      .then((res) => {
         const accessToken = res.accessToken.split("Bearer ")[1];
         const refreshToken = res.refreshToken;
         if (accessToken && refreshToken) {
@@ -78,45 +74,36 @@ export function signIn(history, pathname) {
           type: USER_LOGIN_SUCCESS,
           data: res.user,
         });
-        history.replace({
-          pathname: pathname,
-          state: {},
-        });
-      } else {
+      })
+      .catch((res) => {
         dispatch({
           type: USER_LOGIN_ERROR,
         });
         console.log("loginRequest" + res.message);
-      }
-    });
+      });
   };
 }
 
-export function signOut(history) {
+export function signOut() {
   return function (dispatch) {
     dispatch({
       type: USER_LOGOUT_REQUEST,
     });
     const refreshToken = getCookie("refreshToken");
-    logoutRequest(refreshToken).then((res) => {
-      if (res && res.success) {
+    logoutRequest(refreshToken)
+      .then((res) => {
         dispatch({
           type: USER_LOGOUT_SUCCESS,
         });
         deleteCookie("refreshToken");
         deleteCookie("accessToken");
-
-        history.push({
-          pathname: "/login",
-          state: {},
-        });
-      } else {
+      })
+      .catch((res) => {
         dispatch({
           type: USER_LOGOUT_ERROR,
         });
         console.log("logoutRequest" + res.message);
-      }
-    });
+      });
   };
 }
 
@@ -132,93 +119,81 @@ export function getUser() {
       return;
     }
     if (getCookie("accessToken") !== undefined) {
-      getUserData().then((res) => {
-        if (res && res.success) {
+      getUserData()
+        .then((res) => {
           dispatch({
             type: GET_USER_SUCCESS,
             data: res.user,
           });
-        } else {
+        })
+        .catch((res) => {
           dispatch({
             type: GET_USER_ERROR,
           });
           console.log("getUserData" + res.message);
-        }
-      });
+        });
     } else {
       refreshTokenRequest().then((res) => {
         const accessToken = res.accessToken.split("Bearer ")[1];
         if (accessToken) {
           setCookie("accessToken", accessToken, { "max-age": 1200 });
         }
-        getUserData().then((res) => {
-          if (res && res.success) {
+        getUserData()
+          .then((res) => {
             dispatch({
               type: GET_USER_SUCCESS,
               data: res.user,
             });
-          } else {
+          })
+          .catch((res) => {
             dispatch({
               type: GET_USER_ERROR,
             });
             console.log("getUserData" + res.message);
-          }
-        });
+          });
       });
     }
   };
 }
 
-export function updateUser(history, pathname) {
+export function updateUser(data) {
   return function (dispatch) {
     dispatch({
       type: USER_UPDATE_REQUEST,
     });
     if (getCookie("accessToken") !== undefined) {
-      updateUserData(history.location.state).then((res) => {
-        if (res && res.success) {
+      updateUserData(data)
+        .then((res) => {
           dispatch({
             type: USER_UPDATE_SUCCESS,
             data: res.user,
           });
-          history.replace({
-            pathname: pathname,
-            state: {},
-          });
-          history.push({
-            pathname: "/profile",
-            state: undefined,
-          });
-        } else {
+        })
+        .catch((res) => {
           dispatch({
             type: USER_UPDATE_ERROR,
           });
           console.log("updateUserData" + res.message);
-        }
-      });
+        });
     } else {
       refreshTokenRequest().then((res) => {
         const accessToken = res.accessToken.split("Bearer ")[1];
         if (accessToken) {
           setCookie("accessToken", accessToken, { "max-age": 1200 });
         }
-        updateUserData(history.location.state).then((res) => {
-          if (res && res.success) {
+        updateUserData(data)
+          .then((res) => {
             dispatch({
               type: USER_UPDATE_SUCCESS,
               data: res.user,
             });
-            history.replace({
-              pathname: pathname,
-              state: undefined,
-            });
-          } else {
+          })
+          .catch((res) => {
             dispatch({
               type: USER_UPDATE_ERROR,
             });
             console.log("updateUserData" + res.message);
-          }
-        });
+          });
       });
     }
   };
