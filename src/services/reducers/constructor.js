@@ -2,6 +2,7 @@ import {
   ADD_SELECTED_ITEM,
   DELETE_ITEM,
   TOGGLE_LIST,
+  CLEAN_ALL_LIST,
 } from "../actions/constructor";
 
 const initialStateConstructor = {
@@ -24,6 +25,13 @@ export const constructorReducer = (state = initialStateConstructor, action) => {
         selectedItems: state.selectedItems.filter(
           (item, index) => index !== action.index
         ),
+      };
+    }
+
+    case CLEAN_ALL_LIST: {
+      return {
+        ...state,
+        selectedItems: [],
       };
     }
 

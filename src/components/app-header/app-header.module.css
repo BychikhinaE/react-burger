@@ -6,7 +6,7 @@
 
 .nav {
   display: flex;
-  padding-right: 4vw;
+  padding-right: 112px;
 }
 
 .item {
@@ -15,8 +15,15 @@
   align-items: center;
 }
 
-.button {
-  background: inherit;
+.button__container {
   text-align: center;
   display: flex;
+}
+
+.activeLink{
+  color: white;
+}
+
+.link{
+  text-decoration: none;
 }

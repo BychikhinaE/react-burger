@@ -1,0 +1,57 @@
+.grid{
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px 60px;
+  margin-top: 120px;
+}
+
+.nav {
+grid-area: 1/1/4/2;
+display: flex;
+flex-direction: column;
+align-items: start;
+justify-content: space-between;
+height: 150px;
+row-gap: 20px;
+}
+
+.link{
+ text-decoration: none;
+ display: block;
+
+}
+.exit{
+  text-decoration: none;
+ display: block;
+ background-color: inherit;
+ border: none;
+ cursor: pointer;
+}
+
+.exit:hover{
+color: rgba(240, 68, 68, .5)
+}
+
+.inputName{
+  grid-area: 1/2/2/3;
+}
+.inputEmail{
+  grid-area: 2/2/3/3;
+}
+
+.inputPassword{
+  grid-area: 3/2/4/3;
+}
+
+.info{
+  grid-area: 4/1/5/2;
+
+}
+
+.linkActive{
+  color: white;
+}
+
+.buttons{
+  grid-area: 4/2/5/3;
+}

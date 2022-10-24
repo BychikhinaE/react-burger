@@ -1,0 +1,101 @@
+import React, { useState} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  PasswordInput,
+  EmailInput,
+  Input,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useHistory, useLocation } from "react-router-dom";
+import styles from "./profile.module.css";
+import { updateUser } from "../services/actions/user";
+import { SAVE_PASSWORD } from "../services/actions/password";
+
+function ProfileInfo() {
+  const [valueName, setValueName] = useState(undefined);
+  const [valuePassword, setValuePassword] = useState(undefined);
+  const [valueEmail, setValueEmail] = useState(undefined);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { pathname, state } = useLocation();
+
+  const { name, email } = useSelector((state) => state.user.userData);
+
+  const password = useSelector((state) => state.password.password);
+
+  // const onChange = (e) => {
+  //   history.replace({
+  //     pathname: pathname,
+  //     state: {
+  //       ...state,
+  //       [e.target.name]: e.target.value,
+  //     },
+  //   });
+  // };
+
+  const cancel = () => {
+    setValueName(undefined);
+    setValuePassword(undefined);
+    setValueEmail(undefined);
+  };
+
+  const handleSubmit = () => {
+    dispatch(updateUser({
+      email: valueEmail || email,
+      password: valuePassword || password,
+      name: valueName || name
+    }));
+    if (valuePassword) {
+      dispatch({
+        type: SAVE_PASSWORD,
+        password: valuePassword,
+      });
+    }
+    cancel();
+  };
+
+  return (
+    <>
+      <div className={styles.inputName}>
+        <Input
+          type="text"
+          placeholder="Имя"
+          onChange={e => setValueName(e.target.value)}
+          icon="EditIcon"
+          value={valueName ? valueName : name}
+          name="name"
+        />
+      </div>
+      <div className={styles.inputEmail}>
+        <EmailInput
+          placeholder="Логин"
+          onChange={e => setValueEmail(e.target.value)}
+          value={valueEmail ? valueEmail : email}
+          name="email"
+        />
+      </div>
+      <div className={styles.inputPassword}>
+        <PasswordInput
+          placeholder="Пароль"
+          onChange={e => setValuePassword(e.target.value)}
+          value={valuePassword ? valuePassword  : password}
+          name="password"
+        />
+      </div>
+
+      {(valueName !== undefined || valueEmail!== undefined || valuePassword !== undefined) && (
+        <div className={styles.buttons}>
+          <Button type="secondary" size="medium" onClick={cancel}>
+            Отмена
+          </Button>
+          <Button type="primary" size="medium" onClick={handleSubmit}>
+            Сохранить
+          </Button>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default React.memo(ProfileInfo);

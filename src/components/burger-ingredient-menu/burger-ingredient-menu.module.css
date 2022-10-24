@@ -6,6 +6,8 @@
   width: 272px;
   position: relative;
   text-align: center;
+  color: inherit;
+  text-decoration: none;
 }
 
 .price {
@@ -13,3 +15,7 @@
   align-items: center;
   gap: 8px;
 }
+
+.link{
+  text-decoration: none;
+  }

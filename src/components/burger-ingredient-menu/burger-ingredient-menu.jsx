@@ -6,25 +6,31 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredient-menu.module.css";
+import { useLocation, Link } from "react-router-dom";
 
 //DragSource
-const BurgerIngredientMenu = ({ item, onClickforInfo, counters }) => {
+const BurgerIngredientMenu = ({ item, counters }) => {
   const currentItem = item;
-
+  const currentId = item._id;
   const [, dragRef] = useDrag({
     type: "items",
     item: { currentItem },
   });
 
+  const location = useLocation();
+
   return (
-    <li
+    <Link
       className={`${styles.item} mb-10`}
-      index={item._id}
-      onClick={onClickforInfo}
+      index={currentId}
       ref={dragRef}
+      to={{
+        pathname: `/ingredients/${currentId}`,
+        state: { background: location },
+      }}
     >
-      {typeof counters[item._id] !== "undefined" && (
-        <Counter count={counters[item._id]} size="default" />
+      {typeof counters[currentId] !== "undefined" && (
+        <Counter count={counters[currentId]} size="default" />
       )}
       <img alt={item.name} src={item.image} />
       <div className={styles.price}>
@@ -32,13 +38,12 @@ const BurgerIngredientMenu = ({ item, onClickforInfo, counters }) => {
         <CurrencyIcon type="primary" />
       </div>
       <p className="text text_type_main-default pb-5">{item.name}</p>
-    </li>
+    </Link>
   );
 };
 
 BurgerIngredientMenu.propTypes = {
   item: ingredientPropTypes.isRequired,
-  onClickforInfo: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredientMenu;

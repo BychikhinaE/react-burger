@@ -10,17 +10,18 @@ export function getItems() {
     dispatch({
       type: GET_ITEMS_REQUEST,
     });
-    getData().then((res) => {
-      if (res && res.success) {
+    getData()
+      .then((res) => {
         dispatch({
           type: GET_ITEMS_SUCCESS,
           items: res.data,
         });
-      } else {
+      })
+      .catch((res) => {
         dispatch({
           type: GET_ITEMS_ERROR,
         });
-      }
-    });
+        console.log(res);
+      });
   };
 }

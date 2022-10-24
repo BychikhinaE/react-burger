@@ -1,7 +1,15 @@
 import styles from "./ingredient-details.module.css";
-import ingredientPropTypes from "../../utils/ingredientPropTypes";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() {
+  const items = useSelector((state) => state.menu.items);
+  const { id } = useParams();
+  const ingredient = items.find((item) => item._id === id);
+
+  if (!ingredient) {
+    return null;
+  }
   return (
     <>
       <img
@@ -37,10 +45,5 @@ function IngredientDetails({ ingredient }) {
     </>
   );
 }
-
-//проверкa типов
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
-};
 
 export default IngredientDetails;
