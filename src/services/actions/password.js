@@ -10,60 +10,49 @@ export const POST_RESET_PASSWORD_ERROR = "POST_RESET_PASSWORD_ERROR";
 
 export const SAVE_PASSWORD = "SAVE_PASSWORD";
 
-export function postForgotPasswordAction(history, pathname) {
+export function postForgotPasswordAction(email) {
   return function (dispatch) {
     dispatch({
       type: POST_FORGOT_PASSWORD_REQUEST,
     });
-    postForgotPassword(history.location.state).then((res) => {
-      if (res && res.success) {
+    postForgotPassword(email)
+      .then((res) => {
         dispatch({
           type: POST_FORGOT_PASSWORD_SUCCESS,
           data: res.success,
         });
-        history.replace({
-          pathname: pathname,
-          state: {},
-        });
-
-        history.push({
-          pathname: "/reset-password",
-          state: {},
-        });
-      } else {
+        console.log("postForgotPassword" + res.success);
+      })
+      .catch((res) => {
         dispatch({
           type: POST_FORGOT_PASSWORD_ERROR,
+          data: res.success,
         });
-      }
-    });
+        console.log("postForgotPassword" + res.success);
+      });
   };
 }
 
-export function postResetPasswordAction(history, pathname) {
+export function postResetPasswordAction(data) {
   return function (dispatch) {
     dispatch({
       type: POST_RESET_PASSWORD_REQUEST,
     });
-    postResetPassword(history.location.state).then((res) => {
-      if (res && res.success) {
+    postResetPassword(data)
+      .then((res) => {
         dispatch({
           type: POST_RESET_PASSWORD_SUCCESS,
           data: res.success,
         });
-        history.replace({
-          pathname: pathname,
-          state: {},
-        });
-        history.push({
-          pathname: "/profile",
-          state: {},
-        });
-      } else {
+        console.log("postResetPassword" + res.success);
+      })
+
+      .catch((res) => {
         dispatch({
           type: POST_RESET_PASSWORD_ERROR,
+          data: res.success,
         });
-        console.log(res);
-      }
-    });
+        console.log("postResetPassword" + res.success);
+      });
   };
 }

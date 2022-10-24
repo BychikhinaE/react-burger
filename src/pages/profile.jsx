@@ -1,18 +1,17 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import { useHistory, NavLink, Switch, Route } from "react-router-dom";
+import {  NavLink, Switch, Route } from "react-router-dom";
 import ProfileInfo from "./profile-info";
 import { ProfileОrderHistory } from "./profile-order-history";
 import { signOut } from "../services/actions/user";
 
 export function ProfilePage() {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const logout = useCallback(() => {
-    dispatch(signOut(history));
-  }, [dispatch, history]);
+    dispatch(signOut());
+  }, [dispatch]);
 
   return (
     <section aria-label="profile-page" className={`${styles.grid} pl-10`}>

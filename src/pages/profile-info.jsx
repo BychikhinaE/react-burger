@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   PasswordInput,
@@ -12,6 +12,10 @@ import { updateUser } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
 
 function ProfileInfo() {
+  const [valueName, setValueName] = useState(undefined);
+  const [valuePassword, setValuePassword] = useState(undefined);
+  const [valueEmail, setValueEmail] = useState(undefined);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const { pathname, state } = useLocation();
@@ -20,29 +24,32 @@ function ProfileInfo() {
 
   const password = useSelector((state) => state.password.password);
 
-  const onChange = (e) => {
-    history.replace({
-      pathname: pathname,
-      state: {
-        ...state,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
+  // const onChange = (e) => {
+  //   history.replace({
+  //     pathname: pathname,
+  //     state: {
+  //       ...state,
+  //       [e.target.name]: e.target.value,
+  //     },
+  //   });
+  // };
 
   const cancel = () => {
-    history.replace({
-      pathname: pathname,
-      state: undefined,
-    });
+    setValueName(undefined);
+    setValuePassword(undefined);
+    setValueEmail(undefined);
   };
 
   const handleSubmit = () => {
-    dispatch(updateUser(history, pathname));
-    if (history.location.state.password) {
+    dispatch(updateUser({
+      email: valueEmail || email,
+      password: valuePassword || password,
+      name: valueName || name
+    }));
+    if (valuePassword) {
       dispatch({
         type: SAVE_PASSWORD,
-        password: history.location.state.password,
+        password: valuePassword,
       });
     }
     cancel();
@@ -54,30 +61,30 @@ function ProfileInfo() {
         <Input
           type="text"
           placeholder="Имя"
-          onChange={onChange}
+          onChange={e => setValueName(e.target.value)}
           icon="EditIcon"
-          value={state && state.name ? state.name : name}
+          value={valueName ? valueName : name}
           name="name"
         />
       </div>
       <div className={styles.inputEmail}>
         <EmailInput
           placeholder="Логин"
-          onChange={onChange}
-          value={state && state.email ? state.email : email}
+          onChange={e => setValueEmail(e.target.value)}
+          value={valueEmail ? valueEmail : email}
           name="email"
         />
       </div>
       <div className={styles.inputPassword}>
         <PasswordInput
           placeholder="Пароль"
-          onChange={onChange}
-          value={state && state.password ? state.password : password}
+          onChange={e => setValuePassword(e.target.value)}
+          value={valuePassword ? valuePassword  : password}
           name="password"
         />
       </div>
 
-      {history.location.state !== undefined && (
+      {(valueName !== undefined || valueEmail!== undefined || valuePassword !== undefined) && (
         <div className={styles.buttons}>
           <Button type="secondary" size="medium" onClick={cancel}>
             Отмена

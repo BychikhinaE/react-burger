@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
@@ -13,29 +13,42 @@ import { SAVE_PASSWORD } from "../services/actions/password";
 export function ResetPasswordPage() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { pathname, state } = useLocation();
+  const [newPassword, setNewPassword] = useState("");
+  const [token, setToken] = useState("");
+  const location = useLocation();
 
-  const onChange = (e) => {
-    history.replace({
-      pathname: pathname,
-      state: {
-        ...state,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(postResetPasswordAction(history, pathname));
+    dispatch(
+      postResetPasswordAction({
+        password: newPassword,
+        token: token,
+      })
+    );
     dispatch({
       type: SAVE_PASSWORD,
-      password: history.location.state.password,
+      password: newPassword,
     });
   }
 
   const isAuth = useSelector((state) => state.user.isAuth);
+  const updatePasswordStatus = useSelector(
+    (state) => state.password.updatePasswordStatus
+  );
+  useEffect(() => {
+    if (updatePasswordStatus) {
+      history.replace({
+        pathname: "/profile",
+      });
+    }
+  }, [history, updatePasswordStatus]);
+
   if (isAuth) {
-    return <Redirect to={state?.from || "/"} />;
+    return <Redirect to={{ pathname: "/" }} />;
+  }
+
+  if (location?.state?.from !== "forgot-password") {
+    return <Redirect to={{ pathname: "/forgot-password" }} />;
   }
 
   return (
@@ -46,8 +59,8 @@ export function ResetPasswordPage() {
             Восстановление пароля
           </h1>
           <PasswordInput
-            onChange={onChange}
-            value={state && state.password ? state.password : ""}
+            onChange={(e) => setNewPassword(e.target.value)}
+            value={newPassword}
             name="password"
             placeholder="Введите новый пароль"
             required
@@ -55,8 +68,8 @@ export function ResetPasswordPage() {
           <Input
             type="text"
             placeholder="Введите код из письма"
-            onChange={onChange}
-            value={state && state.token ? state.token : ""}
+            onChange={(e) => setToken(e.target.value)}
+            value={token}
             name="token"
             error={false}
           />
