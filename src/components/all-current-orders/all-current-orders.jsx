@@ -7,21 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import OrderPreview  from '../order-preview/order-preview'
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
-function BurgerIngredients() {
-  const dispatch = useDispatch();
+function AllCurrentOrders() {
+  const orders = useSelector((state) => state.ws.orders);
 
-
+  if (!orders) {
+    return
+  }
 
   return (
-
       <section className={styles.gridArea}>
         <ul className={`${styles.scroll} custom-scroll`} id="scroll">
-         <OrderPreview />
-
+        {orders.map((item) => (
+          <li key={item._id}>
+            <OrderPreview item={item} />
+          </li>
+        ))}
         </ul>
       </section>
 
   );
 };
 
-export default React.memo(BurgerIngredients);
+export default AllCurrentOrders;
