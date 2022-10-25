@@ -17,22 +17,9 @@ function ProfileInfo() {
   const [valueEmail, setValueEmail] = useState(undefined);
 
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { pathname, state } = useLocation();
 
   const { name, email } = useSelector((state) => state.user.userData);
-
   const password = useSelector((state) => state.password.password);
-
-  // const onChange = (e) => {
-  //   history.replace({
-  //     pathname: pathname,
-  //     state: {
-  //       ...state,
-  //       [e.target.name]: e.target.value,
-  //     },
-  //   });
-  // };
 
   const cancel = () => {
     setValueName(undefined);

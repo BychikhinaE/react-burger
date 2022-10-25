@@ -22,6 +22,7 @@ import {
 
 import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
+import OrderMoreInfo from "../order-more-info/order-more-info";
 
 function App() {
   const dispatch = useDispatch();
@@ -60,17 +61,30 @@ function App() {
           <Route path="/order-list" children={<OrderListPage />} exact />
           <Route path="/feed" children={<FeedPage />} exact />
 
-          <Route path='./feed/:id' children={<OrderMoreInfoPage/>} exact />
-          <ProtectedRoute path='/profile/orders/:id' children={<OrderMoreInfoPage/>} exact />
+          <Route path="/feed/:id" children={<OrderMoreInfoPage />} exact />
 
           <Route children={<NotFound404 />} />
         </Switch>
         {background && (
-          <Route path="/ingredients/:id">
-            <Modal onClose={onClose} header="Детали ингредиента">
-              <IngredientDetails />
-            </Modal>
-          </Route>
+          <>
+            <Route path="/ingredients/:id">
+              <Modal onClose={onClose} header="Детали ингредиента">
+                <IngredientDetails />
+              </Modal>
+            </Route>
+
+            <Route path="/feed/:id">
+              <Modal onClose={onClose}>
+                <OrderMoreInfo />
+              </Modal>
+            </Route>
+
+            <ProtectedRoute path="/profile/orders/:id">
+              <Modal onClose={onClose}>
+                <OrderMoreInfo />
+              </Modal>
+            </ProtectedRoute>
+          </>
         )}
       </main>
     </>
