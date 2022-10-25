@@ -16,6 +16,8 @@ import {
   NotFound404,
   InfoFood,
   OrderListPage,
+  FeedPage,
+  OrderMoreInfoPage,
 } from "../../pages/index";
 
 import Modal from "../modal/modal.jsx";
@@ -56,6 +58,11 @@ function App() {
           />
           <ProtectedRoute path="/profile" children={<ProfilePage />} exact />
           <Route path="/order-list" children={<OrderListPage />} exact />
+          <Route path="/feed" children={<FeedPage />} exact />
+
+          <Route path='./feed/:id' children={<OrderMoreInfoPage/>} exact />
+          <ProtectedRoute path='/profile/orders/:id' children={<OrderMoreInfoPage/>} exact />
+
           <Route children={<NotFound404 />} />
         </Switch>
         {background && (

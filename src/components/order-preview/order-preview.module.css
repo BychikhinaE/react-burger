@@ -1,0 +1,30 @@
+.item{
+  display: grid;
+  /* grid-template-columns: minmax(300px, 600px) 1fr; */
+  column-gap: 20px;
+  grid-template-areas: "number time"
+                        "header header"
+                        "images total"
+  /* grid-template-rows: auto auto
+                      1fr auto ; */
+}
+
+.number {
+  grid-area: number;
+}
+
+.time {
+  grid-area: time;
+}
+
+.header {
+  grid-area: header;
+}
+
+.images {
+  grid-area: images;
+}
+
+.total {
+  grid-area: total;
+}
