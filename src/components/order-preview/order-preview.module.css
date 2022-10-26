@@ -23,8 +23,26 @@
 
 .images {
   grid-area: images;
+  display: flex;
+  max-width: 360px;
+  overflow: hidden;
+  list-style: none;
 }
 
 .total {
   grid-area: total;
+}
+
+.image{
+  margin-left: -5px;
+  display: block;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+.status{
+
 }

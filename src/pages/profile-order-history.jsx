@@ -1,22 +1,33 @@
-import React from "react";
+import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import OrderPreview  from '../components/order-preview/order-preview'
-// import styles from "./profile.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import OrderPreview from "../components/order-preview/order-preview";
+import {
+  wsConnectionStart,
+  wsConnectionClosed,
+} from "../services/actions/wsActions";
+import styles from "./profile.module.css";
 // Клик по заказу в «Истории заказов» переносит пользователя на экран /profile/orders/:id.
-export function ProfileОrderHistory() {
-  const myOrders = []
-  const location = useLocation
-return (
-  <ul>
-  {myOrders.map((item) => (
-       <Link
-       to='/profile/orders/:id'
-       >
-       <OrderPreview item={item} />
-     </Link>
-  ))}
+export default function ProfileОrderHistory() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(wsConnectionStart());
+    return () => {
+      dispatch(wsConnectionClosed());
+    };
+  }, []);
+  const orders = useSelector((store) => store.wsOrders.orders);
+  if (!orders) {
+    return;
+  }
 
-  </ul>
-
-)
+  return (
+    <ul className={`${styles.scroll} custom-scroll text`}>
+      {orders.map((item, index) => (
+        <li key={index}>
+          <OrderPreview order={item} isStatus={true} />
+        </li>
+      ))}
+    </ul>
+  );
 }

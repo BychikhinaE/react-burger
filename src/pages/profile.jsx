@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import {  NavLink, Switch, Route } from "react-router-dom";
+import {  NavLink, Switch, Route, ProtectedRoute } from "react-router-dom";
 import ProfileInfo from "./profile-info";
-import { ProfileОrderHistory } from "./profile-order-history";
+import ProfileОrderHistory from "./profile-order-history";
 import { signOut } from "../services/actions/user";
 
 export function ProfilePage() {
@@ -12,6 +12,8 @@ export function ProfilePage() {
   const logout = useCallback(() => {
     dispatch(signOut());
   }, [dispatch]);
+
+
 
   return (
     <section aria-label="profile-page" className={`${styles.grid} pl-10`}>
@@ -50,9 +52,9 @@ export function ProfilePage() {
         <Route path="/profile" exact>
           <ProfileInfo />
         </Route>
-        <Route path="/profile/orders" exact>
+        <ProtectedRoute path="/profile/orders" exact>
           <ProfileОrderHistory />
-        </Route>
+        </ProtectedRoute>
       </Switch>
     </section>
   );

@@ -4,7 +4,7 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
   WS_SEND_MESSAGE,
-
+  WS_CONNECTION_START,
 } from '../action-types';
 
 export const wsConnectionSuccess = () => {
@@ -38,4 +38,11 @@ export const wsSendMessage = message => {
     payload: message
   };
 };
+
+export const wsConnectionStart = () => {
+  return {
+    type: WS_CONNECTION_START,
+  };
+};
+
 

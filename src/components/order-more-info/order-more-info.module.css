@@ -1,0 +1,30 @@
+.scroll {
+  list-style: none;
+  max-height: calc(100vh - 616px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 600px;
+  display: grid;
+  align-content: start;
+  row-gap: 16px;
+}
+
+.status{
+
+}
+
+.price{
+
+}
+
+.footer{
+
+}
+
+.timestamp{
+
+}
+
+.total{
+
+}

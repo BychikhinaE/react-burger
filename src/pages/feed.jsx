@@ -1,23 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
 import AllCurrentOrders from "../components/all-current-orders/all-current-orders";
-import InfoAllOrders from "../components/info-all-orders/info-all-orders";
+import Statistics from "../components/statistics/statistics";
 import styles from "./feed.module.css";
 import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import Modal from "../modal/modal.jsx";
 import OrderMoreInfo from "../components/order-more-info/order-more-info";
 import { useEffect } from "react";
 import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_CLOSED,
-} from "../services/actions/wsActionTypes";
+  wsConnectionStart,
+  wsConnectionClosed,
+} from "../services/actions/wsActions";
 
 export function FeedPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({type: WS_CONNECTION_START});
+    dispatch(wsConnectionStart());
     return () => {
-      dispatch({type: WS_CONNECTION_CLOSED});
+      dispatch(wsConnectionClosed());
     };
   }, []);
 
@@ -32,7 +32,7 @@ export function FeedPage() {
         Лента заказов
       </h1>
       <AllCurrentOrders />
-      <InfoAllOrders />
+      <Statistics />
     </section>
   );
 }

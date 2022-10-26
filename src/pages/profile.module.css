@@ -55,3 +55,14 @@ color: rgba(240, 68, 68, .5)
 .buttons{
   grid-area: 4/2/5/3;
 }
+
+.scroll {
+  list-style: none;
+  max-height: calc(100vh - 616px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 600px;
+  display: grid;
+  align-content: start;
+  row-gap: 16px;
+}

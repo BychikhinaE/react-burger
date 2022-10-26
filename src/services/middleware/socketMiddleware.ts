@@ -1,22 +1,25 @@
 import type { Middleware, MiddlewareAPI } from 'redux';
+import { useSelector } from "react-redux";
+import { getCookie } from '../../utils/utils';
 
 export const socketMiddleware = (wsUrl, wsActions) => {
     return store => {
         let socket = null;
 
     return next => action => {
-      const { dispatch, getState } = store;
+      const { dispatch } = store;
       const { type, payload } = action;
 
       const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-      const { user } = getState().user;
+      const isAuth = useSelector((state) => state.user.isAuth);
+      const token = getCookie("accessToken");
 
-      if (type === wsInit && user) {
+      if (type === wsInit && isAuth) {
             // объект класса WebSocket
-        socket = new WebSocket(`${wsUrl}?token=${user.token}`);
-      }
-      if (socket) {
+        socket = new WebSocket(`${wsUrl}?token=${token}`);
+      } else { socket = new WebSocket(wsUrl)}
 
+      if (socket) {
                 // функция, которая вызывается при открытии сокета
         socket.onopen = event => {
           dispatch({ type: onOpen, payload: event });
@@ -40,9 +43,9 @@ export const socketMiddleware = (wsUrl, wsActions) => {
         };
 
         if (type === wsSendMessage) {
-          const message = { ...payload, token: user.token };
+          const orders = { ...payload, token: token };
                     // функция для отправки сообщения на сервер
-          socket.send(JSON.stringify(message));
+          socket.send(JSON.stringify(orders));
         }
       }
 

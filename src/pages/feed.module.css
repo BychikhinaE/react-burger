@@ -4,7 +4,7 @@
   column-gap: 20px;
   grid-template-areas: "title title"
                         "orders status"
-                        "orders all"
+                        "orders total"
                         "orders today";
   grid-template-rows: auto auto
                       1fr auto ;
