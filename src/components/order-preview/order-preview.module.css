@@ -34,12 +34,13 @@
 }
 
 .image{
-  margin-left: -5px;
+  margin-left: -20px;
   display: block;
   width: 60px;
   height: 60px;
   object-fit: cover;
   object-position: center;
+  border-color:  white;
   border-radius: 50%;
 }
 

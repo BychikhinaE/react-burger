@@ -3,7 +3,8 @@ import styles from "./statistics.module.css";
 import {  useSelector } from "react-redux";
 
 
-//ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
+// Реализуйте вёрстку так, чтобы каждая из этих колонок содержала
+// не более 10 записей. Если записей больше — создавайте дополнительную колонку.
 function Statistics() {
   const { total, totalToday, orders } = useSelector((state) => state.ws);
 

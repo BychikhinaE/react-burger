@@ -1,10 +1,11 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import {  NavLink, Switch, Route, ProtectedRoute } from "react-router-dom";
+import {  NavLink, Switch, Route } from "react-router-dom";
 import ProfileInfo from "./profile-info";
 import ProfileОrderHistory from "./profile-order-history";
 import { signOut } from "../services/actions/user";
+import { ProtectedRoute } from "../components/protected-route/protected-route";
 
 export function ProfilePage() {
   const dispatch = useDispatch();

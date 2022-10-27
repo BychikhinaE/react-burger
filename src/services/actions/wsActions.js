@@ -5,7 +5,7 @@ import {
   WS_GET_MESSAGE,
   WS_SEND_MESSAGE,
   WS_CONNECTION_START,
-} from '../action-types';
+} from './wsActionTypes';
 
 export const wsConnectionSuccess = () => {
   return {

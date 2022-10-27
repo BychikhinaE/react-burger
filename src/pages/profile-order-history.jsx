@@ -16,18 +16,18 @@ export default function ProfileОrderHistory() {
       dispatch(wsConnectionClosed());
     };
   }, []);
-  const orders = useSelector((store) => store.wsOrders.orders);
+  const orders = useSelector((state) => state.wsOrders.orders);
   if (!orders) {
     return;
   }
-
-  return (
-    <ul className={`${styles.scroll} custom-scroll text`}>
-      {orders.map((item, index) => (
-        <li key={index}>
-          <OrderPreview order={item} isStatus={true} />
-        </li>
-      ))}
-    </ul>
-  );
+console.log(orders)
+  // return (
+  //   <ul className={`${styles.scroll} custom-scroll text`}>
+  //     {orders.map((item, index) => (
+  //       <li key={index}>
+  //         <OrderPreview order={item} isStatus={true} />
+  //       </li>
+  //     ))}
+  //   </ul>
+  // );
 }

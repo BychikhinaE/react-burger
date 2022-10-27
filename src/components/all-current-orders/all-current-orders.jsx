@@ -2,7 +2,6 @@ import styles from "./all-current-orders.module.css";
 import { useSelector } from "react-redux";
 import OrderPreview  from '../order-preview/order-preview'
 
-//ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 function AllCurrentOrders() {
   const orders = useSelector((state) => state.ws.orders);
 

@@ -15,7 +15,7 @@ const AppHeader = () => {
       <nav className={`${styles.nav} mt-4 mb-4`}>
         <div className={`${styles.item} pr-4 pt-4 pb-4`}>
           <BurgerIcon
-            type={!pathname.endsWith("/order-list") ? "primary" : "secondary"}
+            type={!pathname.endsWith("/feed") ? "primary" : "secondary"}
           />
           <NavLink
             to={{ pathname: `/` }}
@@ -27,10 +27,10 @@ const AppHeader = () => {
         </div>
         <div className={`${styles.item} pl-5 pr-5 pt-4 pb-4 ml-4`}>
           <ListIcon
-            type={pathname.endsWith("/order-list") ? "primary" : "secondary"}
+            type={pathname.endsWith("/feed") ? "primary" : "secondary"}
           />
           <NavLink
-            to={{ pathname: `/order-list` }}
+            to={{ pathname: `/feed` }}
             className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
             activeClassName={styles.activeLink}
           >

@@ -15,9 +15,9 @@ import {
   ConstructorPage,
   NotFound404,
   InfoFood,
-  OrderListPage,
   FeedPage,
   OrderMoreInfoPage,
+  ProfileОrderHistory
 } from "../../pages/index";
 
 import Modal from "../modal/modal.jsx";
@@ -58,7 +58,9 @@ function App() {
             exact
           />
           <ProtectedRoute path="/profile" children={<ProfilePage />} exact />
-          <Route path="/order-list" children={<OrderListPage />} exact />
+          <ProtectedRoute path="/profile/orders" exact>
+          <ProfileОrderHistory />
+        </ProtectedRoute>
           <Route path="/feed" children={<FeedPage />} exact />
 
           <Route path="/feed/:id" children={<OrderMoreInfoPage />} exact />

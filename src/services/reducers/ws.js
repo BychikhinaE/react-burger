@@ -43,8 +43,7 @@ export const wsReducer = (state = initialState, action) => {
       return {
         ...state,
         error: undefined,
-        orders: [...state.orders,
-          {...action.payload.orders, timestamp: new Date().getTime() / 1000 }],
+        orders: action.payload.orders,
         total: action.payload.total,
         totalToday: action.payload.totalToday,
       };

@@ -1,28 +1,27 @@
 import React, { useEffect, useRef, useMemo } from "react";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./all-current-orders.module.css";
+import styles from "./order-preview.module.css";
 import { Link, useLocation, Redirect, useRouteMatch } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function OrderPreview(order, isStatus) {
+function OrderPreview({order, isStatus}) {
   const location = useLocation();
-  const itemsMenu = useSelector(
+  const AllIngredients = useSelector(
     (state) => state.menu.items
   );
   const { url }  = useRouteMatch();
+console.log(order)
+const orderIngredients = AllIngredients.reduce((prevVal, item)=>{
+  if( order.ingredients.find((ingredient)=> ingredient === item._id)){
+  return prevVal.concat(item)
+}
 
-// const orderIdCount = order.ingredients.reduce((prevVal, item) => {
-// if(!prevVal[item]){
-//   prevVal[item] =1} else {prevVal[item]++}
-//   return prevVal;
-// }, []);
-
-const orderIngredients = order.ingredients.filter((item)=>{
-  return item === itemsMenu._id
-})
+return prevVal
+}, [])
+console.log(orderIngredients)
 const total = orderIngredients.reduce(
   (acc, item) => acc + item.price,
  0
