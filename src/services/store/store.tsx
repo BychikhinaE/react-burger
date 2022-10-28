@@ -9,7 +9,8 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-  WS_SEND_MESSAGE
+  WS_SEND_MESSAGE,
+
 } from "../actions/wsActionTypes";
 
 const wsUrl = "wss://norma.nomoreparties.space/orders";
@@ -21,6 +22,7 @@ const wsActions = {
   onClose: WS_CONNECTION_CLOSED,
   onMessage: WS_GET_MESSAGE,
   wsSendMessage: WS_SEND_MESSAGE,
+
 };
 
 

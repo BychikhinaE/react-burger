@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
 import {  NavLink, Switch, Route } from "react-router-dom";
@@ -6,6 +6,10 @@ import ProfileInfo from "./profile-info";
 import ProfileОrderHistory from "./profile-order-history";
 import { signOut } from "../services/actions/user";
 import { ProtectedRoute } from "../components/protected-route/protected-route";
+import {
+  wsConnectionStart,
+  wsConnectionClosed,
+} from "../services/actions/wsActions";
 
 export function ProfilePage() {
   const dispatch = useDispatch();
@@ -14,7 +18,12 @@ export function ProfilePage() {
     dispatch(signOut());
   }, [dispatch]);
 
-
+  // useEffect(() => {
+  //   dispatch(wsConnectionStart());
+  //   return () => {
+  //     dispatch(wsConnectionClosed());
+  //   };
+  // }, []);
 
   return (
     <section aria-label="profile-page" className={`${styles.grid} pl-10`}>

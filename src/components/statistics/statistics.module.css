@@ -1,11 +1,15 @@
 .gridStatus {
   grid-area: status;
   display: grid;
+  grid-template-columns: 272px 272px;
+  column-gap: 36px;
+  /* grid-auto-flow: column; */
   align-content: start;
-  row-gap: 16px;
+  /* row-gap: 16px; */
   box-sizing: border-box;
   list-style: none;
-  min-height: 50vh;
+  height: 206px;
+  overflow: hidden;
 }
 
 .gridTotal{
@@ -17,19 +21,20 @@
 }
 
 .orders{
+list-style: none;
+padding-left: 0;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+height: 152px;
+overflow: hidden;
+}
+
+.item{
 
 }
 
 .done{
-
+color: #00CCCC;
 }
 
-.done::after{
-  content: 'Готовы';
-  display: block;
-}
-
-.pending::after{
-  content: 'В работе:';
-  display: block;
-}

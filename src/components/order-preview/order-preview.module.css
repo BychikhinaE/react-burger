@@ -1,12 +1,17 @@
-.item{
+.item {
   display: grid;
-  /* grid-template-columns: minmax(300px, 600px) 1fr; */
-  column-gap: 20px;
-  grid-template-areas: "number time"
-                        "header header"
-                        "images total"
-  /* grid-template-rows: auto auto
-                      1fr auto ; */
+  /* grid-template-columns: auto 1fr; */
+  gap: 24px;
+  grid-template-areas:
+    "number time time"
+    "header header header"
+    "images images total";
+  text-decoration: none;
+  color: inherit;
+  background: #1c1c21;
+  border-radius: 40px;
+  padding: 24px;
+
 }
 
 .number {
@@ -15,6 +20,8 @@
 
 .time {
   grid-area: time;
+  justify-self: end;
+  white-space: nowrap;
 }
 
 .header {
@@ -24,26 +31,45 @@
 .images {
   grid-area: images;
   display: flex;
-  max-width: 360px;
+  /* max-width: 250px; */
   overflow: hidden;
-  list-style: none;
+  position: relative;
+  padding-left: 20px;
 }
 
 .total {
   grid-area: total;
+  justify-self: end;
+  display: flex;
+  align-items: center;
 }
 
-.image{
-  margin-left: -20px;
+.imageBorder {
+  list-style: none;
   display: block;
+  width: 64px;
+  height: 64px;
+  border: 2px solid #4c4cff;
+  box-sizing: border-box;
+  border-radius: 50%;
+  margin-left: -20px;
+  background: #131316;
+}
+.image {
   width: 60px;
   height: 60px;
   object-fit: cover;
-  object-position: center;
-  border-color:  white;
-  border-radius: 50%;
 }
 
-.status{
+.status {
+}
+
+.counter{
+  display: block;
+  margin: 0;
+  position: absolute;
+  right: 18px;
+  top: 30%;
+  z-index: 1;
 
 }

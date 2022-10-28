@@ -9,10 +9,11 @@ export function socketMiddleware(wsUrl, wsActions) {
       const { dispatch } = store;
       const { type, payload } = action;
 
-      const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } =
+      const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage,  } =
         wsActions;
 
       const token = getCookie("accessToken");
+      console.log(token+ "token")
       // const isAuth = token ? true : false;
       if (type === wsInit) {
         // объект класса WebSocket
@@ -39,6 +40,7 @@ export function socketMiddleware(wsUrl, wsActions) {
           const { success, ...restParsedData } = parsedData;
           dispatch({ type: onMessage, payload: restParsedData });
         };
+
         // функция, которая вызывается при закрытии соединения
         socket.onclose = (event) => {
           dispatch({ type: onClose, payload: event });

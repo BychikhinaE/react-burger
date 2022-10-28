@@ -1,30 +1,70 @@
 .scroll {
   list-style: none;
-  max-height: calc(100vh - 616px);
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
   overflow-x: hidden;
   max-width: 600px;
   display: grid;
   align-content: start;
   row-gap: 16px;
+  width: 100%;
 }
 
-.status{
-
+.header {
+  align-self: flex-start;
+  width: 100%;
+}
+.status {
+  align-self: flex-start;
+}
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.imageBorder {
+  list-style: none;
+  display: flex;
+  width: 64px;
+  height: 64px;
+  border: 2px solid #4c4cff;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: #131316;
+}
+.image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+.price {
+  display: flex;
+  margin-left: auto;
 }
 
-.price{
-
+.footer {
+  display: flex;
+  width: 100%;
 }
 
-.footer{
-
+.timestamp {
+  margin-right: auto;
 }
 
-.timestamp{
-
+.total {
+  margin-left: auto;
 }
 
-.total{
+.done {
+  color: #00cccc;
+}
+.pending {
+  color: inherit;
+}
+.cancel {
+  color: indianred;
+}
 
+.created {
+  color: inherit;
 }
