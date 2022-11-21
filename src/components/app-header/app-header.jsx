@@ -15,7 +15,7 @@ const AppHeader = () => {
       <nav className={`${styles.nav} mt-4 mb-4`}>
         <div className={`${styles.item} pr-4 pt-4 pb-4`}>
           <BurgerIcon
-            type={!pathname.endsWith("/feed") ? "primary" : "secondary"}
+            type={pathname.endsWith("/") ? "primary" : "secondary"}
           />
           <NavLink
           exact

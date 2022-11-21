@@ -1,5 +1,6 @@
 import styles from "./order-more-info.module.css";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useParams } from "react-router-dom";
 import moment from "moment";
@@ -8,11 +9,15 @@ function OrderMoreInfo() {
   const orders = useSelector((state) => state.ws.orders);
   const itemsMenu = useSelector((state) => state.menu.items);
   const { id } = useParams();
-  const order = orders.find((item) => item._id === id);
 
-  if (!order) {
-    return;
-  }
+if (!orders ) {
+  return;
+}
+
+ const  order = orders.find((item) => item._id === id);
+ if (!order ) {
+  return;
+}
   const orderIngredients = itemsMenu.filter((ingredient) => {
     return order.ingredients.some((id) => ingredient._id === id);
   });
@@ -44,7 +49,8 @@ function OrderMoreInfo() {
       ? (styles.created, (status = "Создан"))
       : (styles.cancel, (status = "Отменен"));
 
-  moment.locale("ru");
+      //странно что не работает локале
+  moment.locale('ru');
   const orderDateMoment = moment().format("HH:mm[ i-GMT]Z");
   const fromNow = () => {
     const dif = moment().diff(order.createdAt, "days");

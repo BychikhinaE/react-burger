@@ -1,10 +1,41 @@
 import { useDispatch, useSelector } from "react-redux";
-
+import { useEffect } from "react";
 import styles from "./info-food.module.css";
 import OrderMoreInfo from "../components/order-more-info/order-more-info";
+import {
+  wsConnectionStart,
+  wsConnectionClosed,
+} from "../services/actions/wsActions";
+import { getCookie } from "../utils/utils";
+import {  useRouteMatch } from "react-router-dom";
 
 export function OrderMoreInfoPage() {
+
+  //доделаеть стили
+
+  const dispatch = useDispatch();
+  const match = useRouteMatch();
   // const numberOrder = useSelector((state) => state.order.numberOrder);
+  console.log(match);
+  useEffect(() => {
+    if (match.path === "/feed/:id") {
+      dispatch(
+        wsConnectionStart({
+          token: `/all`,
+        })
+      );
+    } else {
+      const accessToken = getCookie("accessToken");
+      dispatch(
+        wsConnectionStart({
+          token: `?token=${accessToken}`,
+        })
+      );
+    }
+    return () => {
+      dispatch(wsConnectionClosed());
+    };
+  }, [dispatch, match]);
 
   return (
     <section

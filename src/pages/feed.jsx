@@ -2,9 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import AllCurrentOrders from "../components/all-current-orders/all-current-orders";
 import Statistics from "../components/statistics/statistics";
 import styles from "./feed.module.css";
-// import { Switch, Route, useHistory, useLocation } from "react-router-dom";
-// import Modal from "../modal/modal.jsx";
-// import OrderMoreInfo from "../components/order-more-info/order-more-info";
 import React, { useEffect } from "react";
 import {
   wsConnectionStart,

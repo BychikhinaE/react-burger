@@ -1,5 +1,4 @@
 // import type { Middleware, MiddlewareAPI } from 'redux';
-import { getCookie } from "../../utils/utils";
 
 export function socketMiddleware(wsUrl, wsActions) {
   return (store) => {
@@ -12,9 +11,6 @@ export function socketMiddleware(wsUrl, wsActions) {
       const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage,  } =
         wsActions;
 
-      // const token = getCookie("accessToken");
-      // console.log(token+ "token")
-      // const isAuth = token ? true : false;
       if (type === wsInit) {
         // объект класса WebSocket
         socket = new WebSocket(`${wsUrl}${payload.token}`);
