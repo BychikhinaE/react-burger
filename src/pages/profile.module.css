@@ -58,11 +58,15 @@ color: rgba(240, 68, 68, .5)
 
 .scroll {
   list-style: none;
-  max-height: calc(100vh - 616px);
+  max-height: calc(100vh - 148px);
   overflow-y: auto;
   overflow-x: hidden;
-  max-width: 600px;
+  max-width: 844px;
   display: grid;
   align-content: start;
   row-gap: 16px;
+}
+
+.history {
+  grid-area: 1/2/5/3;
 }

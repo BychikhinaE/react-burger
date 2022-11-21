@@ -12,12 +12,12 @@ export function socketMiddleware(wsUrl, wsActions) {
       const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage,  } =
         wsActions;
 
-      const token = getCookie("accessToken");
-      console.log(token+ "token")
+      // const token = getCookie("accessToken");
+      // console.log(token+ "token")
       // const isAuth = token ? true : false;
       if (type === wsInit) {
         // объект класса WebSocket
-        socket = token ? new WebSocket(`${wsUrl}?token=${token}`) : new WebSocket(`${wsUrl}/all`);
+        socket = new WebSocket(`${wsUrl}${payload.token}`);
       } else if (type === onClose && socket) {
         socket.close();
       }

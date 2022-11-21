@@ -11,9 +11,9 @@ function AllCurrentOrders() {
 
   return (
       <section className={styles.gridArea}>
-        <ul className={`${styles.scroll} custom-scroll`} id="scroll">
-        {orders.map((item) => (
-          <li key={item._id} className={styles.item}>
+        <ul className={`${styles.scroll} custom-scroll`} >
+        {orders.map((item, index) => (
+          <li key={index} className={styles.item}>
             <OrderPreview order={item} isStatus={false}/>
           </li>
         ))}

@@ -5,6 +5,7 @@
   grid-template-areas:
     "number time time"
     "header header header"
+    "status status status"
     "images images total";
   text-decoration: none;
   color: inherit;
@@ -62,6 +63,7 @@
 }
 
 .status {
+  grid-area: status;
 }
 
 .counter{
@@ -72,4 +74,19 @@
   top: 30%;
   z-index: 1;
 
+}
+
+
+.done {
+  color: #00cccc;
+}
+.pending {
+  color: inherit;
+}
+.cancel {
+  color: indianred;
+}
+
+.created {
+  color: inherit;
 }

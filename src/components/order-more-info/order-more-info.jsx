@@ -64,11 +64,11 @@ function OrderMoreInfo() {
       <h3 className={`${styles.header} text text_type_main-medium mb-3`}>
         {order.name}
       </h3>
-      <div
+      <p
         className={`${styles.status} ${colorStatus} text text_type_main-default`}
       >
         {status}
-      </div>
+      </p>
       <h4 className={`${styles.header} text text_type_main-medium mt-15 mb-6`}>
         Состав:
       </h4>

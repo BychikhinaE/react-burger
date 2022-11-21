@@ -34,6 +34,15 @@ function OrderPreview({ order, isStatus }) {
       : null;
   };
   const date = `${fromNow()}, ${orderDateMoment}`;
+  let status = "";
+  const colorStatus =
+    order.status === "done"
+      ? (styles.done, (status = "Выполнен"))
+      : order.status === "pending"
+      ? (styles.pending, (status = "Готовится"))
+      : order.status === "created"
+      ? (styles.created, (status = "Создан"))
+      : (styles.cancel, (status = "Отменен"));
 
   return (
     <Link
@@ -52,22 +61,30 @@ function OrderPreview({ order, isStatus }) {
         {order.name}
       </h2>
       {isStatus && (
-        <p className={`${styles.status} text text_type_main-default`}>
-          {order.status}
+        <p
+          className={`${styles.status} ${colorStatus} text text_type_main-default`}
+        >
+          {status}
         </p>
       )}
       <ul className={`${styles.images}`}>
-        {orderIngredients.map((item, index) => (
-          index < 6 && (
-          <li key={index} className={`${styles.imageBorder}`}>
-            <img src={item.image} alt={item.name} className={styles.image} />
-          </li>)
-        ))}
-     {orderIngredients.length > 6 && (
-            <li className={`${styles.counter} text text_type_main-small`}>
-              {`+${orderIngredients.length - 6}`}
-            </li>
-          )}
+        {orderIngredients.map(
+          (item, index) =>
+            index < 6 && (
+              <li key={index} className={`${styles.imageBorder}`}>
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className={styles.image}
+                />
+              </li>
+            )
+        )}
+        {orderIngredients.length > 6 && (
+          <li className={`${styles.counter} text text_type_main-small`}>
+            {`+${orderIngredients.length - 6}`}
+          </li>
+        )}
       </ul>
 
       <div className={`${styles.total}`}>

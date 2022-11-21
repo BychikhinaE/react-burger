@@ -17,7 +17,7 @@ import {
   InfoFood,
   FeedPage,
   OrderMoreInfoPage,
-  ProfileОrderHistory
+  ProfileОrderHistory,
 } from "../../pages/index";
 
 import Modal from "../modal/modal.jsx";
@@ -37,55 +37,57 @@ function App() {
   const onClose = () => {
     history.goBack();
   };
-  const background = location.state && location.state.background;
+  const background = location.state?.background;
   return (
     <>
       <AppHeader />
       <main className={styles.main}>
         <Switch location={background || location}>
-          <Route path="/" children={<ConstructorPage />} exact />
-          <Route path="/login" children={<LoginPage />} exact />
-          <Route path="/ingredients/:id" children={<InfoFood />} exact />
-          <Route path="/register" children={<RegisterPage />} exact />
+
+          <Route path="/login" children={<LoginPage />}/>
+          <Route path="/ingredients/:id" children={<InfoFood />}/>
+          <Route path="/register" children={<RegisterPage />} />
           <Route
             path="/forgot-password"
             children={<ForgotPasswordPage />}
-            exact
+
           />
           <Route
             path="/reset-password"
             children={<ResetPasswordPage />}
-            exact
+
           />
-          <ProtectedRoute path="/profile" children={<ProfilePage />} exact />
-          <ProtectedRoute path="/profile/orders" exact>
-          <ProfileОrderHistory />
-        </ProtectedRoute>
-          <Route path="/feed" children={<FeedPage />} exact />
+          <ProtectedRoute path="/profile" children={<ProfilePage />} />
 
-          <Route path="/feed/:id" children={<OrderMoreInfoPage />} exact />
-
+          <Route path="/feed/:id" children={<OrderMoreInfoPage />} />
+          <Route path="/feed" children={<FeedPage />}  />
+          <Route path="/" children={<ConstructorPage />} />
           <Route children={<NotFound404 />} />
+
+
+
         </Switch>
         {background && (
           <>
-            <Route path="/ingredients/:id">
+            <Route path="/ingredients/:id" >
               <Modal onClose={onClose} header="Детали ингредиента">
                 <IngredientDetails />
               </Modal>
             </Route>
 
-            <Route path="/feed/:id">
+            <Route path="/feed/:id" >
               <Modal onClose={onClose}>
                 <OrderMoreInfo />
               </Modal>
             </Route>
 
-            <ProtectedRoute path="/profile/orders/:id">
+            <ProtectedRoute path="/profile/orders/:id" >
               <Modal onClose={onClose}>
                 <OrderMoreInfo />
               </Modal>
             </ProtectedRoute>
+
+
           </>
         )}
       </main>

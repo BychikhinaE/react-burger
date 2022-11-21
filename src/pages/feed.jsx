@@ -15,11 +15,13 @@ function FeedPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(wsConnectionStart());
+    dispatch(wsConnectionStart({
+      token: `/all`,
+    }));
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <section
@@ -38,4 +40,4 @@ function FeedPage() {
 }
 
 
-export default React.memo(FeedPage);
+export default FeedPage;

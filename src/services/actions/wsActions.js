@@ -1,3 +1,4 @@
+import { tokenToString } from 'typescript';
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
@@ -42,9 +43,10 @@ export const wsSendMessage = message => {
   };
 };
 
-export const wsConnectionStart = () => {
+export const wsConnectionStart = (token) => {
   return {
     type: WS_CONNECTION_START,
+    payload: token,
   };
 };
 

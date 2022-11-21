@@ -10,7 +10,7 @@ import { wsReducer } from "./ws";
 export const rootReducer = combineReducers({
   menu: burgerIngredientsReducer,
   constr: constructorReducer,
-  info: ingredientReducer,
+  // info: ingredientReducer,
   order: orderReducer,
   user: userReducer,
   password: passwordReducer,

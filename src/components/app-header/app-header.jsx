@@ -18,6 +18,7 @@ const AppHeader = () => {
             type={!pathname.endsWith("/feed") ? "primary" : "secondary"}
           />
           <NavLink
+          exact
             to={{ pathname: `/` }}
             className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
             activeClassName={styles.activeLink}
@@ -30,6 +31,7 @@ const AppHeader = () => {
             type={pathname.endsWith("/feed") ? "primary" : "secondary"}
           />
           <NavLink
+          exact
             to={{ pathname: `/feed` }}
             className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
             activeClassName={styles.activeLink}
