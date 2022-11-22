@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 //Функция возвращает расстояние между заголовком раздела и верхней границей рамки родительского блока
 export function getDistanceBetweenPoints(elem, viewportCoords) {
   const coordsChild = elem.getBoundingClientRect();
@@ -44,3 +46,23 @@ export function setCookie(name, value, props) {
 export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
+
+//функция вернет день времы и часовой пояс заказа Руссктий :(
+moment().locale("ru")
+moment().tz("Europe/Moscow")
+const orderDateMoment = (order) => moment(order.createdAt).format("HH:mm[ i-GMT]");
+const utc = moment().utcOffset()/60
+
+
+const fromNow = (order) => {
+  const dif = moment().diff(order.createdAt, "days");
+  return dif === 0
+    ? "Сегодня"
+    : dif === 1
+    ? "Вчера"
+    : dif > 1
+    ? moment(order.createdAt).locale("ru").fromNow()
+    : null;
+};
+export const getDate = (order) =>{ return `${fromNow(order)}, ${orderDateMoment(order)}+${utc}`};
+

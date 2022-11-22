@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styles from "./info-food.module.css";
+import styles from "./page-module.module.css";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";

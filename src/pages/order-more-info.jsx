@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import styles from "./info-food.module.css";
+import styles from "./page-module.module.css";
 import OrderMoreInfo from "../components/order-more-info/order-more-info";
 import {
   wsConnectionStart,
@@ -40,12 +40,15 @@ export function OrderMoreInfoPage() {
   return (
     <section
       aria-label="OrderMoreInfoPage"
-      className={`${styles.wrapper} pb-10 container pr-10 pl-10`}
+      className={`${styles.wrapper} pb-10 container `}
     >
+      <div className={`${styles.container} mb-3`}>
       <h1 className={`text text_type_main-large pt-10 pb-5 ${styles.header}`}>
         {/* {numberOrder} */}
       </h1>
       <OrderMoreInfo />
+      </div>
+
     </section>
   );
 }

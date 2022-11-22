@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useParams } from "react-router-dom";
-import moment from "moment";
+import {getDate} from '../../utils/utils'
 
 function OrderMoreInfo() {
   const orders = useSelector((state) => state.ws.orders);
-  const itemsMenu = useSelector((state) => state.menu.items);
+  const AllIngredients = useSelector((state) => state.menu.items);
   const { id } = useParams();
 
 if (!orders ) {
@@ -18,27 +18,55 @@ if (!orders ) {
  if (!order ) {
   return;
 }
-  const orderIngredients = itemsMenu.filter((ingredient) => {
-    return order.ingredients.some((id) => ingredient._id === id);
-  });
-  console.log(orderIngredients);
+  // const orderIngredients = itemsMenu.filter((ingredient) => {
+  //   return order.ingredients.some((id) => ingredient._id === id);
+  // });
+  // console.log(orderIngredients);
 
-  const orderIngrCount = orderIngredients.reduce((prevVal, item) => {
-    if (!prevVal[item._id]) {
-      prevVal.push({
-        name: item.name,
-        image: item.image,
-        price: item.price,
-        quantity: 1,
-        _id: item._id,
-      });
-    } else {
-      item.quantity++;
-    }
+//   order.ingredients - массив айди ингредиента
+//   itemsMenu - массив всех ингредиентов с полем _айди
+// нужно создать массив ингредиентов на основе двух этих
+
+const orderIngrCount = AllIngredients.reduce((prevVal,item)=>{
+   order.ingredients.forEach(
+    (id) => {
+      if(item._id ===id){
+        if (!prevVal.some((item)=> item._id === id)) {
+          prevVal.push({
+            name: item.name,
+            image: item.image,
+            price: item.price,
+            quantity: 1,
+            _id: item._id,
+          });
+        } else {
+          prevVal.find((item)=> item._id === id).quantity++
+          // item.quantity++;
+        }
+        return prevVal;
+      }
+    })
     return prevVal;
-  }, []);
+}, []
+)
+console.log(orderIngrCount);
 
-  const total = orderIngredients.reduce((acc, item) => acc + item.price, 0);
+  // const orderIngrCount = orderIngredients.reduce((prevVal, item) => {
+  //   if (!prevVal[item._id]) {
+  //     prevVal.push({
+  //       name: item.name,
+  //       image: item.image,
+  //       price: item.price,
+  //       quantity: 1,
+  //       _id: item._id,
+  //     });
+  //   } else {
+  //     item.quantity++;
+  //   }
+  //   return prevVal;
+  // }, []);
+
+  const total = orderIngrCount.reduce((acc, item) => acc + item.price*item.quantity, 0);
   let status = "";
   const colorStatus =
     order.status === "done"
@@ -49,24 +77,9 @@ if (!orders ) {
       ? (styles.created, (status = "Создан"))
       : (styles.cancel, (status = "Отменен"));
 
-      //странно что не работает локале
-  moment.locale('ru');
-  const orderDateMoment = moment().format("HH:mm[ i-GMT]Z");
-  const fromNow = () => {
-    const dif = moment().diff(order.createdAt, "days");
-    return dif === 0
-      ? "Сегодня"
-      : dif === 1
-      ? "Вчера"
-      : dif > 1
-      ? moment(order.createdAt).fromNow()
-      : null;
-  };
-  const date = `${fromNow()}, ${orderDateMoment}`;
-
   return (
     <>
-      <p className="text text_type_digits-default mb-10 ">#{order.number}</p>
+
       <h3 className={`${styles.header} text text_type_main-medium mb-3`}>
         {order.name}
       </h3>
@@ -100,7 +113,7 @@ if (!orders ) {
         <p
           className={`${styles.timestamp}text text_type_digits-small text_color_inactive `}
         >
-          {date}
+          {getDate(order)}
         </p>
         <p className={`${styles.total} text text_type_digits-default mr-1`}>
           {total}

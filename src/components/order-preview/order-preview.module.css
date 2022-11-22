@@ -34,7 +34,7 @@
   display: flex;
   /* max-width: 250px; */
   overflow: hidden;
-  position: relative;
+
   padding-left: 20px;
 }
 
@@ -66,14 +66,36 @@
   grid-area: status;
 }
 
+.imageBorder:nth-child(1){
+  z-index: 6;
+}
+
+.imageBorder:nth-child(2){
+  z-index: 5;
+}
+
+.imageBorder:nth-child(3){
+  z-index: 4;
+}
+
+.imageBorder:nth-child(4){
+  z-index: 3;
+}
+
+.imageBorder:nth-child(5){
+  z-index: 2;
+}
+
+.imageBorder:nth-child(6){
+  position: relative;
+  z-index: 1;
+}
 .counter{
   display: block;
   margin: 0;
   position: absolute;
-  right: 18px;
-  top: 30%;
-  z-index: 1;
-
+  right: 25px;
+  top: 20px;
 }
 
 

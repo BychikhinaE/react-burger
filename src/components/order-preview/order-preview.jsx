@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useMemo } from "react";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./order-preview.module.css";
 import { Link, useLocation, Redirect, useRouteMatch } from "react-router-dom";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getDate } from "../../utils/utils";
 
 function OrderPreview({ order, isStatus }) {
   const location = useLocation();
@@ -12,28 +11,23 @@ function OrderPreview({ order, isStatus }) {
   const { url } = useRouteMatch();
 
   const orderIngredients = AllIngredients.reduce((prevVal, item) => {
-    if (order.ingredients.find((ingredient) => ingredient === item._id)) {
-      return prevVal.concat(item);
-    }
+    order.ingredients.forEach((id) => {
+      if (item._id === id) {
+        prevVal.push({
+          name: item.name,
+          image: item.image,
+          price: item.price,
 
+          _id: item._id,
+        });
+      }
+      return prevVal;
+    });
     return prevVal;
   }, []);
 
   const total = orderIngredients.reduce((acc, item) => acc + item.price, 0);
 
-  moment.locale("ru");
-  const orderDateMoment = moment().format("HH:mm[ i-GMT]Z");
-  const fromNow = () => {
-    const dif = moment().diff(order.createdAt, "days");
-    return dif === 0
-      ? "Сегодня"
-      : dif === 1
-      ? "Вчера"
-      : dif > 1
-      ? moment(order.createdAt).fromNow()
-      : null;
-  };
-  const date = `${fromNow()}, ${orderDateMoment}`;
   let status = "";
   const colorStatus =
     order.status === "done"
@@ -55,7 +49,7 @@ function OrderPreview({ order, isStatus }) {
       <p
         className={`${styles.time} text text_type_main-default text_color_inactive`}
       >
-        {date}
+        {getDate(order)}
       </p>
       <h2 className={`${styles.header} text text_type_main-medium`}>
         {order.name}
@@ -70,7 +64,7 @@ function OrderPreview({ order, isStatus }) {
       <ul className={`${styles.images}`}>
         {orderIngredients.map(
           (item, index) =>
-            index < 6 && (
+            index < 5 && (
               <li key={index} className={`${styles.imageBorder}`}>
                 <img
                   src={item.image}
@@ -80,11 +74,27 @@ function OrderPreview({ order, isStatus }) {
               </li>
             )
         )}
-        {orderIngredients.length > 6 && (
-          <li className={`${styles.counter} text text_type_main-small`}>
-            {`+${orderIngredients.length - 6}`}
-          </li>
-        )}
+
+        {orderIngredients.length >= 5 &&
+          orderIngredients.map(
+            (item, index) =>
+              index === 5 && (
+                <li key={index} className={`${styles.imageBorder}`}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className={styles.image}
+                  />
+                  {orderIngredients.length > 5 && (
+                    <p
+                      className={`${styles.counter} text text_type_main-small`}
+                    >
+                      {`+${orderIngredients.length - 5}`}
+                    </p>
+                  )}
+                </li>
+              )
+          )}
       </ul>
 
       <div className={`${styles.total}`}>
