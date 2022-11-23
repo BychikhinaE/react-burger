@@ -1,23 +1,19 @@
+/* info-food order-more-info */
 .wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  /* justify-content: center; */
   height: 100%;
-  padding-top: 180px;
+  padding-top: 122px;
 }
 
 .container{
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.header {
-  /* display: flex;
-  justify-content: space-between;
   width: 100%;
-  align-items: center; */
+  max-width: 640px;
 }
 
 .image {

@@ -15,7 +15,7 @@ const initialStateOrder = {
 export const orderReducer = (state = initialStateOrder, action) => {
   switch (action.type) {
     case SUBMIT_ORDER_REQUEST: {
-      return { ...state, orderRequest: true };
+      return { ...state, orderRequest: true, modalVisible: true, };
     }
 
     // получить номер заказа

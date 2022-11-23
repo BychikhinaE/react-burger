@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useMemo } from "react";
 import styles from "./order-preview.module.css";
-import { Link, useLocation, Redirect, useRouteMatch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import {  useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getDate } from "../../utils/utils";
+import { formatHumanDate } from "../../utils/utils";
 
 function OrderPreview({ order, isStatus }) {
   const location = useLocation();
@@ -28,15 +27,28 @@ function OrderPreview({ order, isStatus }) {
 
   const total = orderIngredients.reduce((acc, item) => acc + item.price, 0);
 
+  //Здесь меняем текст статуса и его цвет
   let status = "";
-  const colorStatus =
-    order.status === "done"
-      ? (styles.done, (status = "Выполнен"))
-      : order.status === "pending"
-      ? (styles.pending, (status = "Готовится"))
-      : order.status === "created"
-      ? (styles.created, (status = "Создан"))
-      : (styles.cancel, (status = "Отменен"));
+  let colorStatus = undefined;
+
+  switch (order.status) {
+    case "done":
+      status = "Выполнен";
+      colorStatus = styles.done;
+      break;
+    case "pending":
+      status = "Готовится";
+      colorStatus = styles.pending;
+      break;
+    case "created":
+      status = "Создан";
+      colorStatus = styles.created;
+      break;
+    default:
+      status = "Отменен";
+      colorStatus = styles.cancel;
+      break;
+  }
 
   return (
     <Link
@@ -49,7 +61,7 @@ function OrderPreview({ order, isStatus }) {
       <p
         className={`${styles.time} text text_type_main-default text_color_inactive`}
       >
-        {getDate(order)}
+        {formatHumanDate(order)}
       </p>
       <h2 className={`${styles.header} text text_type_main-medium`}>
         {order.name}

@@ -12,13 +12,15 @@ function FeedPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(wsConnectionStart({
-      token: `/all`,
-    }));
+    dispatch(
+      wsConnectionStart({
+        token: `/all`,
+      })
+    );
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <section
@@ -35,6 +37,5 @@ function FeedPage() {
     </section>
   );
 }
-
 
 export default FeedPage;

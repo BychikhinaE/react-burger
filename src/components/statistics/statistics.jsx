@@ -2,8 +2,6 @@ import styles from "./statistics.module.css";
 
 import { useSelector } from "react-redux";
 
-// Реализуйте вёрстку так, чтобы каждая из этих колонок содержала
-// не более 10 записей. Если записей больше — создавайте дополнительную колонку.
 function Statistics() {
   const { total, totalToday, orders } = useSelector((state) => state.ws);
 
@@ -18,14 +16,14 @@ function Statistics() {
           <p className={`${styles.status} text text_type_main-medium mb-6`}>
             Готовы:
           </p>
-          <ul
-            className={`${styles.orders} text text_type_digits-default`}
-          >
+          <ul className={`${styles.orders} text text_type_digits-default`}>
             {orders.map(
               (item, index) =>
-                item.status === "done" && <li key={index}
-                className={`${styles.done} mr-5 mb-2`}
-                >{item.number}</li>
+                item.status === "done" && (
+                  <li key={index} className={`${styles.done} mr-5 mb-2`}>
+                    {item.number}
+                  </li>
+                )
             )}
           </ul>
         </div>
@@ -33,9 +31,7 @@ function Statistics() {
           <p className={`${styles.status} text text_type_main-medium`}>
             В работе:
           </p>
-          <ul
-            className={`${styles.orders} text text_type_digits-default`}
-          >
+          <ul className={`${styles.orders} text text_type_digits-default`}>
             {orders.map(
               (item, index) =>
                 item.status === "pending" && (

@@ -1,16 +1,15 @@
+/* forgot-password login  reset-password register*/
 .wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   height: 100%;
-  padding-top: 180px;
+  margin-top: 180px;;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  /* justify-items: stretch; */
   width: 480px;
 }
 
@@ -20,17 +19,13 @@
   margin: 0 auto;
   gap: 24px;
   place-items: center;
-  /* justify-items: stretch; */
-  /* justify-items: stretch; */
-  /* align-items: center; */
 }
 
 .heading {
   justify-self: center;
 }
 
-.container__footer {
-}
+
 .joinform {
   display: flex;
   align-items: center;
@@ -41,6 +36,4 @@
   display: block;
   text-decoration: none;
   color: #4C4CFF;
-  /* font-family: inherit; */
-  /* font-size: inherit; */
 }

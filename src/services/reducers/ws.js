@@ -3,7 +3,7 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-} from '../actions/wsActionTypes';
+} from "../actions/wsActionTypes";
 
 const initialState = {
   wsConnected: false,
@@ -20,14 +20,14 @@ export const wsReducer = (state = initialState, action) => {
       return {
         ...state,
         error: undefined,
-        wsConnected: true
+        wsConnected: true,
       };
 
     case WS_CONNECTION_ERROR:
       return {
         ...state,
         error: action.payload,
-        wsConnected: false
+        wsConnected: false,
       };
 
     case WS_CONNECTION_CLOSED:
@@ -40,7 +40,7 @@ export const wsReducer = (state = initialState, action) => {
         totalToday: 0,
       };
 
-      case WS_GET_MESSAGE:
+    case WS_GET_MESSAGE:
       return {
         ...state,
         error: undefined,
@@ -48,8 +48,6 @@ export const wsReducer = (state = initialState, action) => {
         total: action.payload.total,
         totalToday: action.payload.totalToday,
       };
-
-
 
     default:
       return state;

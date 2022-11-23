@@ -10,7 +10,6 @@ import {
   Route,
   useHistory,
   useLocation,
-  BrowserRouter as Router,
 } from "react-router-dom";
 import {
   LoginPage,
@@ -23,7 +22,6 @@ import {
   InfoFood,
   FeedPage,
   OrderMoreInfoPage,
-  ProfileОrderHistory,
 } from "../../pages/index";
 
 import Modal from "../modal/modal.jsx";
@@ -47,7 +45,7 @@ function App() {
   return (
     <>
       <AppHeader />
-      <main className={styles.main}>
+      <main>
         <Switch location={background || location}>
           <Route path="/login" children={<LoginPage />} />
           <Route path="/ingredients/:id" children={<InfoFood />} />
@@ -55,14 +53,11 @@ function App() {
           <Route path="/forgot-password" children={<ForgotPasswordPage />} />
           <Route path="/reset-password" children={<ResetPasswordPage />} />
           <Route path="/feed/:id" children={<OrderMoreInfoPage />} />
-          <Route
-            path="/profile/orders/:id"
-            children={<OrderMoreInfoPage />}
-          />
+          <Route path="/profile/orders/:id" children={<OrderMoreInfoPage />} />
           <Route path="/feed" children={<FeedPage />} />
-          <Route path="/profile/orders" children={<ProfilePage />} />
+          <ProtectedRoute path="/profile/orders" children={<ProfilePage />} />
           <ProtectedRoute path="/profile" children={<ProfilePage />} />
-          <Route path="/" children={<ConstructorPage />}  />
+          <Route path="/" children={<ConstructorPage />} />
           <Route children={<NotFound404 />} />
         </Switch>
         {background && (

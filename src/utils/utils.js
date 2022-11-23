@@ -19,8 +19,8 @@ export function getCookie(name) {
 
 export function setCookie(name, value, props) {
   props = {
-    path: '/',
-    ...props
+    path: "/",
+    ...props,
   };
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
@@ -47,12 +47,11 @@ export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
 
-//функция вернет день времы и часовой пояс заказа Руссктий :(
-moment().locale("ru")
-moment().tz("Europe/Moscow")
-const orderDateMoment = (order) => moment(order.createdAt).format("HH:mm[ i-GMT]");
-const utc = moment().utcOffset()/60
-
+//функция вернет день времы и часовой пояс заказа
+moment().locale("ru");
+const orderDateMoment = (order) =>
+  moment(order.createdAt).format("HH:mm[ i-GMT]");
+const utc = moment().utcOffset() / 60;
 
 const fromNow = (order) => {
   const dif = moment().diff(order.createdAt, "days");
@@ -64,5 +63,6 @@ const fromNow = (order) => {
     ? moment(order.createdAt).locale("ru").fromNow()
     : null;
 };
-export const getDate = (order) =>{ return `${fromNow(order)}, ${orderDateMoment(order)}+${utc}`};
-
+export const formatHumanDate = (order) => {
+  return `${fromNow(order)}, ${orderDateMoment(order)}+${utc}`;
+};

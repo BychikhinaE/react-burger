@@ -2,12 +2,11 @@
   list-style: none;
   max-height: calc(100vh - 200px);
   overflow-y: auto;
-  overflow-x: hidden;
   max-width: 600px;
   display: grid;
-  align-content: start;
   row-gap: 16px;
   width: 100%;
+  align-self: flex-start;
 }
 
 .header {
@@ -23,7 +22,6 @@
   width: 100%;
 }
 .imageBorder {
-  list-style: none;
   display: flex;
   width: 64px;
   height: 64px;
