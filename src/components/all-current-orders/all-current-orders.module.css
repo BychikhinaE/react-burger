@@ -1,0 +1,23 @@
+.gridArea {
+  grid-area: orders;
+}
+
+.scroll {
+  max-height: calc(100vh - 364px);
+  overflow-y: auto;
+  max-width: 600px;
+  padding: 0;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.item{
+  list-style: none;
+  margin-bottom: 24px;
+  box-sizing: border-box;
+
+}

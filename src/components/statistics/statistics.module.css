@@ -1,0 +1,36 @@
+.gridStatus {
+  grid-area: status;
+  display: grid;
+  grid-template-columns: 272px 272px;
+  column-gap: 36px;
+  align-content: start;
+  box-sizing: border-box;
+  list-style: none;
+  height: 206px;
+  overflow: hidden;
+}
+
+.gridTotal{
+  grid-area: total;
+}
+
+.gridToday{
+  grid-area: today;
+}
+
+.orders{
+list-style: none;
+padding-left: 0;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+height: 152px;
+overflow: hidden;
+}
+
+
+
+.done{
+color: #00CCCC;
+}
+

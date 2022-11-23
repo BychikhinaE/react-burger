@@ -116,7 +116,7 @@ export function getUser() {
       getCookie("accessToken") === undefined &&
       getCookie("refreshToken") === undefined
     ) {
-      return;
+      return null;
     }
     if (getCookie("accessToken") !== undefined) {
       getUserData()

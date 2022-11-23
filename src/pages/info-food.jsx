@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import styles from "./info-food.module.css";
+import styles from "./page-info.module.css";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
 
 export function InfoFood() {
   const { id } = useParams();
@@ -16,7 +15,7 @@ export function InfoFood() {
   };
 
   const items = useSelector((state) => state.menu.items);
-  const ingredient = items.find(item => item._id === id);
+  const ingredient = items.find((item) => item._id === id);
 
   //логика навешивания и удаления обработчиков события нажатия клавиши "Esc"
   useEffect(() => {
