@@ -1,10 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
   PasswordInput,
-  EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { addNewUser } from "../services/actions/user";
@@ -13,7 +12,6 @@ import { useState } from "react";
 
 export function RegisterPage() {
   const dispatch = useDispatch();
-  const { state } = useLocation();
   const [newName, setNewName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -33,11 +31,6 @@ export function RegisterPage() {
     });
   };
 
-  const isAuth = useSelector((state) => state.user.isAuth);
-  if (isAuth) {
-    return <Redirect to={state?.from || "/"} />;
-  }
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -54,10 +47,14 @@ export function RegisterPage() {
             error={false}
             errorText="Ошибка"
           />
-          <EmailInput
+          <Input
+            type="email"
+            placeholder="E-mail"
             onChange={(e) => setNewEmail(e.target.value)}
             value={newEmail}
             name="email"
+            error={false}
+            errorText="Ошибка"
           />
           <PasswordInput
             onChange={(e) => setNewPassword(e.target.value)}

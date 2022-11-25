@@ -6,31 +6,28 @@
   align-content: start;
   box-sizing: border-box;
   list-style: none;
-  height: 206px;
   overflow: hidden;
 }
 
-.gridTotal{
+.gridTotal {
   grid-area: total;
 }
 
-.gridToday{
+.gridToday {
   grid-area: today;
 }
 
-.orders{
-list-style: none;
-padding-left: 0;
-display: flex;
-flex-direction: column;
-flex-wrap: wrap;
-height: 152px;
-overflow: hidden;
+.orders {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-height: 150px;
+  max-height: 370px;
+  overflow: hidden;
 }
 
-
-
-.done{
-color: #00CCCC;
+.done {
+  color: #00cccc;
 }
-

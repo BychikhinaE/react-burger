@@ -1,6 +1,5 @@
 .scroll {
   list-style: none;
-  max-height: calc(100vh - 200px);
   overflow-y: auto;
   max-width: 600px;
   display: grid;

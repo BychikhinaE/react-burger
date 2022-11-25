@@ -28,7 +28,7 @@ function Statistics() {
           </ul>
         </div>
         <div>
-          <p className={`${styles.status} text text_type_main-medium`}>
+          <p className={`${styles.status} text text_type_main-medium mb-6`}>
             В работе:
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>

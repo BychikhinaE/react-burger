@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styles from "./page-form.module.css";
 import {
   Button,
-  EmailInput,
+  Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { postForgotPasswordAction } from "../services/actions/password";
 
@@ -30,11 +30,6 @@ export function ForgotPasswordPage() {
     }
   }, [history, forgotPasswordStatus]);
 
-  const isAuth = useSelector((state) => state.user.isAuth);
-  if (isAuth) {
-    return <Redirect to={{ pathname: "/" }} />;
-  }
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -42,11 +37,14 @@ export function ForgotPasswordPage() {
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Восстановление пароля
           </h1>
-          <EmailInput
+          <Input
+            type="email"
             placeholder="Укажите E-mail"
             onChange={(e) => setValueEmail(e.target.value)}
             value={valueEmail}
             name="email"
+            error={false}
+            errorText="Ошибка"
           />
           <Button type="primary" size="medium">
             Восстановить

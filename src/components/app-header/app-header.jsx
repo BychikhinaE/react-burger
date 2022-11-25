@@ -42,13 +42,14 @@ const AppHeader = () => {
         <Logo />
       </Link>
       <div className={`${styles.button__container} pl-5`}>
-        <ProfileIcon type="secondary" />
-        <Link
+        <ProfileIcon type={pathname.includes("profile") ? "primary" : "secondary"} />
+        <NavLink
           className={`${styles.link} text text_type_main-default text_color_inactive pl-2`}
           to={{ pathname: `/profile` }}
+          activeClassName={styles.activeLink}
         >
           Личный кабинет
-        </Link>
+        </NavLink>
       </div>
     </header>
   );

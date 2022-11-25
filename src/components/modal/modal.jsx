@@ -10,7 +10,7 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 const modalRoot = document.getElementById("react-modals");
 
 function Modal({ children, header, onClose }) {
-  //Если в модальном инф-ция о заказе, то в заготовок добавляем номер заказа(тут ищем его) и меняем стиль
+  //Если в модальном инф-ция о заказе, то в заголовок добавляем номер заказа(тут ищем его) и меняем стиль
   const orders = useSelector((state) => state.ws.orders);
   const { id } = useParams();
   let headerStyle = "text text_type_main-large";
