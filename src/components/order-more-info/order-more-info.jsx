@@ -73,13 +73,13 @@ function OrderMoreInfo() {
       break;
   }
 
+//Положение заголовка? модальное окно или отдельная страница
+  const styleModal = background ? styles.header : ''
   return (
     <>
-      {!background && (
-        <h2 className={`text text_type_digits-default  pb-10 ${styles.number}`}>
+        <h2 className={`text text_type_digits-default  pb-10 ${styleModal}`}>
           {`#${orderNumber}`}
         </h2>
-      )}
       <h3 className={`${styles.header} text text_type_main-medium mb-3`}>
         {order.name}
       </h3>

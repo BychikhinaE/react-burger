@@ -9,13 +9,7 @@
   opacity: 1;
   box-sizing: border-box;
   max-height: 90%;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
+  position: relative;
 }
 
 .button {
@@ -24,7 +18,11 @@
   height: 24px;
   border: none;
   padding: 0;
+  position: absolute;
+  top: 65px;
+  right: 40px;
 }
+
 
 .button:hover {
   opacity: .5;

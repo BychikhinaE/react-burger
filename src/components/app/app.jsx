@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { getItems } from "../../services/actions/menu";
 import { getUser } from "../../services/actions/user.js";
 import { ProtectedRoute } from "../protected-route/protected-route";
@@ -63,7 +62,7 @@ function App() {
         {background && (
           <>
             <Route path="/ingredients/:id">
-              <Modal onClose={onClose} header="Детали ингредиента">
+              <Modal onClose={onClose}>
                 <IngredientDetails />
               </Modal>
             </Route>

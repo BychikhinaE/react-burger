@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AllCurrentOrders from "../components/all-current-orders/all-current-orders";
 import Statistics from "../components/statistics/statistics";
 import styles from "./feed.module.css";
@@ -7,20 +7,26 @@ import {
   wsConnectionStart,
   wsConnectionClosed,
 } from "../services/actions/wsActions";
+import { getUser } from "../services/actions/user";
 
 function FeedPage() {
   const dispatch = useDispatch();
-
+const wsConnected = useSelector((state)=> state.ws.wsConnected)
+const wsPayload= useSelector((state)=> state.ws.payload)
+//wsPayload содержит сообщение от вебсокета, когда он закрывает соединение
   useEffect(() => {
-    dispatch(
+    if(wsPayload?.isTrusted || wsPayload === undefined)
+    {dispatch(
       wsConnectionStart({
         token: `/all`,
       })
-    );
+    );}
+    dispatch(getUser());
     return () => {
-      dispatch(wsConnectionClosed());
+      if(wsConnected)
+      {dispatch(wsConnectionClosed());}
     };
-  }, [dispatch]);
+  }, [dispatch, wsConnected, wsPayload]);
 
   return (
     <section

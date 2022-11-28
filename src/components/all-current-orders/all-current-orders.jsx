@@ -4,7 +4,6 @@ import OrderPreview from "../order-preview/order-preview";
 
 function AllCurrentOrders() {
   const orders = useSelector((state) => state.ws.orders);
-
   if (!orders) {
     return;
   }

@@ -80,7 +80,7 @@ function Total() {
       {/* Модальное окно*/}
       <>
         {modalVisible && (
-          <Modal header="" onClose={closePopup}>
+          <Modal onClose={closePopup}>
             {orderRequest ? <Loader size="large" /> : <OrderDetails />}
           </Modal>
         )}
