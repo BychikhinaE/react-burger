@@ -11,22 +11,24 @@ import { getUser } from "../services/actions/user";
 
 function FeedPage() {
   const dispatch = useDispatch();
-const wsConnected = useSelector((state)=> state.ws.wsConnected)
-const wsPayload= useSelector((state)=> state.ws.payload)
-//wsPayload содержит сообщение от вебсокета, когда он закрывает соединение
+  const wsPayload = useSelector((state) => state.ws.payload);
+
+  //wsPayload содержит сообщение от вебсокета, когда он закрывает соединение
+  console.log(wsPayload);
   useEffect(() => {
-    if(wsPayload?.isTrusted || wsPayload === undefined)
-    {dispatch(
-      wsConnectionStart({
-        token: `/all`,
-      })
-    );}
+    if (wsPayload?.isTrusted || wsPayload === undefined) {
+      dispatch(
+        wsConnectionStart({
+          token: `/all`,
+        })
+      );
+    }
     dispatch(getUser());
     return () => {
-      if(wsConnected)
-      {dispatch(wsConnectionClosed());}
+      dispatch(wsConnectionClosed());
+      console.log(wsPayload, "after close");
     };
-  }, [dispatch, wsConnected, wsPayload]);
+  }, [wsPayload]);
 
   return (
     <section
