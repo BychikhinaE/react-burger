@@ -10,8 +10,7 @@ import { getCookie } from "../utils/utils";
 
 export default function ProfileОrderHistory() {
   const dispatch = useDispatch();
-  const wsPayload = useSelector((state) => state.ws.payload);
-  console.log(wsPayload);
+
   useEffect(() => {
     const accessToken = getCookie("accessToken");
     dispatch(
@@ -21,7 +20,6 @@ export default function ProfileОrderHistory() {
     );
     return () => {
       dispatch(wsConnectionClosed());
-      console.log(wsPayload);
     };
   }, []);
 

@@ -28,5 +28,7 @@ export function setSelectedItems(id) {
         });
         console.log(res);
       });
+      // console.log('код сработает до оформления?');
+      // dispatch({ type: CLEAN_ALL_LIST})
   };
 }

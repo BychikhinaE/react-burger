@@ -2,7 +2,6 @@ import styles from "./statistics.module.css";
 
 import { useSelector } from "react-redux";
 
-
 function Statistics() {
   const { total, totalToday, orders } = useSelector((state) => state.ws);
 
@@ -10,11 +9,20 @@ function Statistics() {
     return;
   }
 
-  const ordersDone = orders.filter((order) => order.status === "done").splice(0, 2)
-  const ordersDoneNumber = ordersDone.map((order) => order.number)
-  const ordersPending = orders.filter((order) => order.status === "pending").splice(0, 2)
-  const ordersPendingNumber = ordersPending.map((order) => order.number)
-  console.log("Завершенные заказы", ordersDoneNumber,  'В работе', ordersPendingNumber)
+  const ordersDone = orders
+    .filter((order) => order.status === "done")
+    .splice(0, 2);
+  const ordersDoneNumber = ordersDone.map((order) => order.number);
+  const ordersPending = orders
+    .filter((order) => order.status === "pending")
+    .splice(0, 2);
+  const ordersPendingNumber = ordersPending.map((order) => order.number);
+  console.log(
+    "Завершенные заказы",
+    ordersDoneNumber,
+    "В работе",
+    ordersPendingNumber
+  );
 
   return (
     <>
@@ -24,14 +32,11 @@ function Statistics() {
             Готовы:
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
-            {ordersDone.map(
-              (item) =>
-               (
-                  <li key={item.number} className={`${styles.done} mr-5 mb-2`}>
-                    {item.number}
-                  </li>
-                )
-            )}
+            {ordersDone.map((item) => (
+              <li key={item.number} className={`${styles.done} mr-5 mb-2`}>
+                {item.number}
+              </li>
+            ))}
           </ul>
         </div>
         <div>
@@ -39,14 +44,11 @@ function Statistics() {
             В работе:
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
-            {ordersPending.map(
-              (item) =>
-                 (
-                  <li key={item.number} className={`${styles.pending} mr-2`}>
-                    {item.number}
-                  </li>
-                )
-            )}
+            {ordersPending.map((item) => (
+              <li key={item.number} className={`${styles.pending} mr-2`}>
+                {item.number}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

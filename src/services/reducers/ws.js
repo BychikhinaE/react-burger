@@ -11,7 +11,6 @@ const initialState = {
   error: undefined,
   total: 0,
   totalToday: 0,
-  payload: undefined,
 };
 
 export const wsReducer = (state = initialState, action) => {
@@ -38,7 +37,6 @@ export const wsReducer = (state = initialState, action) => {
         orders: undefined,
         total: 0,
         totalToday: 0,
-        payload: action.payload,
       };
 
     case WS_GET_MESSAGE:

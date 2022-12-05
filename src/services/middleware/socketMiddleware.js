@@ -39,6 +39,7 @@ export function socketMiddleware(wsUrl, wsActions) {
 
         // функция, которая вызывается при закрытии соединения
         socket.onclose = (event) => {
+          socket = null;
           dispatch({ type: onClose, payload: event });
         };
 
