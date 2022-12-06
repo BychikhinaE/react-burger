@@ -9,6 +9,21 @@ function Statistics() {
     return;
   }
 
+  const ordersDone = orders
+    .filter((order) => order.status === "done")
+    .splice(0, 2);
+  const ordersDoneNumber = ordersDone.map((order) => order.number);
+  const ordersPending = orders
+    .filter((order) => order.status === "pending")
+    .splice(0, 2);
+  const ordersPendingNumber = ordersPending.map((order) => order.number);
+  console.log(
+    "Завершенные заказы",
+    ordersDoneNumber,
+    "В работе",
+    ordersPendingNumber
+  );
+
   return (
     <>
       <div className={styles.gridStatus}>
@@ -17,29 +32,23 @@ function Statistics() {
             Готовы:
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
-            {orders.map(
-              (item, index) =>
-                item.status === "done" && (
-                  <li key={index} className={`${styles.done} mr-5 mb-2`}>
-                    {item.number}
-                  </li>
-                )
-            )}
+            {ordersDone.map((item) => (
+              <li key={item.number} className={`${styles.done} mr-5 mb-2`}>
+                {item.number}
+              </li>
+            ))}
           </ul>
         </div>
         <div>
-          <p className={`${styles.status} text text_type_main-medium`}>
+          <p className={`${styles.status} text text_type_main-medium mb-6`}>
             В работе:
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
-            {orders.map(
-              (item, index) =>
-                item.status === "pending" && (
-                  <li key={index} className={`${styles.pending} mr-2`}>
-                    {item.number}
-                  </li>
-                )
-            )}
+            {ordersPending.map((item) => (
+              <li key={item.number} className={`${styles.pending} mr-2`}>
+                {item.number}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

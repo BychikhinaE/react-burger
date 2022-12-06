@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, useLocation, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch} from "react-redux";
 import styles from "./page-form.module.css";
 import {
   Button,
   PasswordInput,
-  EmailInput,
+  Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { signIn } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
@@ -15,7 +15,6 @@ export function LoginPage() {
   const [valueEmail, setValueEmail] = useState("");
 
   const dispatch = useDispatch();
-  const location = useLocation();
 
   const login = (e) => {
     e.preventDefault();
@@ -26,11 +25,6 @@ export function LoginPage() {
     });
   };
 
-  const isAuth = useSelector((state) => state.user.isAuth);
-  if (isAuth) {
-    return <Redirect to={location?.state?.from || "/"} />;
-  }
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -38,11 +32,14 @@ export function LoginPage() {
           <h1 className={`text text_type_main-medium ${styles.heading}`}>
             Вход
           </h1>
-          <EmailInput
+          <Input
+            type="email"
             placeholder="E-mail"
             onChange={(e) => setValueEmail(e.target.value)}
             value={valueEmail}
             name="email"
+            error={false}
+            errorText="Ошибка"
           />
           <PasswordInput
             onChange={(e) => setValuePassword(e.target.value)}

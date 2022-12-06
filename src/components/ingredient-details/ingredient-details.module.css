@@ -16,3 +16,7 @@
   align-items: center;
   min-width: 112px;
 }
+
+.header {
+  align-self: flex-start;
+}

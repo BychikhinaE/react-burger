@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import AllCurrentOrders from "../components/all-current-orders/all-current-orders";
 import Statistics from "../components/statistics/statistics";
 import styles from "./feed.module.css";

@@ -7,7 +7,7 @@ import { formatHumanDate } from "../../utils/utils";
 function OrderMoreInfo() {
   const location = useLocation();
   const orders = useSelector((state) => state.ws.orders);
-  const AllIngredients = useSelector((state) => state.menu.items);
+  const allIngredients = useSelector((state) => state.menu.items);
   const { id } = useParams();
 
   if (!orders) {
@@ -21,10 +21,11 @@ function OrderMoreInfo() {
   const orderNumber = order.number;
 
   //Сделаем новый массив ингредиентов в заказе в котором в объектах будет кол-во повторений этого ингредиента
-  const orderIngrCount = AllIngredients.reduce((prevVal, item) => {
+  const orderIngrCount = allIngredients.reduce((prevVal, item) => {
     order.ingredients.forEach((id) => {
+      const itemInNewArr = prevVal.find((item) => item._id === id)
       if (item._id === id) {
-        if (!prevVal.some((item) => item._id === id)) {
+        if (!itemInNewArr) {
           prevVal.push({
             name: item.name,
             image: item.image,
@@ -33,7 +34,7 @@ function OrderMoreInfo() {
             _id: item._id,
           });
         } else {
-          prevVal.find((item) => item._id === id).quantity++;
+          itemInNewArr.quantity++;
         }
         return prevVal;
       }
@@ -72,13 +73,13 @@ function OrderMoreInfo() {
       break;
   }
 
+//Положение заголовка? модальное окно или отдельная страница
+  const styleModal = background ? styles.header : ''
   return (
     <>
-      {!background && (
-        <h2 className={`text text_type_digits-default  pb-10 ${styles.number}`}>
+        <h2 className={`text text_type_digits-default  pb-10 ${styleModal}`}>
           {`#${orderNumber}`}
         </h2>
-      )}
       <h3 className={`${styles.header} text text_type_main-medium mb-3`}>
         {order.name}
       </h3>

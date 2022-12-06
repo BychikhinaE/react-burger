@@ -10,8 +10,9 @@ import { getCookie } from "../utils/utils";
 
 export default function ProfileОrderHistory() {
   const dispatch = useDispatch();
-  const accessToken = getCookie("accessToken");
+
   useEffect(() => {
+    const accessToken = getCookie("accessToken");
     dispatch(
       wsConnectionStart({
         token: `?token=${accessToken}`,
@@ -20,7 +21,7 @@ export default function ProfileОrderHistory() {
     return () => {
       dispatch(wsConnectionClosed());
     };
-  }, [accessToken, dispatch]);
+  }, []);
 
   const orders = useSelector((state) => state.ws.orders);
 

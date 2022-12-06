@@ -3,13 +3,14 @@ import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import {  useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { formatHumanDate } from "../../utils/utils";
+import PropTypes from "prop-types";
 
 function OrderPreview({ order, isStatus }) {
   const location = useLocation();
-  const AllIngredients = useSelector((state) => state.menu.items);
+  const allIngredients = useSelector((state) => state.menu.items);
   const { url } = useRouteMatch();
 
-  const orderIngredients = AllIngredients.reduce((prevVal, item) => {
+  const orderIngredients = allIngredients.reduce((prevVal, item) => {
     order.ingredients.forEach((id) => {
       if (item._id === id) {
         prevVal.push({
@@ -118,5 +119,12 @@ function OrderPreview({ order, isStatus }) {
     </Link>
   );
 }
+
+//проверкa типов PropTypes.
+OrderPreview.propTypes = {
+  order: PropTypes.object.isRequired,
+  isStatus: PropTypes.bool.isRequired,
+};
+
 
 export default OrderPreview;

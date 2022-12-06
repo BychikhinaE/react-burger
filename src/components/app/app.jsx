@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { getItems } from "../../services/actions/menu";
 import { getUser } from "../../services/actions/user.js";
 import { ProtectedRoute } from "../protected-route/protected-route";
@@ -47,13 +46,13 @@ function App() {
       <AppHeader />
       <main>
         <Switch location={background || location}>
-          <Route path="/login" children={<LoginPage />} />
+          <ProtectedRoute notForAuth  path="/login" children={<LoginPage />} />
           <Route path="/ingredients/:id" children={<InfoFood />} />
-          <Route path="/register" children={<RegisterPage />} />
-          <Route path="/forgot-password" children={<ForgotPasswordPage />} />
-          <Route path="/reset-password" children={<ResetPasswordPage />} />
+          <ProtectedRoute notForAuth  path="/register" children={<RegisterPage />} />
+          <ProtectedRoute notForAuth  path="/forgot-password" children={<ForgotPasswordPage />} />
+          <ProtectedRoute notForAuth  path="/reset-password" children={<ResetPasswordPage />} />
           <Route path="/feed/:id" children={<OrderMoreInfoPage />} />
-          <Route path="/profile/orders/:id" children={<OrderMoreInfoPage />} />
+          <ProtectedRoute path="/profile/orders/:id" children={<OrderMoreInfoPage />} />
           <Route path="/feed" children={<FeedPage />} />
           <ProtectedRoute path="/profile/orders" children={<ProfilePage />} />
           <ProtectedRoute path="/profile" children={<ProfilePage />} />
@@ -63,7 +62,7 @@ function App() {
         {background && (
           <>
             <Route path="/ingredients/:id">
-              <Modal onClose={onClose} header="Детали ингредиента">
+              <Modal onClose={onClose}>
                 <IngredientDetails />
               </Modal>
             </Route>
