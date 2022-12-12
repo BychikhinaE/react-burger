@@ -14,6 +14,7 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { INGREDIENT_TYPES } from "../../utils/constants";
 import { useHistory } from "react-router-dom";
+import { useCallback } from "react";
 
 //Компонент кнопки ЗАКАЗА и здесь МОДАЛЬНОЕ окно
 function Total() {
@@ -29,13 +30,7 @@ function Total() {
     priceSecondBun = bun.price;
     bunId = bun._id;
   }
-  const idSet = [
-    bunId,
-    ...selectedItems
-      .filter((item) => item.type !== INGREDIENT_TYPES.BUN)
-      .map((item) => item._id),
-    bunId,
-  ];
+
   const total = selectedItems.reduce(
     (acc, item) => acc + item.price,
     priceSecondBun
@@ -49,16 +44,26 @@ function Total() {
   //Массив id элементов в заказе
 
   const modalVisible = useSelector((state) => state.order.modalVisible);
-  function submitOrder() {
+
+  const submitOrder = useCallback(() => {
+    const idSet = [
+      bunId,
+      ...selectedItems
+        .filter((item) => item.type !== INGREDIENT_TYPES.BUN)
+        .map((item) => item._id),
+      bunId,
+    ];
+
     if (!isAuth) {
       history.push("/login");
     } else {
       dispatch(setSelectedItems(idSet));
     }
-  }
-  function closePopup() {
+  }, [bunId, dispatch, history, isAuth, selectedItems]);
+
+  const closePopup = useCallback(() => {
     dispatch({ type: CLOSE_MODAL_ORDER });
-  }
+  }, [dispatch]);
 
   return (
     <>

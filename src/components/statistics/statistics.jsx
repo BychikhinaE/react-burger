@@ -11,18 +11,10 @@ function Statistics() {
 
   const ordersDone = orders
     .filter((order) => order.status === "done")
-    .splice(0, 2);
-  const ordersDoneNumber = ordersDone.map((order) => order.number);
+    .splice(0, 30);
   const ordersPending = orders
     .filter((order) => order.status === "pending")
-    .splice(0, 2);
-  const ordersPendingNumber = ordersPending.map((order) => order.number);
-  console.log(
-    "Завершенные заказы",
-    ordersDoneNumber,
-    "В работе",
-    ordersPendingNumber
-  );
+    .splice(0, 30);
 
   return (
     <>
@@ -33,7 +25,7 @@ function Statistics() {
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
             {ordersDone.map((item) => (
-              <li key={item.number} className={`${styles.done} mr-5 mb-2`}>
+              <li key={item.number.toString()} className={`${styles.done} mr-5 mb-2`}>
                 {item.number}
               </li>
             ))}
@@ -45,7 +37,7 @@ function Statistics() {
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
             {ordersPending.map((item) => (
-              <li key={item.number} className={`${styles.pending} mr-2`}>
+              <li key={item.number.toString()} className={`${styles.pending} mr-2`}>
                 {item.number}
               </li>
             ))}

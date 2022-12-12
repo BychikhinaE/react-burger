@@ -8,13 +8,13 @@ export function socketMiddleware(wsUrl, wsActions) {
       const { dispatch } = store;
       const { type, payload } = action;
 
-      const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage,  } =
+      const { wsInit, onOpen, onClose, onError, onMessage,  } =
         wsActions;
 
-      if (type === wsInit) {
+      if (type === wsInit && socket === null) {
         // объект класса WebSocket
         socket = new WebSocket(`${wsUrl}${payload.token}`);
-      } else if (type === onClose && socket) {
+      } else if (type === onClose && socket !== null) {
         socket.close();
       }
 
@@ -33,8 +33,8 @@ export function socketMiddleware(wsUrl, wsActions) {
         socket.onmessage = (event) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-          const { success, ...restParsedData } = parsedData;
-          dispatch({ type: onMessage, payload: restParsedData });
+          // const { success, ...restParsedData } = parsedData;
+          dispatch({ type: onMessage, payload: parsedData });
         };
 
         // функция, которая вызывается при закрытии соединения
@@ -42,12 +42,6 @@ export function socketMiddleware(wsUrl, wsActions) {
           socket = null;
           dispatch({ type: onClose, payload: event });
         };
-
-        if (type === wsSendMessage) {
-          const orders = { ...payload };
-          // функция для отправки сообщения на сервер
-          socket.send(JSON.stringify(orders));
-        }
       }
 
       next(action);
