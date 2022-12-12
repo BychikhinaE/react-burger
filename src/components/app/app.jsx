@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import { useDispatch} from "react-redux";
 import { getItems } from "../../services/actions/menu";
@@ -37,9 +37,10 @@ function App() {
     dispatch(getUser());
   }, []);
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     history.goBack();
-  };
+  }, [history]);
+
   const background = location.state?.background;
   return (
     <>

@@ -34,8 +34,8 @@ export default function ProfileОrderHistory() {
   return (
     <section className={`${styles.history} mt-10`}>
       <ul className={`${styles.scroll} custom-scroll text`}>
-        {reversed.map((item, index) => (
-          <li key={index}>
+        {reversed.map((item) => (
+          <li key={item.number.toString()}>
             <OrderPreview order={item} isStatus={true} />
           </li>
         ))}

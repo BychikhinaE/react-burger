@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AllCurrentOrders from "../components/all-current-orders/all-current-orders";
 import Statistics from "../components/statistics/statistics";
 import styles from "./feed.module.css";
@@ -12,13 +12,16 @@ function FeedPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      wsConnectionStart({
-        token: `/all`,
-      })
-    );
+    const timer = window.setTimeout(() => {
+      dispatch(
+        wsConnectionStart({
+          token: `/all`,
+        })
+      );
+    }, 600);
     return () => {
       dispatch(wsConnectionClosed());
+      window.clearTimeout(timer);
     };
   }, []);
 
