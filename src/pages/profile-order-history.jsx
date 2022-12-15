@@ -2,24 +2,18 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import OrderPreview from "../components/order-preview/order-preview";
 import {
-  wsConnectionStart,
-  wsConnectionClosed,
+  wsConnectionStartUser,
+  wsConnectionClosedUser,
 } from "../services/actions/wsActions";
 import styles from "./profile.module.css";
-import { getCookie } from "../utils/utils";
 
 export default function ProfileОrderHistory() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    dispatch(
-      wsConnectionStart({
-        token: `?token=${accessToken}`,
-      })
-    );
+    dispatch(wsConnectionStartUser());
     return () => {
-      dispatch(wsConnectionClosed());
+      dispatch(wsConnectionClosedUser());
     };
   }, []);
 

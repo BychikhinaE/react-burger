@@ -2,9 +2,11 @@
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_CLOSED_ALL,
+  WS_CONNECTION_CLOSED_USER,
   WS_GET_MESSAGE,
-  WS_CONNECTION_START,
+  WS_CONNECTION_START_ALL,
+  WS_CONNECTION_START_USER,
 
 } from './wsActionTypes';
 
@@ -20,9 +22,15 @@ export const wsConnectionError = () => {
   };
 };
 
-export const wsConnectionClosed = () => {
+export const wsConnectionClosedAll = () => {
   return {
-    type: WS_CONNECTION_CLOSED
+    type: WS_CONNECTION_CLOSED_ALL
+  };
+};
+
+export const wsConnectionClosedUser = () => {
+  return {
+    type: WS_CONNECTION_CLOSED_USER
   };
 };
 
@@ -33,11 +41,15 @@ export const wsGetMessage = message => {
   };
 };
 
-export const wsConnectionStart = (token) => {
+export const wsConnectionStartAll = () => {
   return {
-    type: WS_CONNECTION_START,
-    payload: token,
+    type: WS_CONNECTION_START_ALL,
   };
 };
 
+export const wsConnectionStartUser = () => {
+  return {
+    type: WS_CONNECTION_START_USER,
+  };
+};
 

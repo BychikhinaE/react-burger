@@ -6,7 +6,7 @@ import {
 } from "../actions/order";
 
 const initialStateOrder = {
-  numberOrder: NaN,
+  numberOrder: '',
   modalVisible: false,
   orderRequest: false,
   orderFailed: false,
@@ -22,7 +22,7 @@ export const orderReducer = (state = initialStateOrder, action) => {
     case SUBMIT_ORDER_SUCCESS: {
       return {
         ...state,
-        numberOrder: action.number,
+        numberOrder: action.number.toString(),
         modalVisible: true,
         orderFailed: false,
         orderRequest: false,

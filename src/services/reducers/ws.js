@@ -1,7 +1,8 @@
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_CLOSED_ALL,
+  WS_CONNECTION_CLOSED_USER,
   WS_GET_MESSAGE,
 } from "../actions/wsActionTypes";
 
@@ -29,7 +30,17 @@ export const wsReducer = (state = initialState, action) => {
         wsConnected: false,
       };
 
-    case WS_CONNECTION_CLOSED:
+    case WS_CONNECTION_CLOSED_ALL:
+      return {
+        ...state,
+        error: undefined,
+        wsConnected: false,
+        orders: undefined,
+        total: 0,
+        totalToday: 0,
+      };
+
+    case WS_CONNECTION_CLOSED_USER:
       return {
         ...state,
         error: undefined,
