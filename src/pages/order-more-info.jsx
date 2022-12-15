@@ -3,11 +3,12 @@ import { useEffect } from "react";
 import styles from "./page-info.module.css";
 import OrderMoreInfo from "../components/order-more-info/order-more-info";
 import {
-  wsConnectionStart,
-  wsConnectionClosed,
+  wsConnectionStartAll,
+  wsConnectionStartUser,
+  wsConnectionClosedAll,
+  wsConnectionClosedUser,
 } from "../services/actions/wsActions";
-import { getCookie } from "../utils/utils";
-import { useRouteMatch} from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 export function OrderMoreInfoPage() {
@@ -15,22 +16,10 @@ export function OrderMoreInfoPage() {
   const match = useRouteMatch();
 
   useEffect(() => {
-    if (match.path === "/feed/:id") {
-      dispatch(
-        wsConnectionStart({
-          token: `/all`,
-        })
-      );
-    } else {
-      const accessToken = getCookie("accessToken");
-      dispatch(
-        wsConnectionStart({
-          token: `?token=${accessToken}`,
-        })
-      );
-    }
+    match.path === "/feed/:id" ? dispatch(wsConnectionStartAll()) : dispatch(wsConnectionStartUser())
+
     return () => {
-      dispatch(wsConnectionClosed());
+      match.path === "/feed/:id" ?  dispatch(wsConnectionClosedAll()) : dispatch(wsConnectionClosedUser());
     };
   }, [dispatch, match]);
 

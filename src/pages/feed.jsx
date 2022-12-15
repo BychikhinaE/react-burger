@@ -4,24 +4,17 @@ import Statistics from "../components/statistics/statistics";
 import styles from "./feed.module.css";
 import React, { useEffect } from "react";
 import {
-  wsConnectionStart,
-  wsConnectionClosed,
+  wsConnectionStartAll,
+  wsConnectionClosedAll,
 } from "../services/actions/wsActions";
 
 function FeedPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      dispatch(
-        wsConnectionStart({
-          token: `/all`,
-        })
-      );
-    }, 600);
+    dispatch(wsConnectionStartAll());
     return () => {
-      dispatch(wsConnectionClosed());
-      window.clearTimeout(timer);
+      dispatch(wsConnectionClosedAll());
     };
   }, []);
 
