@@ -1,0 +1,114 @@
+.item {
+  display: grid;
+  /* grid-template-columns: auto 1fr; */
+  gap: 24px;
+  grid-template-areas:
+    "number time time"
+    "header header header"
+    "status status status"
+    "images images total";
+  text-decoration: none;
+  color: inherit;
+  background: #1c1c21;
+  border-radius: 40px;
+  padding: 24px;
+
+}
+
+.number {
+  grid-area: number;
+}
+
+.time {
+  grid-area: time;
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.header {
+  grid-area: header;
+}
+
+.images {
+  grid-area: images;
+  display: flex;
+  /* max-width: 250px; */
+  overflow: hidden;
+
+  padding-left: 20px;
+}
+
+.total {
+  grid-area: total;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+}
+
+.imageBorder {
+  list-style: none;
+  display: block;
+  width: 64px;
+  height: 64px;
+  border: 2px solid #4c4cff;
+  box-sizing: border-box;
+  border-radius: 50%;
+  margin-left: -20px;
+  background: #131316;
+}
+.image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.status {
+  grid-area: status;
+}
+
+.imageBorder:nth-child(1){
+  z-index: 6;
+}
+
+.imageBorder:nth-child(2){
+  z-index: 5;
+}
+
+.imageBorder:nth-child(3){
+  z-index: 4;
+}
+
+.imageBorder:nth-child(4){
+  z-index: 3;
+}
+
+.imageBorder:nth-child(5){
+  z-index: 2;
+}
+
+.imageBorder:nth-child(6){
+  position: relative;
+  z-index: 1;
+}
+.counter{
+  display: block;
+  margin: 0;
+  position: absolute;
+  right: 25px;
+  top: 20px;
+}
+
+
+.done {
+  color: #00cccc;
+}
+.pending {
+  color: inherit;
+}
+.cancel {
+  color: indianred;
+}
+
+.created {
+  color: inherit;
+}

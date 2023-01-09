@@ -12,6 +12,7 @@ function IngredientDetails() {
   }
   return (
     <>
+      <h2 className={`${styles.header} text text_type_main-large`}>Детали ингредиента</h2>
       <img
         alt={ingredient.name}
         src={ingredient.image_large}

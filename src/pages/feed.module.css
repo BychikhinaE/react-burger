@@ -1,0 +1,20 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 600px) 1fr;
+  column-gap: 20px;
+  row-gap: 30px;
+  grid-template-areas:
+    "title title"
+    "orders status"
+    "orders total"
+    "orders today";
+  grid-template-rows:
+    auto auto
+    auto auto
+    1fr auto;
+  max-height: 100%;
+}
+
+.gridTitle {
+  grid-area: title;
+}

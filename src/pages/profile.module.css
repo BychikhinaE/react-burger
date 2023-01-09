@@ -1,57 +1,68 @@
-.grid{
+.grid {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 24px 60px;
-  margin-top: 120px;
+  grid-template-rows:
+    auto auto
+    auto 1fr;
 }
 
 .nav {
-grid-area: 1/1/4/2;
-display: flex;
-flex-direction: column;
-align-items: start;
-justify-content: space-between;
-height: 150px;
-row-gap: 20px;
+  grid-area: 1/1/4/2;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  height: 150px;
+  row-gap: 20px;
 }
 
-.link{
- text-decoration: none;
- display: block;
-
-}
-.exit{
+.link {
   text-decoration: none;
- display: block;
- background-color: inherit;
- border: none;
- cursor: pointer;
+  display: block;
+}
+.exit {
+  text-decoration: none;
+  display: block;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
 }
 
-.exit:hover{
-color: rgba(240, 68, 68, .5)
+.exit:hover {
+  color: rgba(240, 68, 68, 0.5);
 }
 
-.inputName{
+.inputName {
   grid-area: 1/2/2/3;
 }
-.inputEmail{
+.inputEmail {
   grid-area: 2/2/3/3;
 }
 
-.inputPassword{
+.inputPassword {
   grid-area: 3/2/4/3;
 }
 
-.info{
+.info {
   grid-area: 4/1/5/2;
-
 }
 
-.linkActive{
-  color: white;
-}
-
-.buttons{
+.buttons {
   grid-area: 4/2/5/3;
+}
+
+.scroll {
+  list-style: none;
+  max-height: 100%;
+  overflow-y: auto;
+  max-width: 844px;
+  display: grid;
+  align-content: start;
+  row-gap: 16px;
+}
+
+.history {
+  grid-area: 1/2/5/3;
+  max-height: calc(100vh - 168px);
 }

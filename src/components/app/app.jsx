@@ -1,11 +1,15 @@
-import { useEffect } from "react";
-import styles from "./app.module.css";
+import { useCallback, useEffect } from "react";
 import AppHeader from "../app-header/app-header";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { getItems } from "../../services/actions/menu";
 import { getUser } from "../../services/actions/user.js";
 import { ProtectedRoute } from "../protected-route/protected-route";
-import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import {
   LoginPage,
   RegisterPage,
@@ -15,11 +19,13 @@ import {
   ConstructorPage,
   NotFound404,
   InfoFood,
-  OrderListPage,
+  FeedPage,
+  OrderMoreInfoPage,
 } from "../../pages/index";
 
 import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
+import OrderMoreInfo from "../order-more-info/order-more-info";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,39 +37,49 @@ function App() {
     dispatch(getUser());
   }, []);
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     history.goBack();
-  };
-  const background = location.state && location.state.background;
+  }, [history]);
+
+  const background = location.state?.background;
   return (
     <>
       <AppHeader />
-      <main className={styles.main}>
+      <main>
         <Switch location={background || location}>
-          <Route path="/" children={<ConstructorPage />} exact />
-          <Route path="/login" children={<LoginPage />} exact />
-          <Route path="/ingredients/:id" children={<InfoFood />} exact />
-          <Route path="/register" children={<RegisterPage />} exact />
-          <Route
-            path="/forgot-password"
-            children={<ForgotPasswordPage />}
-            exact
-          />
-          <Route
-            path="/reset-password"
-            children={<ResetPasswordPage />}
-            exact
-          />
-          <ProtectedRoute path="/profile" children={<ProfilePage />} exact />
-          <Route path="/order-list" children={<OrderListPage />} exact />
+          <ProtectedRoute notForAuth  path="/login" children={<LoginPage />} />
+          <Route path="/ingredients/:id" children={<InfoFood />} />
+          <ProtectedRoute notForAuth  path="/register" children={<RegisterPage />} />
+          <ProtectedRoute notForAuth  path="/forgot-password" children={<ForgotPasswordPage />} />
+          <ProtectedRoute notForAuth  path="/reset-password" children={<ResetPasswordPage />} />
+          <Route path="/feed/:id" children={<OrderMoreInfoPage />} />
+          <ProtectedRoute path="/profile/orders/:id" children={<OrderMoreInfoPage />} />
+          <Route path="/feed" children={<FeedPage />} />
+          <ProtectedRoute path="/profile/orders" children={<ProfilePage />} />
+          <ProtectedRoute path="/profile" children={<ProfilePage />} />
+          <Route path="/" children={<ConstructorPage />} />
           <Route children={<NotFound404 />} />
         </Switch>
         {background && (
-          <Route path="/ingredients/:id">
-            <Modal onClose={onClose} header="Детали ингредиента">
-              <IngredientDetails />
-            </Modal>
-          </Route>
+          <>
+            <Route path="/ingredients/:id">
+              <Modal onClose={onClose}>
+                <IngredientDetails />
+              </Modal>
+            </Route>
+
+            <Route path="/feed/:id">
+              <Modal onClose={onClose}>
+                <OrderMoreInfo />
+              </Modal>
+            </Route>
+
+            <Route path="/profile/orders/:id">
+              <Modal onClose={onClose}>
+                <OrderMoreInfo />
+              </Modal>
+            </Route>
+          </>
         )}
       </main>
     </>

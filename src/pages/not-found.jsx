@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+
+import {  useHistory, useLocation } from "react-router-dom";
 
 import styles from "./not-found.module.css";
 import gif from "../images/404.gif";

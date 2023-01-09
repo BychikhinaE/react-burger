@@ -31,7 +31,6 @@ export function ResetPasswordPage() {
     });
   }
 
-  const isAuth = useSelector((state) => state.user.isAuth);
   const updatePasswordStatus = useSelector(
     (state) => state.password.updatePasswordStatus
   );
@@ -42,10 +41,6 @@ export function ResetPasswordPage() {
       });
     }
   }, [history, updatePasswordStatus]);
-
-  if (isAuth) {
-    return <Redirect to={{ pathname: "/" }} />;
-  }
 
   if (location?.state?.from !== "forgot-password") {
     return <Redirect to={{ pathname: "/forgot-password" }} />;

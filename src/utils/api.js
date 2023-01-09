@@ -1,9 +1,10 @@
 import { getCookie } from "./utils";
 const API = "https://norma.nomoreparties.space/api";
 
-function request(url, options) {
+async function request(url, options) {
   // принимает два аргумента: урл и объект опций
-  return fetch(url, options).then(getResponse)
+  const res = await fetch(url, options);
+  return getResponse(res);
 }
 //Проверить на ошибки ответ с сервера
 function getResponse(res) {
@@ -27,6 +28,7 @@ export function postOrder(ingridientsIdArray) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie("accessToken"),
     },
     body: JSON.stringify({ ingredients: ingridientsIdArray }),
   })
