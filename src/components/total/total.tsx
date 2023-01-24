@@ -21,18 +21,18 @@ function Total() {
   const selectedItems = useSelector((state) => state.constr.selectedItems);
 
   //Здесь считаем сумму заказа и формируем список айдишек для отправки на сервер
-  let priceSecondBun = 0;
-  let bunId = undefined;
+  let priceSecondBun: number | undefined = 0;
+  let bunId: string | undefined  = undefined;
   if (selectedItems.some((item) => item.type === INGREDIENT_TYPES.BUN)) {
     const bun = selectedItems.find(
       (item) => item.type === INGREDIENT_TYPES.BUN
     );
-    priceSecondBun = bun.price;
-    bunId = bun._id;
+    priceSecondBun = bun?.price;
+    bunId = bun?._id;
   }
 
   const total = selectedItems.reduce(
-    (acc, item) => acc + item.price,
+    (acc=0, item) => acc + item.price,
     priceSecondBun
   );
 
@@ -44,7 +44,7 @@ function Total() {
   const modalVisible = useSelector((state) => state.order.modalVisible);
 
   const submitOrder = useCallback(() => {
-    const idSet: Array<string> = [
+    const idSet: Array<string| undefined> = [
       bunId,
       ...selectedItems
         .filter((item) => item.type !== INGREDIENT_TYPES.BUN)

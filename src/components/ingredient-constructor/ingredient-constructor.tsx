@@ -1,5 +1,5 @@
-import { useRef, useCallback, FC } from "react";
-import { useDispatch } from "'../../services/hooks/hooks'";
+import React, { useRef, useCallback, FC } from "react";
+import { useDispatch } from "../../services/hooks/hooks";
 import styles from "./ingredient-constructor.module.css";
 import {
   ConstructorElement,
@@ -15,7 +15,7 @@ const IngredientConstructor: FC<IItemConstructorProps & { index: number }> = ({
   index,
   isLocked,
 }) => {
-  const ref = useRef();
+  const ref = useRef<HTMLLIElement>(null);
   const dispatch = useDispatch();
   //Колбэк для пропса handleClose в ConstructorElement
   const deleteItem = useCallback(() => {
@@ -37,7 +37,7 @@ const IngredientConstructor: FC<IItemConstructorProps & { index: number }> = ({
 
   const [{ isHover }, drop] = useDrop({
     accept: "main",
-    hover(item) {
+    hover(item: {index: number}) {
       if (!ref.current) {
         return;
       }

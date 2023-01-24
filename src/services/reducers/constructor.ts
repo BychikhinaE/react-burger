@@ -7,7 +7,7 @@ import {
 import {IIngredient} from "../types/data"
 import {TConstructorActions} from '../types/constructor'
 
-const initialStateConstructor: Array<IIngredient | undefined>= {
+const initialStateConstructor: {selectedItems: Array<IIngredient>} = {
   // список всех ингредиентов в текущем конструкторе бургера,
   selectedItems: [],
 };

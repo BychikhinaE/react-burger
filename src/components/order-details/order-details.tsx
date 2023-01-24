@@ -1,5 +1,5 @@
 import styles from "./order-details.module.css";
-import { useSelector } from "'../../services/hooks/hooks'";
+import { useSelector } from "../../services/hooks/hooks";
 
 function OrderDetails() {
   const numberOrder = useSelector((state) => state.order.numberOrder);

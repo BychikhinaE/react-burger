@@ -5,6 +5,7 @@ import { NavLink, Switch, Route, useLocation } from "react-router-dom";
 import ProfileInfo from "./profile-info";
 import ProfileОrderHistory from "./profile-order-history";
 import { signOut,  getUser } from "../services/actions/user";
+import { TLocation } from "../services/types/data";
 
 export function ProfilePage() {
   useEffect(() => {
@@ -17,7 +18,7 @@ export function ProfilePage() {
   }, [dispatch]);
 
 
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const background = location.state?.background;
   return (
     <section aria-label="profile-page" className={`${styles.grid} pl-10`}>

@@ -5,7 +5,7 @@ import { FC } from "react";
 import { IItemConstructorProps } from "../../services/types/data";
 
 //Компонент для булочек, отображается в конструкторе
-const BunConstructor: FC<IItemConstructorProps & { position: string }> = ({
+const BunConstructor: FC<IItemConstructorProps & { position: "top" | "bottom" }> = ({
   item,
   position,
   isLocked,

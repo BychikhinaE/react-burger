@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "../services/hooks/hooks";
 import { Link, useHistory, useLocation, Redirect } from "react-router-dom";
 import styles from "./page-form.module.css";
@@ -9,15 +9,16 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { postResetPasswordAction } from "../services/actions/password";
 import { SAVE_PASSWORD } from "../services/actions/password";
+import { TLocation } from "../services/types/data";
 
 export function ResetPasswordPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [newPassword, setNewPassword] = useState("");
   const [token, setToken] = useState("");
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch(
       postResetPasswordAction({
@@ -42,7 +43,7 @@ export function ResetPasswordPage() {
     }
   }, [history, updatePasswordStatus]);
 
-  if (location?.state?.from !== "forgot-password") {
+  if (location?.state?.from?.pathname !== "forgot-password") {
     return <Redirect to={{ pathname: "/forgot-password" }} />;
   }
 
@@ -57,8 +58,8 @@ export function ResetPasswordPage() {
             onChange={(e) => setNewPassword(e.target.value)}
             value={newPassword}
             name="password"
-            placeholder="Введите новый пароль"
-            required
+            // placeholder="Введите новый пароль"
+            // required
           />
           <Input
             type="text"

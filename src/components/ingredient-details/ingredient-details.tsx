@@ -1,12 +1,12 @@
 import styles from "./ingredient-details.module.css";
-import { useSelector } from "'../../services/hooks/hooks'";
+import { useSelector } from "../../services/hooks/hooks";
 import { useParams } from "react-router-dom";
 import { IIngredient } from "../../services/types/data";
 
 function IngredientDetails() {
   const items = useSelector((state) => state.menu.items);
   const { id } = useParams<{id: string}>();
-  const ingredient: IIngredient = items.find((item) => item._id === id);
+  const ingredient = items.find((item: IIngredient) => item._id === id);
 
   if (!ingredient) {
     return null;

@@ -11,10 +11,10 @@ import { FC } from "react";
 //DragSource
 interface IBurgerIngredientMenu {
   item: IIngredient;
-  counters?: undefined | number;
+  counters:{ [key: string] : number};
 }
 const BurgerIngredientMenu: FC<IBurgerIngredientMenu> = ({ item, counters }) => {
-  const currentItem: IIngredient = item;
+  const currentItem = item;
   const currentId = item._id;
   const [, dragRef] = useDrag({
     type: "items",
@@ -26,14 +26,14 @@ const BurgerIngredientMenu: FC<IBurgerIngredientMenu> = ({ item, counters }) => 
   return (
     <Link
       className={`${styles.item} mb-10`}
-      index={currentId}
+      // index={currentId}
       ref={dragRef}
       to={{
         pathname: `/ingredients/${currentId}`,
         state: { background: location },
       }}
     >
-      {typeof counters[currentId] !== "undefined" && (
+      { counters.currentId !== 0 && (
         <Counter count={counters[currentId]} size="default" />
       )}
       <img alt={item.name} src={item.image} />

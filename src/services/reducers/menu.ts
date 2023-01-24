@@ -5,13 +5,13 @@ import {
   TAB_SWITCH,
 } from "../actions/menu";
 import {IIngredient} from "../types/data"
-import {TMenuActions, TTabSwitchName} from '../types/menu'
+import {TMenuActions} from '../types/menu'
 
 type TMenuState = {
   items: Array<IIngredient>,
   itemsRequest: boolean,
   itemsFailed: boolean,
-  currentTab: TTabSwitchName,
+  currentTab: string,
 }
 const initialState: TMenuState = {
   // список всех полученных с сервера ингредиентов,
@@ -19,7 +19,7 @@ const initialState: TMenuState = {
   itemsRequest: false,
   itemsFailed: false,
   //Таблица переключений активного поля
-  currentTab: "Булки",
+  currentTab: 'Булки',
 };
 
 export const burgerIngredientsReducer = (state = initialState, action: TMenuActions) => {

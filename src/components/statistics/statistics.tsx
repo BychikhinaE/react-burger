@@ -1,18 +1,19 @@
 import styles from "./statistics.module.css";
-import { useSelector } from "'../../services/hooks/hooks'";
+import { useSelector } from "../../services/hooks/hooks";
+import { IOrder } from "../../services/types/data";
 
 function Statistics() {
   const { total, totalToday, orders } = useSelector((state) => state.ws);
 
   if (!orders) {
-    return;
+    return null;
   }
 
   const ordersDone = orders
-    .filter((order) => order.status === "done")
+    .filter((order: IOrder) => order.status === "done")
     .splice(0, 30);
   const ordersPending = orders
-    .filter((order) => order.status === "pending")
+    .filter((order: IOrder) => order.status === "pending")
     .splice(0, 30);
 
   return (
@@ -23,7 +24,7 @@ function Statistics() {
             Готовы:
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
-            {ordersDone.map((item) => (
+            {ordersDone.map((item: IOrder) => (
               <li
                 key={item.number.toString()}
                 className={`${styles.done} mr-5 mb-2`}
@@ -38,7 +39,7 @@ function Statistics() {
             В работе:
           </p>
           <ul className={`${styles.orders} text text_type_digits-default`}>
-            {ordersPending.map((item) => (
+            {ordersPending.map((item: IOrder) => (
               <li
                 key={item.number.toString()}
                 className={`${styles.pending} mr-2`}

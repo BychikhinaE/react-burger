@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "../services/hooks/hooks";
 import { Link, useHistory } from "react-router-dom";
 import styles from "./page-form.module.css";
@@ -16,7 +16,7 @@ export function ForgotPasswordPage() {
     (state) => state.password.forgotPasswordStatus
   );
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch(postForgotPasswordAction({ email: valueEmail }));
   }

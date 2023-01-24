@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { addNewUser } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export function RegisterPage() {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export function RegisterPage() {
   const [newPassword, setNewPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
 
-  const submitUserData = (e: FormEvent<HTMLFormElement>) => {
+  const submitUserData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
       addNewUser({

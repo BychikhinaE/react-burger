@@ -1,7 +1,15 @@
+import {Location} from 'history';
+export type TLocation = {
+  background?: Location;
+  from?: { pathname: string };
+};
+
+export type TIngredientGroup = "bun" | "sauce" | "main";
+
 export interface IIngredient {
   readonly _id: string;
   readonly name: string;
-  readonly type?: string;
+  readonly type?: TIngredientGroup;
   readonly proteins?: number;
   readonly fat?: number;
   readonly carbohydrates?: number;
@@ -11,7 +19,6 @@ export interface IIngredient {
   readonly image_mobile?: string;
   readonly image_large?: string;
   readonly __v?: number;
-  quantity?: number;
   sysid?: string;
 }
 
@@ -40,6 +47,9 @@ export interface IRegisterData {
   email: string;
   password: string;
 }
+
+export type TUserData = Omit<IRegisterData, 'password'>
+
 export interface IUpdateUserData {
   name?: string;
   email?: string;
@@ -65,10 +75,7 @@ export interface ICreateUser {
   success: boolean;
   accessToken: string;
   refreshToken: string;
-  user: {
-    email: string;
-    name: string;
-  };
+  user: TUserData;
 }
 
 export interface ILogoutRequest {
@@ -78,10 +85,7 @@ export interface ILogoutRequest {
 
 export interface IGetUserData {
   success: boolean;
-  user: {
-    email: string;
-    name: string;
-  };
+  user: TUserData;
 }
 export interface IPostForgotPassword {
   success: boolean;

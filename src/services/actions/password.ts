@@ -1,5 +1,5 @@
 import { postForgotPassword, postResetPassword } from "../../utils/api";
-import { AppDispatch, AppThunk } from "../types/index";
+import { AppDispatch } from "../types/index";
 import { IResetPassword } from "../types/data";
 
 export const POST_FORGOT_PASSWORD_REQUEST: "POST_FORGOT_PASSWORD_REQUEST" =
@@ -18,7 +18,7 @@ export const POST_RESET_PASSWORD_ERROR: "POST_RESET_PASSWORD_ERROR" =
 
 export const SAVE_PASSWORD: "SAVE_PASSWORD" = "SAVE_PASSWORD";
 
-export const postForgotPasswordAction: AppThunk =
+export const postForgotPasswordAction =
   (email: { email: string }) => (dispatch: AppDispatch) => {
     dispatch({
       type: POST_FORGOT_PASSWORD_REQUEST,
@@ -40,7 +40,7 @@ export const postForgotPasswordAction: AppThunk =
       });
   };
 
-export const postResetPasswordAction: AppThunk =
+export const postResetPasswordAction =
   (data: IResetPassword) => (dispatch: AppDispatch) => {
     dispatch({
       type: POST_RESET_PASSWORD_REQUEST,

@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import { useDispatch } from "../../services/hooks/hooks";
 import { getItems } from "../../services/actions/menu";
-import { getUser } from "../../services/actions/user.js";
+import { getUser } from "../../services/actions/user";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import {
@@ -18,14 +18,17 @@ import {
   OrderMoreInfoPage,
 } from "../../pages/index";
 
-import Modal from "../modal/modal.jsx";
-import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import OrderMoreInfo from "../order-more-info/order-more-info";
+import { TLocation } from "../../services/types/data";
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
+
+
+  const location = useLocation<TLocation>();
 
   useEffect(() => {
     dispatch(getItems());
@@ -35,6 +38,7 @@ function App() {
   const onClose = useCallback<() => void>(() => {
     history.goBack();
   }, [history]);
+
 
   const background = location.state?.background;
   return (

@@ -1,6 +1,6 @@
 import styles from "./order-preview.module.css";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
-import { useSelector } from "'../../services/hooks/hooks'";
+import { useSelector } from "../../services/hooks/hooks";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { formatHumanDate } from "../../utils/utils";
 import { IOrder, IIngredient } from "../../services/types/data";
@@ -16,7 +16,7 @@ const OrderPreview: FC<IOrderPreviewProps> = ({ order, isStatus }) => {
   const { url } = useRouteMatch();
 
   const orderIngredients: Array<IIngredient> = allIngredients.reduce(
-    (prevVal, item) => {
+    (prevVal: Array<IIngredient>, item: IIngredient) => {
       order.ingredients.forEach((id) => {
         if (item._id === id) {
           prevVal.push({

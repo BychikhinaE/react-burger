@@ -16,11 +16,8 @@ import {
   GET_USER_ERROR,
 } from "../actions/user";
 import {TUserActions} from '../types/user'
+import { TUserData } from "../types/data";
 
-type TUserData = {
-  email: string,
-  name: string
-}
 type TUserState = {
   isAuth: boolean,
   userData: TUserData,
@@ -34,9 +31,12 @@ type TUserState = {
   getUserFailed: boolean,
 };
 
-const initialState: TUserState = {
+const initialUserState: TUserState = {
   isAuth: false,
-  userData: {},
+  userData: {
+    name: '',
+    email: ''
+  },
   userDataRequest: false,
   userDataFailed: false,
   logoutRequest: false,
@@ -47,7 +47,7 @@ const initialState: TUserState = {
   getUserFailed: false,
 };
 
-export const userReducer = (state = initialState, action: TUserActions) => {
+export const userReducer = (state = initialUserState, action: TUserActions) => {
   switch (action.type) {
     case SUBMIT_PROFILE_REQUEST: {
       return { ...state, userDataRequest: true };
@@ -97,7 +97,10 @@ export const userReducer = (state = initialState, action: TUserActions) => {
       return {
         ...state,
         isAuth: false,
-        userData: {},
+        userData: {
+          name: '',
+          email: ''
+        },
         logoutRequest: false,
       };
     }

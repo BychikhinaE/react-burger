@@ -11,9 +11,9 @@ import { updateUser } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
 
 function ProfileInfo() {
-  const [valueName, setValueName] = useState(undefined);
-  const [valuePassword, setValuePassword] = useState(undefined);
-  const [valueEmail, setValueEmail] = useState(undefined);
+  const [valueName, setValueName] = useState<string>('');
+  const [valuePassword, setValuePassword] = useState<string>('');
+  const [valueEmail, setValueEmail] = useState<string>('');
 
   const dispatch = useDispatch();
 
@@ -21,9 +21,9 @@ function ProfileInfo() {
   const password = useSelector((state) => state.password.password);
 
   const cancel = () => {
-    setValueName(undefined);
-    setValuePassword(undefined);
-    setValueEmail(undefined);
+    setValueName(name);
+    setValuePassword(password);
+    setValueEmail(email);
   };
 
   const handleSubmit = () => {
@@ -48,7 +48,7 @@ function ProfileInfo() {
       <div className={`${styles.inputName} mt-30`}>
         <Input
           type="text"
-          placeholder="Имя"
+          // placeholder="Имя"
           onChange={(e) => setValueName(e.target.value)}
           icon="EditIcon"
           value={valueName ? valueName : name}
@@ -57,7 +57,7 @@ function ProfileInfo() {
       </div>
       <div className={styles.inputEmail}>
         <EmailInput
-          placeholder="Логин"
+          // placeholder="Логин"
           onChange={(e) => setValueEmail(e.target.value)}
           value={valueEmail ? valueEmail : email}
           name="email"
@@ -65,7 +65,7 @@ function ProfileInfo() {
       </div>
       <div className={styles.inputPassword}>
         <PasswordInput
-          placeholder="Пароль"
+          // placeholder="Пароль"
           onChange={(e) => setValuePassword(e.target.value)}
           value={valuePassword ? valuePassword : password}
           name="password"

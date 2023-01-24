@@ -5,12 +5,12 @@ import {
   WS_CONNECTION_CLOSED_USER,
   WS_GET_MESSAGE,
 } from "../actions/wsActionTypes";
-import {TWsActions} from '../actions/wsActions';
+import { TWsActions } from "../types/ws";
 import { IOrder } from "../types/data";
 
 type TWsState = {
   wsConnected: boolean;
-  orders: ReadonlyArray<IOrder>  | undefined;
+  orders: Array<IOrder>;
   error: string | undefined;
   total: number;
   totalToday: number;
@@ -18,7 +18,7 @@ type TWsState = {
 
 const initialState: TWsState = {
   wsConnected: false,
-  orders: undefined,
+  orders: [],
   error: undefined,
   total: 0,
   totalToday: 0,
@@ -45,7 +45,7 @@ export const wsReducer = (state = initialState, action: TWsActions) => {
         ...state,
         error: undefined,
         wsConnected: false,
-        orders: undefined,
+        orders: [],
         total: 0,
         totalToday: 0,
       };
@@ -55,7 +55,7 @@ export const wsReducer = (state = initialState, action: TWsActions) => {
         ...state,
         error: undefined,
         wsConnected: false,
-        orders: undefined,
+        orders: [],
         total: 0,
         totalToday: 0,
       };

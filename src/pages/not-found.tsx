@@ -1,12 +1,12 @@
 
 import {  useHistory, useLocation } from "react-router-dom";
-
+import { TLocation } from "../services/types/data";
 import styles from "./not-found.module.css";
 import gif from "../images/404.gif";
 
 export const NotFound404 = () => {
   const hist = useHistory();
-  let location = useLocation();
+  let location = useLocation<TLocation>();
   return (
     <div className={`${styles.container} pl-10 pr-10`}>
       <h1 className={`${styles.head} text text_type_main-default text_color_inactive`}>

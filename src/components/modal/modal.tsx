@@ -25,7 +25,7 @@ const Modal: FC<IModalProps> = ({ children, onClose }) => {
     };
   }, []);
 
-  return ReactDOM.createPortal(
+  return modalRoot && ReactDOM.createPortal(
     <ModalOverlay onClick={onClose}>
       <div className={`${styles.modal} pt-15 pl-10 pr-10`}>
         <button className={styles.button} onClick={onClose}>

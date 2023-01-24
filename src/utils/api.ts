@@ -5,7 +5,7 @@ import {IGetData, IPostOrder, ICreateUser, IPostForgotPassword,
 
 const API = "https://norma.nomoreparties.space/api";
 
-async function request<T>(url, options) {
+async function request<T>(url:string, options: RequestInit | undefined) {
   // принимает два аргумента: урл и объект опций
   const res = await fetch(url, options);
   return getResponse<T>(res);
@@ -27,7 +27,7 @@ export function getData() {
   })
 }
 //Отправить заказ
-export function postOrder(ingridientsIdArray: Array<string>) {
+export function postOrder(ingridientsIdArray: Array<string | undefined>) {
   return request<IPostOrder>(`${API}/orders`, {
     method: "POST",
     headers: {
@@ -89,7 +89,7 @@ export function loginRequest(data: ILoginData) {
 }
 
 //для выхода
-export function logoutRequest(refreshToken: string) {
+export function logoutRequest(refreshToken: string | undefined) {
   return request<ILogoutRequest>(`${API}/auth/logout`, {
     method: "POST",
     mode: "cors",

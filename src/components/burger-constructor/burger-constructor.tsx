@@ -11,6 +11,7 @@ import {
 } from "../../services/actions/constructor";
 import IngredientConstructor from "../ingredient-constructor/ingredient-constructor";
 import BunConstructor from "../bun-constructor/bun-constructor";
+import { IIngredient } from "../../services/types/data";
 
 //ОСНОВНОЙ КОМПОНЕНТ, который вернет разметку справа
 function BurgerConstructor() {
@@ -18,14 +19,14 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
   const [{ isHover }, dropTarget] = useDrop({
     accept: "items",
-    drop: ({ currentItem }) => {
+    drop: (item: { currentItem: IIngredient }) => {
       //  Проверим, если перетаскиваемый элемент - хлеб
       if (
-        (currentItem.type === INGREDIENT_TYPES.BUN) &
-        selectedItems.some((item) => item.type === INGREDIENT_TYPES.BUN)
+        (item.currentItem.type === INGREDIENT_TYPES.BUN) &&
+        selectedItems.some((item: IIngredient) => item.type === INGREDIENT_TYPES.BUN)
       ) {
         const bunIndex = selectedItems.findIndex(
-          (item) => item.type === INGREDIENT_TYPES.BUN
+          (item: IIngredient) => item.type === INGREDIENT_TYPES.BUN
         );
         dispatch({
           type: DELETE_ITEM,
@@ -35,9 +36,12 @@ function BurgerConstructor() {
       // Отправим экшен с текущим перетаскиваемым элементом
       dispatch({
         type: ADD_SELECTED_ITEM,
-        item: { ...currentItem, sysid: uniqid() },
+        item: { ...item.currentItem, sysid: uniqid() },
       });
     },
+    collect: monitor => ({
+        isHover:  monitor.isOver(),
+      }),
   });
 
   return (
@@ -49,21 +53,20 @@ function BurgerConstructor() {
         ref={dropTarget}
       >
         {selectedItems.map(
-          (item, index) =>
+          (item: IIngredient, index: number) =>
             item.type === INGREDIENT_TYPES.BUN && (
               <BunConstructor
                 item={item}
                 key={item.sysid}
                 position="top"
                 isLocked={true}
-                index={index}
               />
             )
         )}
 
         <ul className={`${styles.scroll} custom-scroll text`}>
           {selectedItems.map(
-            (item, index) =>
+            (item: IIngredient, index: number) =>
               item.type !== INGREDIENT_TYPES.BUN && (
                 <IngredientConstructor
                   item={item}
@@ -76,7 +79,7 @@ function BurgerConstructor() {
         </ul>
 
         {selectedItems.map(
-          (item) =>
+          (item: IIngredient) =>
             item.type === INGREDIENT_TYPES.BUN && (
               <BunConstructor
                 item={item}

@@ -7,7 +7,7 @@ import {
   getUserData,
 } from "../../utils/api";
 import { setCookie, getCookie, deleteCookie } from "../../utils/utils";
-import { AppDispatch, AppThunk } from "../types/index";
+import { AppDispatch } from "../types/index";
 import { ILoginData, IRegisterData, IUpdateUserData } from "../types/data";
 
 export const SUBMIT_PROFILE_REQUEST: "SUBMIT_PROFILE_REQUEST" =
@@ -34,61 +34,58 @@ export const GET_USER_SUCCESS: "GET_USER_SUCCESS" = "GET_USER_SUCCESS";
 export const GET_USER_ERROR: "GET_USER_ERROR" = "GET_USER_ERROR";
 
 //Отправляем данные нового пользователя на сервер
-
-export const addNewUser: AppThunk =
-  (data: IRegisterData) => (dispatch: AppDispatch) => {
-    dispatch({
-      type: SUBMIT_PROFILE_REQUEST,
-    });
-    createUser(data)
-      .then((res) => {
-        const accessToken = res.accessToken.split("Bearer ")[1];
-        const refreshToken = res.refreshToken;
-        if (accessToken && refreshToken) {
-          setCookie("accessToken", accessToken, { "max-age": 1200 });
-          setCookie("refreshToken", refreshToken);
-        }
-        dispatch({
-          type: SUBMIT_PROFILE_SUCCESS,
-          data: res.user,
-        });
-      })
-      .catch((res) => {
-        dispatch({
-          type: SUBMIT_PROFILE_ERROR,
-        });
-        console.log("createUser" + res.message);
+export const addNewUser = (data: IRegisterData) => (dispatch: AppDispatch) => {
+  dispatch({
+    type: SUBMIT_PROFILE_REQUEST,
+  });
+  createUser(data)
+    .then((res) => {
+      const accessToken = res.accessToken.split("Bearer ")[1];
+      const refreshToken = res.refreshToken;
+      if (accessToken && refreshToken) {
+        setCookie("accessToken", accessToken, { "max-age": 1200 });
+        setCookie("refreshToken", refreshToken);
+      }
+      dispatch({
+        type: SUBMIT_PROFILE_SUCCESS,
+        data: res.user,
       });
-  };
-
-export const signIn: AppThunk =
-  (data: ILoginData) => (dispatch: AppDispatch) => {
-    dispatch({
-      type: USER_LOGIN_REQUEST,
-    });
-    loginRequest(data)
-      .then((res) => {
-        const accessToken = res.accessToken.split("Bearer ")[1];
-        const refreshToken = res.refreshToken;
-        if (accessToken && refreshToken) {
-          setCookie("accessToken", accessToken, { "max-age": 1200 });
-          setCookie("refreshToken", refreshToken);
-        }
-
-        dispatch({
-          type: USER_LOGIN_SUCCESS,
-          data: res.user,
-        });
-      })
-      .catch((res) => {
-        dispatch({
-          type: USER_LOGIN_ERROR,
-        });
-        console.log("loginRequest" + res.message);
+    })
+    .catch((res) => {
+      dispatch({
+        type: SUBMIT_PROFILE_ERROR,
       });
-  };
+      console.log("createUser" + res.message);
+    });
+};
 
-export const signOut: AppThunk = () => (dispatch: AppDispatch) => {
+export const signIn = (data: ILoginData) => (dispatch: AppDispatch) => {
+  dispatch({
+    type: USER_LOGIN_REQUEST,
+  });
+  loginRequest(data)
+    .then((res) => {
+      const accessToken = res.accessToken.split("Bearer ")[1];
+      const refreshToken = res.refreshToken;
+      if (accessToken && refreshToken) {
+        setCookie("accessToken", accessToken, { "max-age": 1200 });
+        setCookie("refreshToken", refreshToken);
+      }
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        data: res.user,
+      });
+    })
+    .catch((res) => {
+      dispatch({
+        type: USER_LOGIN_ERROR,
+      });
+      console.log("loginRequest" + res.message);
+    });
+};
+
+export const signOut = () => (dispatch: AppDispatch) => {
   dispatch({
     type: USER_LOGOUT_REQUEST,
   });
@@ -109,7 +106,7 @@ export const signOut: AppThunk = () => (dispatch: AppDispatch) => {
     });
 };
 
-export const getUser: AppThunk = () => (dispatch: AppDispatch) => {
+export const getUser = () => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_USER_REQUEST,
   });
@@ -156,7 +153,7 @@ export const getUser: AppThunk = () => (dispatch: AppDispatch) => {
   }
 };
 
-export const updateUser: AppThunk =
+export const updateUser =
   (data: IUpdateUserData) => (dispatch: AppDispatch) => {
     dispatch({
       type: USER_UPDATE_REQUEST,

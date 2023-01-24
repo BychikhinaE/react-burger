@@ -23,17 +23,17 @@ export function OrderMoreInfoPage() {
     };
   }, [dispatch, match]);
 
-  const orders = useSelector((state) => state.ws.orders);
-  const { id } = useParams<{id: string}>();
+  // const orders = useSelector((state) => state.ws.orders);
+  // const { id } = useParams<{id: string}>();
 
-  if (!orders) {
-    return;
-  }
+  // if (!orders) {
+  //   return;
+  // }
 
-  const order = orders.find((item) => item._id === id);
-  if (!order) {
-    return;
-  }
+  // const order = orders?.find((item) => item._id === id);
+  // if (!order) {
+  //   return;
+  // }
 
   return (
     <section aria-label="OrderMoreInfoPage" className={`${styles.wrapper}  `}>

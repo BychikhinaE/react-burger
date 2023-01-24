@@ -2,8 +2,9 @@ import moment from "moment-timezone";
 import { IOrder } from "../services/types/data";
 
 //Функция возвращает расстояние между заголовком раздела и верхней границей рамки родительского блока
-export function getDistanceBetweenPoints(elem: HTMLDivElement | null, viewportCoords: DOMRect) {
-  const coordsChild = elem.getBoundingClientRect();
+export function getDistanceBetweenPoints(elem: React.RefObject<HTMLDivElement>, viewportCoords: DOMRect) {
+  const coordsChild = elem.current!.getBoundingClientRect();
+
   return Math.abs(viewportCoords.top - coordsChild.top);
 }
 
@@ -17,20 +18,18 @@ export function getCookie(name: string): string | undefined {
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-//Посмотреть советы по типизации в интернете или еще раз тренажер
+
 export function setCookie(name: string, value: string, props: { [key: string]: any } & { expires?: string | number | Date } = {}) {
-  props = {
-    path: "/",
-    ...props,
-  };
-  // props = props || {};
+  props = props || {};
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
     const d = new Date();
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
   }
+  // @ts-ignore
   if (exp && exp.toUTCString) {
+    // @ts-ignore
     props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);
@@ -46,7 +45,7 @@ export function setCookie(name: string, value: string, props: { [key: string]: a
 }
 
 export function deleteCookie(name: string): void {
-  setCookie(name, null, { expires: -1 });
+  setCookie(name, '', { expires: -1 });
 }
 
 //функция вернет день времы и часовой пояс заказа
@@ -55,7 +54,7 @@ moment().locale("ru");
 const orderDateMoment = (order: IOrder): string=>
   moment(order.createdAt).format("HH:mm[ i-GMT]");
 
-const utc: string = moment().utcOffset() / 60;
+const utc: number = moment().utcOffset() / 60;
 
 const fromNow = (order: IOrder): string => {
   const dif = moment().diff(order.createdAt, "days");
@@ -63,9 +62,7 @@ const fromNow = (order: IOrder): string => {
     ? "Сегодня"
     : dif === 1
     ? "Вчера"
-    : dif > 1
-    ? moment(order.createdAt).locale("ru").fromNow()
-    : null;
+    : moment(order.createdAt).locale("ru").fromNow();
 };
 export const formatHumanDate = (order: IOrder): string => {
   return `${fromNow(order)}, ${orderDateMoment(order)}+${utc}`;

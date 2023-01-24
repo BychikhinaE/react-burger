@@ -1,7 +1,7 @@
 import { IIngredient } from "./data";
 import { GET_ITEMS_REQUEST, GET_ITEMS_SUCCESS, GET_ITEMS_ERROR, TAB_SWITCH } from '../actions/menu'
 
-export type TTabSwitchName = "Булки" | 'Соусы' | 'Начинки';
+// export type TTabSwitchName = "Булки" | 'Соусы' | 'Начинки';
 
 type TGetItemsRequestAction = {
   readonly type: typeof GET_ITEMS_REQUEST;
@@ -15,7 +15,7 @@ type TGetItemsErrorAction = {
 }
 type TTabSwitchAction = {
   readonly type: typeof  TAB_SWITCH;
-  readonly value: TTabSwitchName;
+  readonly value: string;
 }
 export type TMenuActions =
   | TGetItemsRequestAction

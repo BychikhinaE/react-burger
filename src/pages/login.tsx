@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import React, { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch} from "../services/hooks/hooks";
 import styles from "./page-form.module.css";
@@ -16,7 +16,7 @@ export function LoginPage() {
 
   const dispatch = useDispatch();
 
-  const login = (e: FormEvent<HTMLFormElement>) => {
+  const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(signIn({ email: valueEmail, password: valuePassword }));
     dispatch({
@@ -45,7 +45,7 @@ export function LoginPage() {
             onChange={(e) => setValuePassword(e.target.value)}
             value={valuePassword}
             name="password"
-            placeholder="Пароль"
+            // placeholder="Пароль"
           />
           <Button type="primary" size="medium">
             Войти

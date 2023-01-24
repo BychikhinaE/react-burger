@@ -1,10 +1,11 @@
 import { Route, Redirect, RouteProps } from "react-router-dom";
-import { useSelector } from "'../../services/hooks/hooks'";
+import { useSelector } from "../../services/hooks/hooks";
 import { useLocation } from "react-router-dom";
 import { FC } from "react";
+import { TLocation } from "../../services/types/data";
 
 type TProtectedRouteProps = {
-  notForAuth: boolean;
+  notForAuth?: boolean;
 } & RouteProps;
 
 export const ProtectedRoute: FC<TProtectedRouteProps> = ({
@@ -13,7 +14,7 @@ export const ProtectedRoute: FC<TProtectedRouteProps> = ({
   ...rest
 }) => {
   const isAuth = useSelector((state) => state.user.isAuth);
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
   return (
     <Route
