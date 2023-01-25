@@ -29,7 +29,6 @@ export const postForgotPasswordAction =
           type: POST_FORGOT_PASSWORD_SUCCESS,
           data: res.success,
         });
-        console.log("postForgotPassword" + res.success);
       })
       .catch((res) => {
         dispatch({

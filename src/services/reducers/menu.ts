@@ -4,25 +4,28 @@ import {
   GET_ITEMS_ERROR,
   TAB_SWITCH,
 } from "../actions/menu";
-import {IIngredient} from "../types/data"
-import {TMenuActions} from '../types/menu'
+import { IIngredient } from "../types/data";
+import { TMenuActions } from "../types/menu";
 
 type TMenuState = {
-  items: Array<IIngredient>,
-  itemsRequest: boolean,
-  itemsFailed: boolean,
-  currentTab: string,
-}
+  items: Array<IIngredient>;
+  itemsRequest: boolean;
+  itemsFailed: boolean;
+  currentTab: string;
+};
 const initialState: TMenuState = {
   // список всех полученных с сервера ингредиентов,
   items: [],
   itemsRequest: false,
   itemsFailed: false,
   //Таблица переключений активного поля
-  currentTab: 'Булки',
+  currentTab: "Булки",
 };
 
-export const burgerIngredientsReducer = (state = initialState, action: TMenuActions) => {
+export const burgerIngredientsReducer = (
+  state = initialState,
+  action: TMenuActions
+) => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {
       return {

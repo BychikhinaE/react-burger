@@ -15,27 +15,27 @@ import {
   GET_USER_SUCCESS,
   GET_USER_ERROR,
 } from "../actions/user";
-import {TUserActions} from '../types/user'
+import { TUserActions } from "../types/user";
 import { TUserData } from "../types/data";
 
 type TUserState = {
-  isAuth: boolean,
-  userData: TUserData,
-  userDataRequest: boolean,
-  userDataFailed: boolean,
-  logoutRequest: boolean,
-  logoutFailed: boolean,
-  updateRequest: boolean,
-  updateFailed: boolean,
-  getUserRequest: boolean,
-  getUserFailed: boolean,
+  isAuth: boolean;
+  userData: TUserData;
+  userDataRequest: boolean;
+  userDataFailed: boolean;
+  logoutRequest: boolean;
+  logoutFailed: boolean;
+  updateRequest: boolean;
+  updateFailed: boolean;
+  getUserRequest: boolean;
+  getUserFailed: boolean;
 };
 
 const initialUserState: TUserState = {
   isAuth: false,
   userData: {
-    name: '',
-    email: ''
+    name: "",
+    email: "",
   },
   userDataRequest: false,
   userDataFailed: false,
@@ -98,8 +98,8 @@ export const userReducer = (state = initialUserState, action: TUserActions) => {
         ...state,
         isAuth: false,
         userData: {
-          name: '',
-          email: ''
+          name: "",
+          email: "",
         },
         logoutRequest: false,
       };

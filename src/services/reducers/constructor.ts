@@ -4,15 +4,18 @@ import {
   TOGGLE_LIST,
   CLEAN_ALL_LIST,
 } from "../actions/constructor";
-import {IIngredient} from "../types/data"
-import {TConstructorActions} from '../types/constructor'
+import { IIngredient } from "../types/data";
+import { TConstructorActions } from "../types/constructor";
 
-const initialStateConstructor: {selectedItems: Array<IIngredient>} = {
+const initialStateConstructor: { selectedItems: Array<IIngredient> } = {
   // список всех ингредиентов в текущем конструкторе бургера,
   selectedItems: [],
 };
 
-export const constructorReducer = (state = initialStateConstructor, action: TConstructorActions) => {
+export const constructorReducer = (
+  state = initialStateConstructor,
+  action: TConstructorActions
+) => {
   switch (action.type) {
     case ADD_SELECTED_ITEM: {
       return {

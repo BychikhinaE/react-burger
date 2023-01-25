@@ -11,9 +11,9 @@ import { updateUser } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
 
 function ProfileInfo() {
-  const [valueName, setValueName] = useState<string>('');
-  const [valuePassword, setValuePassword] = useState<string>('');
-  const [valueEmail, setValueEmail] = useState<string>('');
+  const [valueName, setValueName] = useState<{value: string, isChange: boolean}>({value: '', isChange: false});
+  const [valuePassword, setValuePassword] = useState<{value: string, isChange: boolean}>({value: '', isChange: false});
+  const [valueEmail, setValueEmail] = useState<{value: string, isChange: boolean}>({value: '', isChange: false});
 
   const dispatch = useDispatch();
 
@@ -21,23 +21,23 @@ function ProfileInfo() {
   const password = useSelector((state) => state.password.password);
 
   const cancel = () => {
-    setValueName(name);
-    setValuePassword(password);
-    setValueEmail(email);
+    setValueName({value: name, isChange: false});
+    setValuePassword({value: password, isChange: false});
+    setValueEmail({value: email, isChange: false});
   };
 
   const handleSubmit = () => {
     dispatch(
       updateUser({
-        email: valueEmail || email,
-        password: valuePassword || password,
-        name: valueName || name,
+        email: valueEmail.isChange? valueEmail.value : email,
+        password: valuePassword.isChange? valuePassword.value : password,
+        name: valueName.isChange? valueName.value : name,
       })
     );
-    if (valuePassword) {
+    if (valuePassword.isChange) {
       dispatch({
         type: SAVE_PASSWORD,
-        password: valuePassword,
+        password: valuePassword.value,
       });
     }
     cancel();
@@ -49,32 +49,30 @@ function ProfileInfo() {
         <Input
           type="text"
           // placeholder="Имя"
-          onChange={(e) => setValueName(e.target.value)}
+          onChange={(e) => setValueName({value: e.target.value, isChange: true})}
           icon="EditIcon"
-          value={valueName ? valueName : name}
+          value={valueName.isChange ? valueName.value : name}
           name="name"
         />
       </div>
       <div className={styles.inputEmail}>
         <EmailInput
           // placeholder="Логин"
-          onChange={(e) => setValueEmail(e.target.value)}
-          value={valueEmail ? valueEmail : email}
+          onChange={(e) => setValueEmail({value: e.target.value, isChange: true})}
+          value={valueEmail.isChange ? valueEmail.value : email}
           name="email"
         />
       </div>
       <div className={styles.inputPassword}>
         <PasswordInput
           // placeholder="Пароль"
-          onChange={(e) => setValuePassword(e.target.value)}
-          value={valuePassword ? valuePassword : password}
+          onChange={(e) => setValuePassword({value: e.target.value, isChange: true})}
+          value={valuePassword.isChange ? valuePassword.value : password}
           name="password"
         />
       </div>
 
-      {(valueName !== undefined ||
-        valueEmail !== undefined ||
-        valuePassword !== undefined) && (
+      {(valueName.isChange|| valueEmail.isChange ||  valuePassword.isChange) && (
         <div className={styles.buttons}>
           <Button type="secondary" size="medium" onClick={cancel}>
             Отмена

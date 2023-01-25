@@ -22,8 +22,10 @@ function BurgerConstructor() {
     drop: (item: { currentItem: IIngredient }) => {
       //  Проверим, если перетаскиваемый элемент - хлеб
       if (
-        (item.currentItem.type === INGREDIENT_TYPES.BUN) &&
-        selectedItems.some((item: IIngredient) => item.type === INGREDIENT_TYPES.BUN)
+        item.currentItem.type === INGREDIENT_TYPES.BUN &&
+        selectedItems.some(
+          (item: IIngredient) => item.type === INGREDIENT_TYPES.BUN
+        )
       ) {
         const bunIndex = selectedItems.findIndex(
           (item: IIngredient) => item.type === INGREDIENT_TYPES.BUN
@@ -39,9 +41,9 @@ function BurgerConstructor() {
         item: { ...item.currentItem, sysid: uniqid() },
       });
     },
-    collect: monitor => ({
-        isHover:  monitor.isOver(),
-      }),
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
   });
 
   return (

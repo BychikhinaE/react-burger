@@ -1,11 +1,22 @@
 import { getCookie } from "./utils";
-import {IGetData, IPostOrder, ICreateUser, IPostForgotPassword,
-  IPostResetPassword, ILogoutRequest, IGetUserData, IRefreshTokenRequest,
-  IUpdateUserData, IResetPassword, IRegisterData, ILoginData } from '../services/types/data'
+import {
+  IGetData,
+  IPostOrder,
+  ICreateUser,
+  IPostForgotPassword,
+  IPostResetPassword,
+  ILogoutRequest,
+  IGetUserData,
+  IRefreshTokenRequest,
+  IUpdateUserData,
+  IResetPassword,
+  IRegisterData,
+  ILoginData,
+} from "../services/types/data";
 
 const API = "https://norma.nomoreparties.space/api";
 
-async function request<T>(url:string, options: RequestInit | undefined) {
+async function request<T>(url: string, options: RequestInit | undefined) {
   // принимает два аргумента: урл и объект опций
   const res = await fetch(url, options);
   return getResponse<T>(res);
@@ -24,7 +35,7 @@ export function getData() {
     headers: {
       "Content-Type": "application/json",
     },
-  })
+  });
 }
 //Отправить заказ
 export function postOrder(ingridientsIdArray: Array<string | undefined>) {
@@ -35,9 +46,8 @@ export function postOrder(ingridientsIdArray: Array<string | undefined>) {
       Authorization: "Bearer " + getCookie("accessToken"),
     },
     body: JSON.stringify({ ingredients: ingridientsIdArray }),
-  })
+  });
 }
-
 
 //Создать пользователя
 export function createUser(data: IRegisterData) {
@@ -47,7 +57,7 @@ export function createUser(data: IRegisterData) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  })
+  });
 }
 
 //Восстановить пароль
@@ -58,7 +68,7 @@ export function postForgotPassword(data: { email: string }) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  })
+  });
 }
 
 //Сбросить пароль
@@ -69,7 +79,7 @@ export function postResetPassword(data: IResetPassword) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  })
+  });
 }
 
 //для авторизации
@@ -85,7 +95,7 @@ export function loginRequest(data: ILoginData) {
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify(data),
-  })
+  });
 }
 
 //для выхода
@@ -101,7 +111,7 @@ export function logoutRequest(refreshToken: string | undefined) {
     body: JSON.stringify({
       token: refreshToken,
     }),
-  })
+  });
 }
 
 //для обновления токена
@@ -118,7 +128,7 @@ export function refreshTokenRequest() {
     body: JSON.stringify({
       token: refreshToken,
     }),
-  })
+  });
 }
 
 //для получения данных пользователя
@@ -134,7 +144,7 @@ export function getUserData() {
     },
     redirect: "follow",
     referrerPolicy: "no-referrer",
-  })
+  });
 }
 
 export function updateUserData(data: IUpdateUserData) {
@@ -150,5 +160,5 @@ export function updateUserData(data: IUpdateUserData) {
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify(data),
-  })
+  });
 }

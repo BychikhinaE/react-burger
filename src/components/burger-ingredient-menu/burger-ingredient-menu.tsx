@@ -11,14 +11,17 @@ import { FC } from "react";
 //DragSource
 interface IBurgerIngredientMenu {
   item: IIngredient;
-  counters:{ [key: string] : number};
+  counters: { [key: string]: number | undefined };
 }
-const BurgerIngredientMenu: FC<IBurgerIngredientMenu> = ({ item, counters }) => {
+const BurgerIngredientMenu: FC<IBurgerIngredientMenu> = ({
+  item,
+  counters,
+}) => {
   const currentItem = item;
   const currentId = item._id;
   const [, dragRef] = useDrag({
     type: "items",
-    item: { currentItem},
+    item: { currentItem },
   });
 
   const location = useLocation();
@@ -26,15 +29,14 @@ const BurgerIngredientMenu: FC<IBurgerIngredientMenu> = ({ item, counters }) => 
   return (
     <Link
       className={`${styles.item} mb-10`}
-      // index={currentId}
       ref={dragRef}
       to={{
         pathname: `/ingredients/${currentId}`,
         state: { background: location },
       }}
     >
-      { counters.currentId !== 0 && (
-        <Counter count={counters[currentId]} size="default" />
+      {typeof counters[currentId] !== "undefined" && (
+        <Counter count={counters[currentId]!} size="default" />
       )}
       <img alt={item.name} src={item.image} />
       <div className={styles.price}>

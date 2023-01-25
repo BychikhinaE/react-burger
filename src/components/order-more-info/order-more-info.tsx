@@ -12,12 +12,12 @@ function OrderMoreInfo() {
   const allIngredients = useSelector((state) => state.menu.items);
   const { id } = useParams<{ id: string }>();
 
-  const order: IOrder | undefined = orders?.find((item: IOrder) => item._id === id);
-  // if (!order) {
-  //   return;
-  // }
-  const orderNumber: string | undefined  = order?.number.toString();
-type TIngredientQuantyty = IIngredient  & {quantity: number}
+  const order: IOrder | undefined = orders?.find(
+    (item: IOrder) => item._id === id
+  );
+
+  const orderNumber: string | undefined = order?.number.toString();
+  type TIngredientQuantyty = IIngredient & { quantity: number };
   //Сделаем новый массив ингредиентов в заказе в котором в объектах будет кол-во повторений этого ингредиента
   const orderIngrCount: Array<TIngredientQuantyty> = allIngredients.reduce(
     (prevVal: Array<TIngredientQuantyty>, item: IIngredient) => {
@@ -45,12 +45,11 @@ type TIngredientQuantyty = IIngredient  & {quantity: number}
 
   const background = location.state?.background;
   //Считаем сумму заказа
-  const total = () => {
-    return orderIngrCount.reduce(
-      (acc: number, item: TIngredientQuantyty) => acc + item.price * item.quantity,
-      0
-    );
-  };
+  const total = orderIngrCount.reduce(
+    (acc: number, item: TIngredientQuantyty) =>
+      acc + item.price * item.quantity,
+    0
+  );
 
   //Здесь меняем текст статуса и его цвет
   let status = "";

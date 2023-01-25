@@ -20,7 +20,7 @@ export function InfoFood() {
 
   //логика навешивания и удаления обработчиков события нажатия клавиши "Esc"
   useEffect(() => {
-    const handleEscClose = (evt: {key: string}) => {
+    const handleEscClose = (evt: { key: string }) => {
       if (evt.key === "Escape") {
         onClose();
       }

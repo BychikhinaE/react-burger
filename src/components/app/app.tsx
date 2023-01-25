@@ -27,7 +27,6 @@ function App() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-
   const location = useLocation<TLocation>();
 
   useEffect(() => {
@@ -35,10 +34,9 @@ function App() {
     dispatch(getUser());
   }, []);
 
-  const onClose = useCallback<() => void>(() => {
+  const onClose = useCallback(() => {
     history.goBack();
   }, [history]);
-
 
   const background = location.state?.background;
   return (
@@ -46,49 +44,62 @@ function App() {
       <AppHeader />
       <main>
         <Switch location={background || location}>
-          <ProtectedRoute notForAuth path="/login" children={<LoginPage />} />
-          <Route path="/ingredients/:id" children={<InfoFood />} />
+          <ProtectedRoute
+            notForAuth
+            path="/login"
+            children={<LoginPage />}
+            exact
+          />
+          <Route path="/ingredients/:id" children={<InfoFood />} exact />
           <ProtectedRoute
             notForAuth
             path="/register"
             children={<RegisterPage />}
+            exact
           />
           <ProtectedRoute
             notForAuth
             path="/forgot-password"
             children={<ForgotPasswordPage />}
+            exact
           />
           <ProtectedRoute
             notForAuth
             path="/reset-password"
             children={<ResetPasswordPage />}
+            exact
           />
-          <Route path="/feed/:id" children={<OrderMoreInfoPage />} />
+          <Route path="/feed/:id" children={<OrderMoreInfoPage />} exact />
           <ProtectedRoute
             path="/profile/orders/:id"
             children={<OrderMoreInfoPage />}
+            exact
           />
-          <Route path="/feed" children={<FeedPage />} />
-          <ProtectedRoute path="/profile/orders" children={<ProfilePage />} />
-          <ProtectedRoute path="/profile" children={<ProfilePage />} />
-          <Route path="/" children={<ConstructorPage />} />
+          <Route path="/feed" children={<FeedPage />} exact />
+          <ProtectedRoute
+            path="/profile/orders"
+            children={<ProfilePage />}
+            exact
+          />
+          <ProtectedRoute path="/profile" children={<ProfilePage />} exact />
+          <Route path="/" children={<ConstructorPage />} exact />
           <Route children={<NotFound404 />} />
         </Switch>
         {background && (
           <>
-            <Route path="/ingredients/:id">
+            <Route path="/ingredients/:id" exact>
               <Modal onClose={onClose}>
                 <IngredientDetails />
               </Modal>
             </Route>
 
-            <Route path="/feed/:id">
+            <Route path="/feed/:id" exact>
               <Modal onClose={onClose}>
                 <OrderMoreInfo />
               </Modal>
             </Route>
 
-            <Route path="/profile/orders/:id">
+            <Route path="/profile/orders/:id" exact>
               <Modal onClose={onClose}>
                 <OrderMoreInfo />
               </Modal>

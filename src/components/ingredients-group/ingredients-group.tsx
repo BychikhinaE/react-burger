@@ -7,7 +7,7 @@ import { IIngredient, TIngredientGroup } from "../../services/types/data";
 
 interface IIngredientsGroupProps {
   ingredientGroup: TIngredientGroup;
-  counters: { [key: string] : number} ;
+  counters: { [key: string]: number | undefined };
 }
 const IngredientsGroup: FC<IIngredientsGroupProps> = ({
   ingredientGroup,

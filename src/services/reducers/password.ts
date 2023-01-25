@@ -75,6 +75,7 @@ export const passwordReducer = (state = passwordInitialState, action: TPasswordA
         resetPasswordFailed: false,
         updatePasswordStatus: action.data,
         resetPasswordRequest: false,
+        forgotPasswordStatus: false,
       };
     }
 
@@ -84,6 +85,7 @@ export const passwordReducer = (state = passwordInitialState, action: TPasswordA
         resetPasswordFailed: true,
         resetPasswordRequest: false,
         updatePasswordStatus: action.data,
+        forgotPasswordStatus: false,
       };
     }
 

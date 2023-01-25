@@ -5,9 +5,9 @@ import {
   WS_CONNECTION_CLOSED_USER,
   WS_GET_MESSAGE,
   WS_CONNECTION_START_ALL,
-  WS_CONNECTION_START_USER
+  WS_CONNECTION_START_USER,
 } from "../actions/wsActionTypes";
-import {IWsMessage} from './data'
+import { IWsMessage } from "./data";
 
 interface IWsConnectionSuccess {
   readonly type: typeof WS_CONNECTION_SUCCESS;
@@ -39,11 +39,10 @@ interface IWsConnectionStartUser {
 }
 
 export type TWsActions =
-|IWsConnectionSuccess
-|IWsConnectionError
-|IWsConnectionClosedAll
-|IWsConnectionClosedUser
-|IWsGetMessage
-|IWsConnectionStartAll
-|IWsConnectionStartUser;
-
+  | IWsConnectionSuccess
+  | IWsConnectionError
+  | IWsConnectionClosedAll
+  | IWsConnectionClosedUser
+  | IWsGetMessage
+  | IWsConnectionStartAll
+  | IWsConnectionStartUser;

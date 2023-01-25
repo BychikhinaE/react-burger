@@ -22,7 +22,7 @@ function Total() {
 
   //Здесь считаем сумму заказа и формируем список айдишек для отправки на сервер
   let priceSecondBun: number | undefined = 0;
-  let bunId: string | undefined  = undefined;
+  let bunId: string | undefined = undefined;
   if (selectedItems.some((item) => item.type === INGREDIENT_TYPES.BUN)) {
     const bun = selectedItems.find(
       (item) => item.type === INGREDIENT_TYPES.BUN
@@ -32,7 +32,7 @@ function Total() {
   }
 
   const total = selectedItems.reduce(
-    (acc=0, item) => acc + item.price,
+    (acc = 0, item) => acc + item.price,
     priceSecondBun
   );
 
@@ -44,7 +44,7 @@ function Total() {
   const modalVisible = useSelector((state) => state.order.modalVisible);
 
   const submitOrder = useCallback(() => {
-    const idSet: Array<string| undefined> = [
+    const idSet: Array<string | undefined> = [
       bunId,
       ...selectedItems
         .filter((item) => item.type !== INGREDIENT_TYPES.BUN)

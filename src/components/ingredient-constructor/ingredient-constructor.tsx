@@ -37,7 +37,7 @@ const IngredientConstructor: FC<IItemConstructorProps & { index: number }> = ({
 
   const [{ isHover }, drop] = useDrop({
     accept: "main",
-    hover(item: {index: number}) {
+    hover(item: { index: number }) {
       if (!ref.current) {
         return;
       }

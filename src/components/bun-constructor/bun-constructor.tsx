@@ -5,11 +5,9 @@ import { FC } from "react";
 import { IItemConstructorProps } from "../../services/types/data";
 
 //Компонент для булочек, отображается в конструкторе
-const BunConstructor: FC<IItemConstructorProps & { position: "top" | "bottom" }> = ({
-  item,
-  position,
-  isLocked,
-}) => {
+const BunConstructor: FC<
+  IItemConstructorProps & { position: "top" | "bottom" }
+> = ({ item, position, isLocked }) => {
   let halfBun = "";
   if (position === BUN_POSITION.TOP) {
     halfBun = " (верх)";

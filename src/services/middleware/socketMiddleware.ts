@@ -1,8 +1,12 @@
-import type { Middleware} from 'redux';
+import type { Middleware } from "redux";
 import { getCookie } from "../../utils/utils";
-import {IWs} from '../store/store'
+import { IWs } from "../store/store";
 
-export const socketMiddleware = (wsUrl: string, wsActions: IWs, isAll: boolean): Middleware => {
+export const socketMiddleware = (
+  wsUrl: string,
+  wsActions: IWs,
+  isAll: boolean
+): Middleware => {
   return (store) => {
     let socket: WebSocket | null = null;
 
@@ -39,7 +43,6 @@ export const socketMiddleware = (wsUrl: string, wsActions: IWs, isAll: boolean):
         socket.onmessage = (event) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-          // const { success, ...restParsedData } = parsedData;
           dispatch({ type: onMessage, payload: parsedData });
         };
 
@@ -53,4 +56,4 @@ export const socketMiddleware = (wsUrl: string, wsActions: IWs, isAll: boolean):
       next(action);
     };
   };
-}
+};

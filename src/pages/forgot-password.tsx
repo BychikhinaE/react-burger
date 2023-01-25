@@ -7,11 +7,12 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { postForgotPasswordAction } from "../services/actions/password";
+import { TLocation } from "../services/types/data";
 
 export function ForgotPasswordPage() {
   const dispatch = useDispatch();
   const [valueEmail, setValueEmail] = useState("");
-  const history = useHistory();
+  const history = useHistory<TLocation>();
   const forgotPasswordStatus = useSelector(
     (state) => state.password.forgotPasswordStatus
   );
@@ -25,7 +26,6 @@ export function ForgotPasswordPage() {
     if (forgotPasswordStatus) {
       history.replace({
         pathname: "/reset-password",
-        state: { from: "forgot-password" },
       });
     }
   }, [history, forgotPasswordStatus]);

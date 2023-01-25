@@ -7,9 +7,10 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
+import { TLocation } from "../../services/types/data";
 
 const AppHeader = () => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation<TLocation>();
   return (
     <header className={`${styles.header} pt-10 container pr-10 pl-10`}>
       <nav className={`${styles.nav} mt-4 mb-4`}>

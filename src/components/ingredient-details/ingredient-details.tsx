@@ -5,7 +5,7 @@ import { IIngredient } from "../../services/types/data";
 
 function IngredientDetails() {
   const items = useSelector((state) => state.menu.items);
-  const { id } = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
   const ingredient = items.find((item: IIngredient) => item._id === id);
 
   if (!ingredient) {
@@ -13,7 +13,9 @@ function IngredientDetails() {
   }
   return (
     <>
-      <h2 className={`${styles.header} text text_type_main-large`}>Детали ингредиента</h2>
+      <h2 className={`${styles.header} text text_type_main-large`}>
+        Детали ингредиента
+      </h2>
       <img
         alt={ingredient.name}
         src={ingredient.image_large}

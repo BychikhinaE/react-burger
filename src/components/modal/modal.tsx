@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
@@ -12,7 +12,7 @@ interface IModalProps {
 
 const Modal: FC<IModalProps> = ({ children, onClose }) => {
   //логика навешивания и удаления обработчиков события нажатия клавиши "Esc"
-  React.useEffect(() => {
+  useEffect(() => {
     const handleEscClose = (evt: { key: string }) => {
       if (evt.key === "Escape") {
         onClose();
@@ -23,9 +23,9 @@ const Modal: FC<IModalProps> = ({ children, onClose }) => {
     return () => {
       document.removeEventListener("keydown", handleEscClose);
     };
-  }, []);
+  }, [onClose]);
 
-  return modalRoot && ReactDOM.createPortal(
+  return ReactDOM.createPortal(
     <ModalOverlay onClick={onClose}>
       <div className={`${styles.modal} pt-15 pl-10 pr-10`}>
         <button className={styles.button} onClick={onClose}>
@@ -34,7 +34,7 @@ const Modal: FC<IModalProps> = ({ children, onClose }) => {
         {children}
       </div>
     </ModalOverlay>,
-    modalRoot
+    modalRoot!
   );
 };
 

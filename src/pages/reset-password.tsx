@@ -13,10 +13,13 @@ import { TLocation } from "../services/types/data";
 
 export function ResetPasswordPage() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useHistory<TLocation>();
   const [newPassword, setNewPassword] = useState("");
   const [token, setToken] = useState("");
   const location = useLocation<TLocation>();
+  const forgotPasswordStatus = useSelector(
+    (state) => state.password.forgotPasswordStatus
+  );
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,7 +46,7 @@ export function ResetPasswordPage() {
     }
   }, [history, updatePasswordStatus]);
 
-  if (location?.state?.from?.pathname !== "forgot-password") {
+  if (!forgotPasswordStatus) {
     return <Redirect to={{ pathname: "/forgot-password" }} />;
   }
 

@@ -1,6 +1,10 @@
-import { compose, createStore, applyMiddleware, Action,  ActionCreator} from "redux";
+import {
+  compose,
+  createStore,
+  applyMiddleware,
+} from "redux";
 import { rootReducer } from "../reducers/index";
-import thunk, {ThunkAction} from "redux-thunk";
+import thunk from "redux-thunk";
 import { socketMiddleware } from "../middleware/socketMiddleware";
 
 import {
@@ -15,12 +19,12 @@ import {
 
 const wsUrl = "wss://norma.nomoreparties.space/orders";
 
-export interface IWs  {
-  wsInit: typeof WS_CONNECTION_START_ALL | typeof WS_CONNECTION_START_USER,
-  onOpen: typeof WS_CONNECTION_SUCCESS,
-  onError: typeof WS_CONNECTION_ERROR,
-  onClose: typeof WS_CONNECTION_CLOSED_ALL | typeof WS_CONNECTION_CLOSED_USER,
-  onMessage: typeof WS_GET_MESSAGE,
+export interface IWs {
+  wsInit: typeof WS_CONNECTION_START_ALL | typeof WS_CONNECTION_START_USER;
+  onOpen: typeof WS_CONNECTION_SUCCESS;
+  onError: typeof WS_CONNECTION_ERROR;
+  onClose: typeof WS_CONNECTION_CLOSED_ALL | typeof WS_CONNECTION_CLOSED_USER;
+  onMessage: typeof WS_GET_MESSAGE;
 }
 
 const wsActionsAll: IWs = {
@@ -46,9 +50,12 @@ declare global {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk, socketMiddleware(wsUrl, wsActionsAll, true), socketMiddleware(wsUrl, wsActionsUser, false)),
+  applyMiddleware(
+    thunk,
+    socketMiddleware(wsUrl, wsActionsAll, true),
+    socketMiddleware(wsUrl, wsActionsUser, false)
+  )
 );
 
 const store = createStore(rootReducer, enhancer);
-// export type RootState = ReturnType<typeof store.getState>;
 export default store;

@@ -1,4 +1,4 @@
-import {Location} from 'history';
+import { Location } from "history";
 export type TLocation = {
   background?: Location;
   from?: { pathname: string };
@@ -48,7 +48,7 @@ export interface IRegisterData {
   password: string;
 }
 
-export type TUserData = Omit<IRegisterData, 'password'>
+export type TUserData = Omit<IRegisterData, "password">;
 
 export interface IUpdateUserData {
   name?: string;

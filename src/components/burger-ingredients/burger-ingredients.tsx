@@ -6,8 +6,6 @@ import { TAB_NAME, INGREDIENT_TYPES } from "../../utils/constants";
 import { TAB_SWITCH } from "../../services/actions/menu";
 import IngredientsGroup from "../ingredients-group/ingredients-group";
 import { getDistanceBetweenPoints } from "../../utils/utils";
-// import { TTabSwitchName } from "../../services/types/menu";
-import { IIngredient } from "../../services/types/data";
 
 //ОСНОВНОЙ КОМПОНЕНТ, которй отрисует меню
 const BurgerIngredients = () => {
@@ -21,7 +19,6 @@ const BurgerIngredients = () => {
   const mainRef = useRef<HTMLDivElement>(null);
   //Меняет активность у вкладок по мере скролла меню высчитывая самый близкий заголовок к верхней границе родителя
   function changeTab(scrollBlock: HTMLElement) {
-
     const viewportCoords = scrollBlock.getBoundingClientRect();
 
     getDistanceBetweenPoints(bunRef, viewportCoords) <
@@ -44,10 +41,12 @@ const BurgerIngredients = () => {
 
   useEffect(() => {
     const scrollBlock = document.getElementById("scroll");
-    const callBack = () =>
-   {if(scrollBlock) { return changeTab(scrollBlock)}
-}
-   scrollBlock?.addEventListener("scroll", callBack);
+    const callBack = () => {
+      if (scrollBlock) {
+        return changeTab(scrollBlock);
+      }
+    };
+    scrollBlock?.addEventListener("scroll", callBack);
     return function cleanup() {
       scrollBlock?.removeEventListener("scroll", callBack);
     };
@@ -65,45 +64,25 @@ const BurgerIngredients = () => {
 
   //Счетчик заказанных ингридиентов, потом пробросим пропсами до каждой карточки
   const selectedItems = useSelector((state) => state.constr.selectedItems);
-  const items = useSelector((state) => state.menu.items);
-
-  const countersStart  = items.reduce((prevVal: { [key: string] : number}, item: IIngredient) => {
-
-  prevVal[item._id] = 0;
-  return prevVal
-  }, {})
-
-
-  const counters: { [key: string] : number} = useMemo(
+  const counters = useMemo(
     () =>
-      selectedItems.reduce((prevVal, item) => {
-
-          if (item.type === INGREDIENT_TYPES.BUN) {
-            prevVal[item._id] = 2;
+      selectedItems.reduce(
+        (prevVal: { [key: string]: number | undefined }, item) => {
+          if (!prevVal[item._id]) {
+            if (item.type === INGREDIENT_TYPES.BUN) {
+              prevVal[item._id] = 2;
+            } else {
+              prevVal[item._id] = 1;
+            }
+          } else {
+            prevVal[item._id]!++;
           }
-         else {
-          prevVal[item._id]++;
-        }
-        return prevVal;
-      }, countersStart),
-    [selectedItems, countersStart]
+          return prevVal;
+        },
+        {}
+      ),
+    [selectedItems]
   );
-  // const counters: {[key: string]: number}= useMemo(
-  //   () =>
-  //     selectedItems.reduce((prevVal, item) => {
-  //       if (!prevVal[item._id]) {
-  //         if (item.type === INGREDIENT_TYPES.BUN) {
-  //           prevVal[item._id] = 2;
-  //         } else {
-  //           prevVal[item._id] = 1;
-  //         }
-  //       } else {
-  //         prevVal[item._id]++;
-  //       }
-  //       return prevVal;
-  //     }, {}),
-  //   [selectedItems]
-  // );
   return (
     <>
       <section className={styles.gridIngred}>

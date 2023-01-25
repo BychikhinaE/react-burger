@@ -5,9 +5,9 @@ import { IOrder } from "../../services/types/data";
 
 function AllCurrentOrders() {
   const orders = useSelector((state) => state.ws.orders);
-if(!orders){
-return null;
-}
+  if (!orders) {
+    return null;
+  }
   return (
     <section className={styles.gridArea}>
       <ul className={`${styles.scroll} custom-scroll`}>

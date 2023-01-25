@@ -8,7 +8,7 @@ export const TAB_SWITCH: "TAB_SWITCH" = "TAB_SWITCH";
 
 //Получаем карточки товара с сервера
 export function getItems() {
-  return function (dispatch: AppDispatch)  {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_ITEMS_REQUEST,
     });
@@ -25,5 +25,5 @@ export function getItems() {
         });
         console.log(res);
       });
-  }
+  };
 }
