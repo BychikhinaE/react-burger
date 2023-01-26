@@ -13,8 +13,8 @@ import {
   IRegisterData,
   ILoginData,
 } from "../services/types/data";
+import { API } from "./constants";
 
-const API = "https://norma.nomoreparties.space/api";
 
 async function request<T>(url: string, options: RequestInit | undefined) {
   // принимает два аргумента: урл и объект опций

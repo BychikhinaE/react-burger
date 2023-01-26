@@ -37,3 +37,14 @@
   text-decoration: none;
   color: #4C4CFF;
 }
+
+.button {
+  display: block;
+  text-decoration: none;
+  color: #4C4CFF;
+  border: none;
+  background-color: inherit;
+}
+.button:hover {
+  cursor: pointer;
+}

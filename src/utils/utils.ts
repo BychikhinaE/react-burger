@@ -34,9 +34,8 @@ export function setCookie(
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
   }
-  // @ts-ignore
-  if (exp && exp.toUTCString) {
-    // @ts-ignore
+
+  if (exp && exp instanceof Date) {
     props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);
