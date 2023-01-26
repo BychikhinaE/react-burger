@@ -17,7 +17,7 @@ import {
   WS_GET_MESSAGE,
 } from "../actions/wsActionTypes";
 
-const wsUrl = "wss://norma.nomoreparties.space/orders";
+import { wsUrl } from "../../utils/constants";
 
 export interface IWs {
   wsInit: typeof WS_CONNECTION_START_ALL | typeof WS_CONNECTION_START_USER;

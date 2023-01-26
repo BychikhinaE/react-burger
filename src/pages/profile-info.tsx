@@ -11,9 +11,10 @@ import { updateUser } from "../services/actions/user";
 import { SAVE_PASSWORD } from "../services/actions/password";
 
 function ProfileInfo() {
-  const [valueName, setValueName] = useState<{value: string, isChange: boolean}>({value: '', isChange: false});
-  const [valuePassword, setValuePassword] = useState<{value: string, isChange: boolean}>({value: '', isChange: false});
-  const [valueEmail, setValueEmail] = useState<{value: string, isChange: boolean}>({value: '', isChange: false});
+  type TUseStateProfile = {value: string, isChange: boolean}
+  const [valueName, setValueName] = useState<TUseStateProfile>({value: '', isChange: false});
+  const [valuePassword, setValuePassword] = useState<TUseStateProfile>({value: '', isChange: false});
+  const [valueEmail, setValueEmail] = useState<TUseStateProfile>({value: '', isChange: false});
 
   const dispatch = useDispatch();
 
@@ -48,7 +49,6 @@ function ProfileInfo() {
       <div className={`${styles.inputName} mt-30`}>
         <Input
           type="text"
-          // placeholder="Имя"
           onChange={(e) => setValueName({value: e.target.value, isChange: true})}
           icon="EditIcon"
           value={valueName.isChange ? valueName.value : name}
@@ -57,7 +57,6 @@ function ProfileInfo() {
       </div>
       <div className={styles.inputEmail}>
         <EmailInput
-          // placeholder="Логин"
           onChange={(e) => setValueEmail({value: e.target.value, isChange: true})}
           value={valueEmail.isChange ? valueEmail.value : email}
           name="email"
@@ -65,7 +64,6 @@ function ProfileInfo() {
       </div>
       <div className={styles.inputPassword}>
         <PasswordInput
-          // placeholder="Пароль"
           onChange={(e) => setValuePassword({value: e.target.value, isChange: true})}
           value={valuePassword.isChange ? valuePassword.value : password}
           name="password"

@@ -9,6 +9,7 @@ import {
 import { setCookie, getCookie, deleteCookie } from "../../utils/utils";
 import { AppDispatch } from "../types/index";
 import { ILoginData, IRegisterData, IUpdateUserData } from "../types/data";
+import { maxAgeToken } from "../../utils/constants";
 
 export const SUBMIT_PROFILE_REQUEST: "SUBMIT_PROFILE_REQUEST" =
   "SUBMIT_PROFILE_REQUEST";
@@ -43,7 +44,7 @@ export const addNewUser = (data: IRegisterData) => (dispatch: AppDispatch) => {
       const accessToken = res.accessToken.split("Bearer ")[1];
       const refreshToken = res.refreshToken;
       if (accessToken && refreshToken) {
-        setCookie("accessToken", accessToken, { "max-age": 1200 });
+        setCookie("accessToken", accessToken, { "max-age": maxAgeToken });
         setCookie("refreshToken", refreshToken);
       }
       dispatch({
@@ -68,7 +69,7 @@ export const signIn = (data: ILoginData) => (dispatch: AppDispatch) => {
       const accessToken = res.accessToken.split("Bearer ")[1];
       const refreshToken = res.refreshToken;
       if (accessToken && refreshToken) {
-        setCookie("accessToken", accessToken, { "max-age": 1200 });
+        setCookie("accessToken", accessToken, { "max-age": maxAgeToken });
         setCookie("refreshToken", refreshToken);
       }
 

@@ -1,16 +1,20 @@
-export const INGREDIENT_TYPES: {
-  BUN: "bun";
-  SAUCE: "sauce";
-  MAIN: "main";
-} = { BUN: "bun", SAUCE: "sauce", MAIN: "main" };
+export enum INGREDIENT_TYPES {
+  BUN = "bun",
+  SAUCE = "sauce",
+  MAIN = "main",
+}
 
-export const BUN_POSITION: {
-  TOP: "top";
-  BOTTOM: "bottom";
-} = { TOP: "top", BOTTOM: "bottom" };
+export enum BUN_POSITION {
+  TOP = "top",
+  BOTTOM = "bottom",
+}
 
-export const TAB_NAME: {
-  BUN: "Булки";
-  SAUCE: "Соусы";
-  MAIN: "Начинки";
-} = { BUN: "Булки", SAUCE: "Соусы", MAIN: "Начинки" };
+export enum TAB_NAME {
+  BUN = "Булки",
+  SAUCE = "Соусы",
+  MAIN = "Начинки",
+}
+
+export const maxAgeToken: number = 1200;
+export const API = "https://norma.nomoreparties.space/api";
+export const wsUrl = "wss://norma.nomoreparties.space/orders";

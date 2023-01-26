@@ -36,7 +36,7 @@ const BurgerIngredientMenu: FC<IBurgerIngredientMenu> = ({
       }}
     >
       {typeof counters[currentId] !== "undefined" && (
-        <Counter count={counters[currentId]!} size="default" />
+        <Counter count={counters[currentId] || 0 } size="default" />
       )}
       <img alt={item.name} src={item.image} />
       <div className={styles.price}>
